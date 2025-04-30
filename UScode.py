@@ -5,6 +5,17 @@ api_id = os.getenv('API_ID')
 api_hash = os.getenv('API_HASH')
 session = 'session'
 ABH = TelegramClient(session, int(api_id), api_hash)
+from telethon.sync import TelegramClient
+from telethon.sessions import StringSession
+
+api_id = int(input("ادخل API_ID: "))
+api_hash = input("ادخل API_HASH: ")
+
+with TelegramClient(StringSession(), api_id, api_hash) as client:
+    print("✅ سجل الدخول الآن...")
+    client.send_message("me", "📥 تم تسجيل الدخول بنجاح.")
+    session_string = client.session.save()
+    print(f"\n🔐 Session String:\n{session_string}")
 @ABH.on(events.NewMessage(pattern='خاص'))
 async def save(event):
     uid = event.sender_id
