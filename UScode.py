@@ -1,21 +1,9 @@
 from telethon import TelegramClient, events
 import asyncio, os
-from telethon.sessions import StringSession
 api_id = os.getenv('API_ID')
 api_hash = os.getenv('API_HASH')
 session = 'session'
 ABH = TelegramClient(session, int(api_id), api_hash)
-from telethon.sync import TelegramClient
-from telethon.sessions import StringSession
-
-api_id = int(input("ادخل API_ID: "))
-api_hash = input("ادخل API_HASH: ")
-
-with TelegramClient(StringSession(), api_id, api_hash) as client:
-    print("✅ سجل الدخول الآن...")
-    client.send_message("me", "📥 تم تسجيل الدخول بنجاح.")
-    session_string = client.session.save()
-    print(f"\n🔐 Session String:\n{session_string}")
 @ABH.on(events.NewMessage(pattern='خاص'))
 async def save(event):
     uid = event.sender_id
@@ -31,16 +19,18 @@ async def save(event):
           await r.forward_to(me.id)
     else:
         return
-@ABH.on(events.NewMessage(pattern='.مسح'))
+@ABH.on(events.NewMessage(pattern=r'^مسح (\d+)$'))
 async def dele(event):
-    await event.delete()
+    num = event.pattern_match.group(1)
     r = await event.get_reply_message()
-    await r.delete()
-@ABH.on(events.NewMessage(pattern='جلسه'))
-async def send_session_string(event):
-    me = await ABH.get_me()
-    session_string = ABH.session.save() 
-    await ABH.send_message(me.id, f"🔐 Session String:\n`{session_string}`")
+    if r:
+        await event.delete()
+        await r.delete()
+    else:
+        for i in range(int(num)):
+            async for msg in ABH.iter_messages(event.chat_id, limit=1):
+                await msg.delete()
+        await event.delete()
 async def main():
     await ABH.start()
     await ABH.run_until_disconnected()
