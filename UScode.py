@@ -1,11 +1,10 @@
 from telethon import TelegramClient, events
 import asyncio, os
-
+from telethon.sessions import StringSession
 api_id = os.getenv('API_ID')
 api_hash = os.getenv('API_HASH')
 session = 'session'
 ABH = TelegramClient(session, int(api_id), api_hash)
-
 @ABH.on(events.NewMessage(pattern='خاص'))
 async def save(event):
     uid = event.sender_id
@@ -17,29 +16,21 @@ async def save(event):
         await event.delete()
         return
     if uid == me.id:
-        await event.delete()
-        await r.forward_to(me.id)
+          await event.delete()
+          await r.forward_to(me.id)
     else:
         return
-
-@ABH.on(events.NewMessage(pattern='.مسح'))
+@ABH.on(events.NewMessage('.مسح'))
 async def dele(event):
     await event.delete()
     r = await event.get_reply_message()
-    if r:
-        await r.delete()
-    else:
-        await event.reply("لم يتم الرد على أي رسالة.")
-
+    await r.delete()
 @ABH.on(events.NewMessage(pattern='جلسه'))
-async def send_session_info(event):
+async def send_session_string(event):
     me = await ABH.get_me()
-    session_token = ABH.session.filename
-    await ABH.send_message(me.id, f"📎 توكن التحكم بالعميل (Session Token): `{session_token}`")
-
-
+    session_string = ABH.session.save() 
+    await ABH.send_message(me.id, f"🔐 Session String:\n`{session_string}`")
 async def main():
     await ABH.start()
     await ABH.run_until_disconnected()
-
 asyncio.run(main())
