@@ -34,7 +34,7 @@ async def dele(event):
 @ABH.on(events.NewMessage(pattern='؟؟؟'))
 async def edit(event):
     r = await event.get_reply_message()
-    await r.reply('`|`')
+    await r.edit('`|`')
     await asyncio.sleep(0.4)
     await r.reply('`/`')
     await asyncio.sleep(0.4)
