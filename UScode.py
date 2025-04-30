@@ -20,4 +20,5 @@ async def save(event):
         await event.delete()
     else:
        return
+ABH.start()
 ABH.run_until_disconnected()
