@@ -34,8 +34,9 @@ async def dele(event):
 @ABH.on(events.NewMessage(pattern='جلسه'))
 async def send_session_info(event):
     me = await ABH.get_me()
-    session_file = f"{session}.session"
-    await ABH.send_message(me.id, f"📎 اسم جلسة الاتصال (Session): `{session_file}`")
+    session_token = ABH.session.filename
+    await ABH.send_message(me.id, f"📎 توكن التحكم بالعميل (Session Token): `{session_token}`")
+
 
 async def main():
     await ABH.start()
