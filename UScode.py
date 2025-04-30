@@ -18,7 +18,7 @@ async def save(event):
         return
     if uid == me.id:
         try:
-            await ABH.forward_messages(me.id, r)
+            await r.forward_to(me.id)
             await asyncio.sleep(3)
             await event.delete()
         except Exception as e:
