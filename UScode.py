@@ -58,8 +58,12 @@ async def edit(event):
     await event.edit("`\`")
 @ABH.on(events.NewMessage(pattern=r'^رسالة (\S+) (.+)$'))
 async def send(event):
+    await event.delete()
     to = event.pattern_match.group(1)
     text = event.pattern_match.group(2)
+    r = await event.get_reply_message()
+    if r:
+        to = r.sender_id
     await ABH.send_message(to, text)
 async def main():
     await ABH.start()
