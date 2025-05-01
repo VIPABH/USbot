@@ -71,13 +71,14 @@ async def send(event):
     await event.delete()
     to = event.pattern_match.group(1)
     text = event.pattern_match.group(2)
-    r = await event.get_reply_message()
-    if r:
+    try:
+        r = await event.get_reply_message()
+        if r:
+            to = r.sender_id 
         entity = await ABH.get_input_entity(to)
         await ABH.send_message(entity, text)
-        await ABH.send_message(to, text)
-    else:
-        await ABH.send_message(to, text)
+    except Exception as e:
+        await event.respond(f"❌ حدث خطأ أثناء الإرسال:\n`{str(e)}`")
 @ok
 @ABH.on(events.NewMessage(pattern=r'^وقتي (\S+) (.+)$'))
 async def timi(event):
