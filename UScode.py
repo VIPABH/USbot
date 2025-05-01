@@ -131,9 +131,7 @@ async def word(event):
                 await msg.delete()  
         except Exception as e:
             await event.respond(f"⚠️ حدث خطأ:\n{e}")
-
-        
-
+async def main():
     await ABH.start()
     await ABH.run_until_disconnected()
 asyncio.run(main())
