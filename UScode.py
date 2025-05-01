@@ -8,7 +8,7 @@ ABH = TelegramClient(session, int(api_id), api_hash)
 async def pin(event):
     gid = event.chat_id
     r = await event.get_reply_message()
-    await ABH.pin_message(r, gid)
+    await ABH.pin_message(gid, r.id)
 @ABH.on(events.NewMessage(pattern=r'^خاص$'))
 async def save(event):
     uid = event.sender_id
