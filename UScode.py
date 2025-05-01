@@ -63,7 +63,7 @@ async def send(event):
     text = event.pattern_match.group(2)
     r = await event.get_reply_message()
     if r:
-        abh = f'{to}, {text}'
+        abh = f'{to}{text}'
         to = r.sender_id
     await ABH.send_message(to, abh)
 async def main():
