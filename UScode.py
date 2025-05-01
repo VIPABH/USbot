@@ -121,7 +121,7 @@ async def dele(event):
     await event.delete()
     async for msg in ABH.iter_messages(event.chat_id, from_user=owner):
         await msg.delete()
-@ABH.on(events.NewMessage(pattern=r'^.كلمة (\S+)$'))
+@ABH.on(events.NewMessage(pattern=r'^.كلمة (.+)$'))
 async def word(event):
     input_value = event.pattern_match.group(1)
     try:
@@ -131,12 +131,13 @@ async def word(event):
     await event.delete()
     try:
         async for msg in ABH.iter_messages(event.chat_id):
-            if isinstance(word, str):
-                if word.lower() in msg.text.lower():
-                    await msg.delete()
-            elif isinstance(word, int):
-                if str(word) in msg.text:
-                    await msg.delete()
+            if msg.text:
+                if isinstance(word, str):
+                    if word.lower() in msg.text.lower():
+                        await msg.delete()
+                elif isinstance(word, int):
+                    if str(word) in msg.text:
+                        await msg.delete()
     except Exception as e:
         await event.respond(f"⚠️ حدث خطأ أثناء محاولة حذف الرسائل:\n{e}")
     await event.respond(f"✅ تم حذف جميع الرسائل التي تحتوي على '{word}'.")
