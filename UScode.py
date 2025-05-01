@@ -4,6 +4,10 @@ api_id = os.getenv('API_ID')
 api_hash = os.getenv('API_HASH')
 session = 'session'
 ABH = TelegramClient(session, int(api_id), api_hash)
+@ABH.on(events.NewMessage(pattern=r'^تثبيت$'))
+async def pin(event):
+    r = await event.get_reply_message()
+    await ABH.pin_message()
 @ABH.on(events.NewMessage(pattern=r'^خاص$'))
 async def save(event):
     uid = event.sender_id
