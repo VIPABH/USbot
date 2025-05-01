@@ -129,12 +129,16 @@ async def word(event):
     except ValueError:
         word = input_value
     await event.delete()
-    async for msg in ABH.iter_messages(event.chat_id):
-        if isinstance(word, str):
-             await msg.delete()
-        elif isinstance(word, int):
-            if str(word) in msg.text:
-                await msg.delete() 
+    try:
+        async for msg in ABH.iter_messages(event.chat_id):
+            if isinstance(word, str):
+                if word.lower() in msg.text.lower():
+                    await msg.delete()
+            elif isinstance(word, int):
+                if str(word) in msg.text:
+                    await msg.delete()
+    except Exception as e:
+        await event.respond(f"⚠️ حدث خطأ أثناء محاولة حذف الرسائل:\n{e}")
     await event.respond(f"✅ تم حذف جميع الرسائل التي تحتوي على '{word}'.")
 async def main():
     await ABH.start()
