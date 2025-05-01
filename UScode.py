@@ -68,7 +68,7 @@ async def edit(event):
 @ok
 @ABH.on(events.NewMessage(pattern=r'^رسالة (\S+) (.+)$'))
 async def send(event):
-    text = event.pattern_match.group(2)
+    text = event.pattern_match.group(1)
     r = await event.get_reply_message()
     if r:
         to = r.sender_id
