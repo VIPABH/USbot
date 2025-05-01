@@ -115,7 +115,7 @@ async def dele(event):
         await asyncio.sleep(3)
         await event.delete()
         return
-    owner = r.event.sender_id
+    owner = r.sender_id
     await event.delete()
     async for msg in ABH.iter_messages(event.chat_id, from_user=owner):
         await msg.delete()
