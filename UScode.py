@@ -47,7 +47,7 @@ async def save(event):
 async def dele(event):
     num = int(event.pattern_match.group(1))
     r = await event.get_reply_message()
-    if r:
+    if r and not num:
         await event.delete()
         await r.delete()
     else:
@@ -56,7 +56,8 @@ async def dele(event):
 @ok
 @ABH.on(events.NewMessage(pattern=r'^؟؟$'))
 async def edit(event):
-    await event.edit('`|`')
+    for i in range(5):
+        await event.edit('`|`')
     await asyncio.sleep(0.4)
     await event.edit('`/`')
     await asyncio.sleep(0.4)
@@ -65,20 +66,6 @@ async def edit(event):
     await event.edit("`\`")
     await asyncio.sleep(0.4)
     await event.edit('`|`')
-    await asyncio.sleep(0.4)
-    await event.edit('`/`')
-    await asyncio.sleep(0.4)
-    await event.edit('`-`')
-    await asyncio.sleep(0.4)
-    await event.edit("`\`")
-    await asyncio.sleep(0.4)
-    await event.edit('`|`')
-    await asyncio.sleep(0.4)
-    await event.edit('`/`')
-    await asyncio.sleep(0.4)
-    await event.edit('`-`')
-    await asyncio.sleep(0.4)
-    await event.edit("`\`")
 @ok
 @ABH.on(events.NewMessage(pattern=r'^رسالة (\S+) (.+)$'))
 async def send(event):
@@ -86,7 +73,7 @@ async def send(event):
     to = event.pattern_match.group(1)
     text = event.pattern_match.group(2)
     r = await event.get_reply_message()
-    if not r:
+    if r:
         to = r.sender_id
         abh = f'{to} {text}'
     await ABH.send_message(to, abh)
