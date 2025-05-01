@@ -47,7 +47,7 @@ async def save(event):
 async def dele(event):
     num = int(event.pattern_match.group(1)) + 1
     r = await event.get_reply_message()
-    if r:
+    if not r:
         await event.delete()
         await r.delete()
     else:
@@ -89,8 +89,8 @@ async def send(event):
     text = event.pattern_match.group(2)
     r = await event.get_reply_message()
     if r:
-        abh = f'{to} {text}'
         to = r.sender_id
+        abh = f'{to} {text}'
     await ABH.send_message(to, abh)
 @ok
 @ABH.on(events.NewMessage(pattern=r'^وقتي (\S+) (.+)$'))
