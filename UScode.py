@@ -4,7 +4,7 @@ api_id = os.getenv('API_ID')
 api_hash = os.getenv('API_HASH')
 session = 'session'
 ABH = TelegramClient(session, int(api_id), api_hash)
-@ABH.on(events.NewMessage(pattern='خاص'))
+@ABH.on(events.NewMessage(pattern=r'^خاص$'))
 async def save(event):
     uid = event.sender_id
     me = await ABH.get_me()
@@ -31,7 +31,7 @@ async def dele(event):
             async for msg in ABH.iter_messages(event.chat_id, limit=1):
                 await msg.delete()
         await event.delete()
-@ABH.on(events.NewMessage(pattern='؟؟؟'))
+@ABH.on(events.NewMessage(pattern=r'^؟؟$'))
 async def edit(event):
     await event.edit('`|`')
     await asyncio.sleep(0.4)
@@ -56,6 +56,11 @@ async def edit(event):
     await event.edit('`-`')
     await asyncio.sleep(0.4)
     await event.edit("`\`")
+@ABH.on(events.NewMessage(pattern=r'^رسالة (\S+) (.+)$'))
+async def send(event):
+    to = event.pattern_match.group(1)
+    text = event.pattern_match.group(2)
+    await ABH.send_message(to, text)
 async def main():
     await ABH.start()
     await ABH.run_until_disconnected()
