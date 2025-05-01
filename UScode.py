@@ -67,18 +67,24 @@ async def edit(event):
         await asyncio.sleep(0.4)
 @ok
 @ABH.on(events.NewMessage(pattern=r'^رسالة (\S+) (.+)$'))
-async def send(event):
+async def send_to_user(event):
     await event.delete()
     to = event.pattern_match.group(1)
     text = event.pattern_match.group(2)
-    try:
-        r = await event.get_reply_message()
-        if r:
-            to = r.sender_id 
+    entity = await ABH.get_input_entity(to)
+    await ABH.send_message(entity, text)
+@ok
+@ABH.on(events.NewMessage(pattern=r'^رسالة للرد (.+)$'))
+async def send_to_replied(event):
+    await event.delete()
+    text = event.pattern_match.group(1)
+    r = await event.get_reply_message()
+    if r:
+        to = r.sender_id
         entity = await ABH.get_input_entity(to)
         await ABH.send_message(entity, text)
-    except Exception as e:
-        await event.respond(f"❌ حدث خطأ أثناء الإرسال:\n`{str(e)}`")
+    else:
+        return
 @ok
 @ABH.on(events.NewMessage(pattern=r'^وقتي (\S+) (.+)$'))
 async def timi(event):
