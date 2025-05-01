@@ -61,11 +61,11 @@ async def send(event):
     await event.delete()
     to = event.pattern_match.group(1)
     text = event.pattern_match.group(2)
-    t1 = to
     r = await event.get_reply_message()
     if r:
+        abh = f'{to}, {text}'
         to = r.sender_id
-    await ABH.send_message(to, t1, text)
+    await ABH.send_message(to, abh)
 async def main():
     await ABH.start()
     await ABH.run_until_disconnected()
