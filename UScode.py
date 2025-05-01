@@ -45,8 +45,8 @@ async def save(event):
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.مسح (\d+)$'))
 async def dele(event):
+    r = await event.get_reply_message()
     if r and not num:
-        r = await event.get_reply_message()
         await event.delete()
         await r.delete()
     else:
