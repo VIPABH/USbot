@@ -42,7 +42,7 @@ async def save(event):
           await r.forward_to(me.id)
     else:
         return
-@ABH.on(events.NewMessage(pattern=r'^.مسح (\d+)$'))
+@ABH.on(events.NewMessage(pattern=r'^.مسح(?: (\d+))?$'))
 async def dele(event):
     r = await event.get_reply_message()
     if r:
