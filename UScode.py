@@ -98,15 +98,12 @@ async def timi(event):
         await asyncio.sleep(3)
         await event.delete()
 @ok
-@ABH.on(events.NewMessage(pattern=r'^.مسح_رسائلي$'))
+@ABH.on(events.NewMessage(pattern=r'^.مسح رسائلي$'))
 async def dele(event):
-    try:
-        owner = (await ABH.get_me()).id
-        await event.delete()
-        async for msg in ABH.iter_messages(event.chat_id, from_user=owner):
-            await msg.delete()
-    except Exception as e:
-        await event.reply(f"حدث خطأ أثناء محاولة حذف الرسائل:\n{e}")
+    owner = (await ABH.get_me()).id
+    await event.delete()
+    async for msg in ABH.iter_messages(event.chat_id, from_user=owner):
+        await msg.delete()
 async def main():
     await ABH.start()
     await ABH.run_until_disconnected()
