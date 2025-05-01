@@ -6,11 +6,13 @@ session = 'session'
 ABH = TelegramClient(session, int(api_id), api_hash)
 @ABH.on(events.NewMessage(pattern=r'^.تثبيت$'))
 async def pin(event):
+    await event.delete()
     gid = event.chat_id
     r = await event.get_reply_message()
     await ABH.pin_message(gid, r.id)
 @ABH.on(events.NewMessage(pattern=r'^الغاء تثبيت$'))
 async def pin(event):
+    await event.delete()
     gid = event.chat_id
     r = await event.get_reply_message()
     await ABH.unpin_message(gid, r.id)
