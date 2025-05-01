@@ -68,18 +68,21 @@ async def edit(event):
 @ok
 @ABH.on(events.NewMessage(pattern=r'^رسالة (\S+) (.+)$'))
 async def send(event):
-    r = await event.get_reply_message()
-    if r:
-        to = r.sender_id
-        text = event.pattern_match.group(2)
-        entity = await ABH.get_input_entity(to)
-        await ABH.send_message(entity, text)
-    else:
-        await event.delete()
-        to = event.pattern_match.group(1)
-        text = event.pattern_match.group(2)
-        entity = await ABH.get_input_entity(to)
-        await ABH.send_message(entity, text)
+    try:
+        r = await event.get_reply_message()
+        if r:
+            to = r.sender_id
+            text = event.pattern_match.group(2)
+            entity = await ABH.get_input_entity(to)
+            await ABH.send_message(entity, text)
+        else:
+            await event.delete()
+            to = event.pattern_match.group(1)
+            text = event.pattern_match.group(2)
+            entity = await ABH.get_input_entity(to)
+            await ABH.send_message(entity, text)
+    except Exception as e:
+        await event.respond(f"❌ حدث خطأ: {str(e)}")
 @ok
 @ABH.on(events.NewMessage(pattern=r'^وقتي (\S+) (.+)$'))
 async def timi(event):
