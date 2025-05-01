@@ -42,6 +42,7 @@ async def save(event):
           await r.forward_to(me.id)
     else:
         return
+@ok
 @ABH.on(events.NewMessage(pattern=r'^.مسح(?: (\d+))?$'))
 async def dele(event):
     r = await event.get_reply_message()
@@ -49,14 +50,11 @@ async def dele(event):
         await event.delete()
         await r.delete()
     else:
-        try:
-            num = int(event.pattern_match.group(1))
-            messages = []
-            async for msg in ABH.iter_messages(event.chat_id, limit=num + 1):
-                messages.append(msg.id)
-            await ABH.delete_messages(event.chat_id, messages)
-        except Exception as e:
-            await event.reply(f"حدث خطأ أثناء الحذف:\n{e}")
+         num = int(event.pattern_match.group(1))
+         messages = []
+         async for msg in ABH.iter_messages(event.chat_id, limit=num + 1):
+              messages.append(msg.id)
+              await ABH.delete_messages(event.chat_id, messages)
 @ok
 @ABH.on(events.NewMessage(pattern=r'^؟؟$'))
 async def edit(event):
