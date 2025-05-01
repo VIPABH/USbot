@@ -61,9 +61,9 @@ async def send(event):
     await event.delete()
     to = event.pattern_match.group(1)
     text = event.pattern_match.group(2)
+    t1 = to
     r = await event.get_reply_message()
     if r:
-        t1 = event.pattern_match.group(1)
         to = r.sender_id
     await ABH.send_message(to, t1, text)
 async def main():
