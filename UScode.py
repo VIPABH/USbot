@@ -76,8 +76,8 @@ async def send(event):
         to = r.sender_id
         abh = f'{to} {text}'
         await ABH.send_message(to, abh)
-    if not r:
-        await event.respond(abh)
+        if not r:
+            await event.respond(abh)
 @ok
 @ABH.on(events.NewMessage(pattern=r'^وقتي (\S+) (.+)$'))
 async def timi(event):
