@@ -45,12 +45,12 @@ async def save(event):
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.مسح (\d+)$'))
 async def dele(event):
-    num = int(event.pattern_match.group(1))
-    r = await event.get_reply_message()
     if r and not num:
+        r = await event.get_reply_message()
         await event.delete()
         await r.delete()
     else:
+        num = int(event.pattern_match.group(1))
         async for msg in ABH.iter_messages(event.chat_id, limit=num + 1):
             await msg.delete()
 @ok
