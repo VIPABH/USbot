@@ -66,25 +66,20 @@ async def edit(event):
         await event.edit("`\`")
         await asyncio.sleep(0.4)
 @ok
-@ABH.on(events.NewMessage(pattern=r'^رساله للرد (.+)$'))
-async def send_to_replied(event):
-    await event.delete()
-    text = event.pattern_match.group(1)
+@ABH.on(events.NewMessage(pattern=r'^رسالة (\S+) (.+)$'))
+async def send(event):
+    text = event.pattern_match.group(2)
     r = await event.get_reply_message()
     if r:
         to = r.sender_id
         entity = await ABH.get_input_entity(to)
         await ABH.send_message(entity, text)
     else:
-        return
-@ok
-@ABH.on(events.NewMessage(pattern=r'^رسالة (\S+) (.+)$'))
-async def send_to_user(event):
-    await event.delete()
-    to = event.pattern_match.group(1)
-    text = event.pattern_match.group(2)
-    entity = await ABH.get_input_entity(to)
-    await ABH.send_message(entity, text)
+        await event.delete()
+        to = event.pattern_match.group(1)
+        text = event.pattern_match.group(2)
+        entity = await ABH.get_input_entity(to)
+        await ABH.send_message(entity, text)
 @ok
 @ABH.on(events.NewMessage(pattern=r'^وقتي (\S+) (.+)$'))
 async def timi(event):
