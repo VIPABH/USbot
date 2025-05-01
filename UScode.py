@@ -72,10 +72,10 @@ async def edit(event):
 async def send(event):
     r = await event.get_reply_message()
     if r:
-        to = r.sender_id
-        text = event.pattern_match.group(2)
-        entity = await ABH.get_input_entity(to)
-        await ABH.send_message(entity, text)
+         to = r.sender_id
+         text = event.pattern_match.group(2)
+         entity = await ABH.get_input_entity(to)
+         await ABH.send_message(entity, text)
     else:
         await event.delete()
         to = event.pattern_match.group(1)
@@ -97,6 +97,16 @@ async def timi(event):
         await event.edit("!!!")
         await asyncio.sleep(3)
         await event.delete()
+@ok
+@ABH.on(events.NewMessage(pattern=r'^.مسح_رسائلي$'))
+async def dele(event):
+    try:
+        owner = (await ABH.get_me()).id
+        await event.delete()
+        async for msg in ABH.iter_messages(event.chat_id, from_user=owner):
+            await msg.delete()
+    except Exception as e:
+        await event.reply(f"حدث خطأ أثناء محاولة حذف الرسائل:\n{e}")
 async def main():
     await ABH.start()
     await ABH.run_until_disconnected()
