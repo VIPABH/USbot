@@ -45,16 +45,14 @@ async def save(event):
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.مسح (\d+)$'))
 async def dele(event):
-    num = int(event.pattern_match.group(1)) + 1
+    num = int(event.pattern_match.group(1))
     r = await event.get_reply_message()
-    if not r:
+    if r:
         await event.delete()
         await r.delete()
     else:
-        for i in range(int(num)):
-            async for msg in ABH.iter_messages(event.chat_id, limit=1):
-                await msg.delete()
-        await event.delete()
+        async for msg in ABH.iter_messages(event.chat_id, limit=num + 1):
+            await msg.delete()
 @ok
 @ABH.on(events.NewMessage(pattern=r'^؟؟$'))
 async def edit(event):
@@ -88,10 +86,12 @@ async def send(event):
     to = event.pattern_match.group(1)
     text = event.pattern_match.group(2)
     r = await event.get_reply_message()
-    if r:
+    if not r:
         to = r.sender_id
         abh = f'{to} {text}'
     await ABH.send_message(to, abh)
+    if not r:
+        await event.send_message(abh)
 @ok
 @ABH.on(events.NewMessage(pattern=r'^وقتي (\S+) (.+)$'))
 async def timi(event):
