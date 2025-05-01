@@ -58,14 +58,14 @@ async def dele(event):
 async def edit(event):
     for i in range(5):
         await event.edit('`|`')
-    await asyncio.sleep(0.4)
-    await event.edit('`/`')
-    await asyncio.sleep(0.4)
-    await event.edit('`-`')
-    await asyncio.sleep(0.4)
-    await event.edit("`\`")
-    await asyncio.sleep(0.4)
-    await event.edit('`|`')
+        await asyncio.sleep(0.4)
+        await event.edit('`/`')
+        await asyncio.sleep(0.4)
+        await event.edit('`-`')
+        await asyncio.sleep(0.4)
+        await event.edit("`\`")
+        await asyncio.sleep(0.4)
+        await event.edit('`|`')
 @ok
 @ABH.on(events.NewMessage(pattern=r'^رسالة (\S+) (.+)$'))
 async def send(event):
