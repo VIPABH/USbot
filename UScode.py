@@ -107,6 +107,8 @@ async def dele(event):
             await msg.delete()
     except Exception as e:
         await event.reply(f"حدث خطأ أثناء محاولة حذف الرسائل:\n{e}")
+
+@ok
 @ABH.on(events.NewMessage(pattern=r'^.مسح مشاركاته$'))
 async def dele(event):
     r = await event.get_reply_message()
@@ -119,7 +121,19 @@ async def dele(event):
     await event.delete()
     async for msg in ABH.iter_messages(event.chat_id, from_user=owner):
         await msg.delete()
-async def main():
+@ABH.on(events.NewMessage(pattern=r'^.كلمة (\S+)$'))
+async def word(event):
+    word = event.pattern_match.group(1)
+    if word:
+        try:
+            await event.delete()
+            async for msg in ABH.iter_messages(event.chat_id, search=word):
+                await msg.delete()  
+        except Exception as e:
+            await event.respond(f"⚠️ حدث خطأ:\n{e}")
+
+        
+
     await ABH.start()
     await ABH.run_until_disconnected()
 asyncio.run(main())
