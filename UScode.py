@@ -131,8 +131,7 @@ async def word(event):
     await event.delete()
     async for msg in ABH.iter_messages(event.chat_id):
         if isinstance(word, str):
-            if word.lower() in msg.text.lower():
-                await msg.delete()
+             await msg.delete()
         elif isinstance(word, int):
             if str(word) in msg.text:
                 await msg.delete() 
