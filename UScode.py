@@ -73,7 +73,8 @@ async def send(event):
     text = event.pattern_match.group(2)
     r = await event.get_reply_message()
     if r:
-        to = r.sender_id
+        entity = await ABH.get_input_entity(to)
+        await ABH.send_message(entity, text)
         await ABH.send_message(to, text)
     else:
         await ABH.send_message(to, text)
