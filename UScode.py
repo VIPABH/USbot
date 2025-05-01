@@ -12,7 +12,7 @@ def ok(func):
             return
         await func(event)
     return wrapper
-@ok
+# @ok
 @ABH.on(events.NewMessage(pattern=r'^.تثبيت$'))
 async def pin(event):
     await event.delete()
