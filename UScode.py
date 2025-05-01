@@ -12,7 +12,7 @@ def ok(func):
             return
         await func(event)
     return wrapper
-# @ok
+@ok
 @ABH.on(events.NewMessage(pattern=r'^.تثبيت$'))
 async def pin(event):
     await event.delete()
@@ -93,7 +93,7 @@ async def send(event):
         to = r.sender_id
     await ABH.send_message(to, abh)
 @ok
-@ABH.on(events.NewMessage(pattern=r'^. (\S+) (.+)$'))
+@ABH.on(events.NewMessage(pattern=r'^وقتي (\S+) (.+)$'))
 async def timi(event):
     await event.delete()
     t = event.pattern_match.group(1)
