@@ -83,7 +83,7 @@ async def send(event):
         entity = await ABH.get_input_entity(to)
         await ABH.send_message(entity, text)
 @ok
-@ABH.on(events.NewMessage(pattern=r'^وقتي (\S+) (.+)$'))
+@ABH.on(events.NewMessage(pattern=r'^وقتي'))
 async def timi(event):
     await event.delete()
     t = event.paterrn_match.group(1)
@@ -107,7 +107,6 @@ async def dele(event):
             await msg.delete()
     except Exception as e:
         await event.reply(f"حدث خطأ أثناء محاولة حذف الرسائل:\n{e}")
-
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.مسح مشاركاته$'))
 async def dele(event):
