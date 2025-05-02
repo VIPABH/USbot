@@ -142,7 +142,7 @@ async def word(event):
                     if str(word) in msg.text:
                         await msg.delete()
 async def main():
-    from .موارد import th
+    from موارد import th
     await ABH.start()
     await ABH.run_until_disconnected()
 print("usbot is running ◉")
