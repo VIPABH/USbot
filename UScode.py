@@ -81,8 +81,7 @@ async def send(event):
     else:
         await event.delete()
         to = event.pattern_match.group(1)
-        txt = event.pattern_match.group(2)
-        text = f"{to} {txt}"
+        text = event.pattern_match.group(2)
         entity = await ABH.get_input_entity(to)
         await ABH.send_message(entity, text)
 @ok
