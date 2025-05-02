@@ -55,4 +55,3 @@ async def config_vars(event):
     await ABH.start()
     print("◉ البوت يعمل الآن")
     await ABH.run_until_disconnected()
-asyncio.run(config_vars(events()))
