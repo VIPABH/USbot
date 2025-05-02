@@ -1,5 +1,4 @@
 from telethon import TelegramClient, events
-# import UScode, التخزين, run #type: ignore
 import asyncio, os
 api_id = os.getenv('API_ID')
 api_hash = os.getenv('API_HASH')
@@ -13,6 +12,7 @@ def ok(func):
         await func(event)
     return wrapper
 async def main():
+    import UScode, التخزين, run #type: ignore
     await ABH.start()
     print("البرنامج يعمل... اضغط Ctrl+C للإيقاف.")
     await ABH.run_until_disconnected()
