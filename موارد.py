@@ -14,5 +14,4 @@ def ok(func):
 async def main():
     await ABH.start()
     await ABH.run_until_disconnected()
-print("usbot is running ◉")
 asyncio.run(main())
