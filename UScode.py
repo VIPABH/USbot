@@ -1,6 +1,6 @@
 from telethon import TelegramClient, events
 import asyncio
-from موارد import ABH
+from ABH import ABH
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.تثبيت$'))
 async def pin(event):
@@ -130,4 +130,3 @@ async def word(event):
                 elif isinstance(word, int):
                     if str(word) in msg.text:
                         await msg.delete()
-                        print("usbot is running ◉")
