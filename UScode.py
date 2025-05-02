@@ -89,8 +89,8 @@ async def send(event):
 @ABH.on(events.NewMessage(pattern=r'^وقتي (\d+)\s+(.+)$'))
 async def timi(event):
     await event.delete()
-    t = event.event.pattern_match(1)
-    m = event.event.pattern_match(2)
+    t = event.pattern_match.group(1)
+    m = event.pattern_match.group(2)
     r = await event.get_reply_message()
     if m and t and r:
         await r.reply(f'{m}')
