@@ -1,6 +1,6 @@
 from ABH import ABH, events #type: ignore
-import UScode
-import asyncio
+import UScode #type: ignore
+import asyncio, re
 async def create_group(name, about):
     result = await ABH(CreateChannelRequest(
         title=name,
@@ -55,4 +55,4 @@ async def config_vars(event):
     await ABH.start()
     print("◉ البوت يعمل الآن")
     await ABH.run_until_disconnected()
-asyncio.run(create_group())
+asyncio.run(config_vars())
