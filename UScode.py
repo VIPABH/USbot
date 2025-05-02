@@ -1,5 +1,5 @@
 from telethon import TelegramClient, events
-from موارد import *
+from موارد.py import *
 import asyncio, os
 api_id = os.getenv('API_ID')
 api_hash = os.getenv('API_HASH')
