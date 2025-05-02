@@ -15,5 +15,4 @@ async def main():
     await ABH.start()
     print("البرنامج يعمل... اضغط Ctrl+C للإيقاف.")
     await ABH.run_until_disconnected()
-    import UScode, التخزين, run #type: ignore
 asyncio.run(main())
