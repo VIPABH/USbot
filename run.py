@@ -1,7 +1,6 @@
 from ABH import ABH
 import UScode
 import asyncio
-async def main():
 async def create_group(name, about):
     result = await ABH(CreateChannelRequest(
         title=name,
