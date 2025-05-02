@@ -79,15 +79,16 @@ async def send(event):
     else:
         await event.delete()
         to = event.pattern_match.group(1)
-        text = event.pattern_match.group(2)
+        txt = event.pattern_match.group(2)
+        text = f"{to} {txt}"
         entity = await ABH.get_input_entity(to)
         await ABH.send_message(entity, text)
 @ok
 @ABH.on(events.NewMessage(pattern=r'^وقتي (\d+)\s+(.+)$'))
 async def timi(event):
     await event.delete()
-    t = event.paterrn_match.group(1)
-    m = event.paterrn_match.group(2)
+    t = event.event.pattern_match(1)
+    m = event.event.pattern_match(2)
     r = await event.get_reply_message()
     if m and t and r:
         await r.reply(f'{m}')
