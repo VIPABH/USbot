@@ -53,3 +53,6 @@ async def config_vars(event):
 {hidvar_value or " لم يتم العثور على الفار"}
     '''
     await event.reply(response)
+    await ABH.start()
+    print("◉ البوت يعمل الآن")
+    await ABH.run_until_disconnected()
