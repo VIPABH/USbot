@@ -1,4 +1,4 @@
-from موارد import ABH
+from ABH import ABH
 import UScode
 import asyncio
 async def main():
