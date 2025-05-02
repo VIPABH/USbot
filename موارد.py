@@ -1,2 +1,3 @@
-from UScode import *
+# from UScode import *
+import UScode
 print(p)
