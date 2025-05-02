@@ -1,5 +1,5 @@
 from telethon import TelegramClient, events
-import UScode, التخزين #type: ignore
+import UScode, التخزين, run #type: ignore
 from ABH import ABH
 import asyncio, os
 api_id = os.getenv('API_ID')
