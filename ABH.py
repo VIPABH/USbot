@@ -11,6 +11,8 @@ def ok(func):
             return
         await func(event)
     return wrapper
-    # await ABH.start()
-    # print("◉ البوت يعمل الآن")
-    # await ABH.run_until_disconnected()
+async def main():
+    await ABH.start()
+    print("البرنامج يعمل... اضغط Ctrl+C للإيقاف.")
+    await ABH.run_until_disconnected()
+asyncio.run(main())
