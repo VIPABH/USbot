@@ -1,6 +1,5 @@
-from telethon import TelegramClient, events
+from ABH import ABH, ok, events #type:ignore
 import asyncio
-from ABH import *
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.تثبيت$'))
 async def pin(event):
@@ -124,7 +123,7 @@ async def word(event):
     await event.delete()
     async for msg in ABH.iter_messages(event.chat_id):
         if msg.text:
-             if isinstance(word, str):
+            if isinstance(word, str):
                 if word.lower() in msg.text.lower():
                     await msg.delete()
                 elif isinstance(word, int):
