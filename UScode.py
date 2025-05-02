@@ -1,6 +1,6 @@
 from telethon import TelegramClient, events
 import asyncio
-from موارد import th, ABH
+from موارد import ABH
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.تثبيت$'))
 async def pin(event):
