@@ -145,6 +145,6 @@ async def word(event):
 async def main():
     await ABH.start()
     await ABH.run_until_disconnected()
-p = 1
+p = "Hello from UScode!"
 print("usbot is running ◉")
 asyncio.run(main())
