@@ -12,8 +12,8 @@ def ok(func):
         await func(event)
     return wrapper
 async def main():
-    import UScode, التخزين, run #type: ignore
     await ABH.start()
     print("البرنامج يعمل... اضغط Ctrl+C للإيقاف.")
     await ABH.run_until_disconnected()
+    import UScode, التخزين, run #type: ignore
 asyncio.run(main())
