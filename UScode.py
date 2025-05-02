@@ -1,5 +1,6 @@
 from telethon import TelegramClient, events
 import asyncio, os
+from موارد import th
 api_id = os.getenv('API_ID')
 api_hash = os.getenv('API_HASH')
 session = 'session'
@@ -142,7 +143,6 @@ async def word(event):
                     if str(word) in msg.text:
                         await msg.delete()
 async def main():
-    from موارد import th
     await ABH.start()
     await ABH.run_until_disconnected()
 print("usbot is running ◉")
