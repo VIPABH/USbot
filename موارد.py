@@ -1,1 +1,1 @@
-print("usbot is running ◉")
+th = print("usbot is running ◉")
