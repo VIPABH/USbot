@@ -3,7 +3,7 @@ import asyncio, os
 api_id = os.getenv('API_ID')
 api_hash = os.getenv('API_HASH')
 ABH = TelegramClient('session', api_id, api_hash)
-async def ok(func):
+def ok(func):
     async def wrapper(event):
         uid = event.sender_id
         owner = (await event.ABH.get_me()).id
