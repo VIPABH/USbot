@@ -146,5 +146,5 @@ async def main():
     await ABH.start()
     await ABH.run_until_disconnected()
 print("usbot is running ◉")
-print(th)
+th
 asyncio.run(main())
