@@ -24,3 +24,4 @@ async def التخزين(event):
 """,
             link_preview=False
         )
+print("التخزين شغال")
