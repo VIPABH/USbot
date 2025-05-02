@@ -1,4 +1,4 @@
-from ABH import ABH
+from ABH import ABH, events #type: ignore
 import UScode
 import asyncio
 async def create_group(name, about):
