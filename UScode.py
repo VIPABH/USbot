@@ -72,9 +72,10 @@ async def edit(event):
 async def send(event):
     r = await event.get_reply_message()
     if r:
+         await event.delete()
          to = r.sender_id
-         t1 = event.pattern_match.group(1)
-         txt = event.pattern_match.group(2)
+         t1 = event.event.pattern_match(1)
+         txt = event.event.pattern_match(2)
          text = f"{t1} {txt}"
          entity = await ABH.get_input_entity(to)
          await ABH.send_message(entity, text)
@@ -98,6 +99,10 @@ async def timi(event):
     else:
         await event.edit("!!!")
         await asyncio.sleep(3)
+        await event.delete()
+    if not r:
+        await event.respond(f'{m}')
+        await asyncio.sleep(t)
         await event.delete()
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.مسح رسائلي$'))
