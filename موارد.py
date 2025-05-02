@@ -1,2 +1,2 @@
-from UScode.py import *
+from UScode import *
 print(p)
