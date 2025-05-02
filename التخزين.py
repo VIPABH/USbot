@@ -1,5 +1,5 @@
 from ABH import ABH, gidvar, events #type: ignore
-@ABH.on(events.NewMessage(incoming=True, func=lambda e: e.is_reply))
+@ABH.on(events.NewMessage)
 async def التخزين(event):
     r = await event.get_reply_message()
     text = event.text
