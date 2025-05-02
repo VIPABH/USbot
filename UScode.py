@@ -1,4 +1,5 @@
-import asyncio, os, موارد
+import asyncio, os
+from موارد import *
 @ABH.on(events.NewMessage(pattern=r'^.تثبيت$'))
 async def pin(event):
     await event.delete()
