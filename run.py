@@ -1,6 +1,5 @@
 # from telethon.tl.functions.messages import CreateChannelRequest
 from ABH import ABH, events #type: ignore
-import UScode #type: ignore
 import asyncio, re
 async def create_group(name, about):
     result = await ABH(CreateChannelRequest(
