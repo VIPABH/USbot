@@ -1,5 +1,5 @@
 from telethon import TelegramClient, events
-import asyncio, os
+import asyncio
 from موارد import th
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.تثبيت$'))
