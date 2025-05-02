@@ -11,6 +11,6 @@ def ok(func):
             return
         await func(event)
     return wrapper
-    await ABH.start()
-    print("◉ البوت يعمل الآن")
-    await ABH.run_until_disconnected()
+    # await ABH.start()
+    # print("◉ البوت يعمل الآن")
+    # await ABH.run_until_disconnected()
