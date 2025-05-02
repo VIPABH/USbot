@@ -88,12 +88,12 @@ async def send(event):
 @ok
 @ABH.on(events.NewMessage(pattern=r'^وقتي (\d+)\s+(.+)$'))
 async def timi(event):
-    await event.delete()
     t = event.pattern_match.group(1)
     m = event.pattern_match.group(2)
     r = await event.get_reply_message()
     if m and t and r:
         await r.reply(f'{m}')
+        await event.delete()
         await asyncio.sleep(t)
         await event.delete()
     else:
