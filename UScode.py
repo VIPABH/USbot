@@ -27,7 +27,7 @@ async def pin(event):
     r = await event.get_reply_message()
     await ABH.unpin_message(gid, r.id)
 @ok
-@ABH.on(events.NewMessage(pattern=r'^خاص$'))
+@ABH.on(events.NewMessage(pattern=r'خاص'))
 async def save(event):
     uid = event.sender_id
     me = await ABH.get_me()
