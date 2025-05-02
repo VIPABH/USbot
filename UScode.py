@@ -130,3 +130,4 @@ async def word(event):
                 elif isinstance(word, int):
                     if str(word) in msg.text:
                         await msg.delete()
+                        print("usbot is running ◉")
