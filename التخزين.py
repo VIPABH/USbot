@@ -90,27 +90,21 @@ async def gidvar_save(event):
 #                 """,
 #                 link_preview=False
 #             )
+    sender = await event.get_sender()
     text = event.raw_text
     me = await ABH.get_me()
     replied = await event.get_reply_message()
-
     if (
         (me.username and f"@{me.username}" in text) or
         (str(me.id) in text) or
         (replied and replied.sender_id == me.id)
     ):
-        # تأكد من وجود معلومات عن الدردشة (chat)
         chat = await event.get_chat()
-        if not chat:
-            return  # لا تقم بالمتابعة إذا لم يكن هناك معلومات عن الدردشة
-
         chat_id_str = str(chat.id).replace("-100", "")
         msg_id = event.id
-
-        # إرسال الرسالة إذا تحقق الشرط
-        await ABH.send_message(
-            int(gidvar),
-            f"""
+    await ABH.send_message(
+        int(gidvar),
+        f"""
 #التــاكــات
 
 ⌔┊الكــروب : {chat.title if hasattr(chat, 'title') else 'خاص'}
@@ -120,8 +114,8 @@ async def gidvar_save(event):
 ⌔┊الرســالـه : {text}
 
 ⌔┊رابـط الرسـاله : [link](https://t.me/c/{chat_id_str}/{msg_id})
-            """,
-            link_preview=False
-        )
+""",
+        link_preview=False
+            )
 
 print("التخزين شغال")
