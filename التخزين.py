@@ -55,7 +55,6 @@ async def config_vars(event):
 async def gidvar_save(event):
     try:
         me = await ABH.get_me()
-        print(me)
         text = event.text
         print(text)
         if str(me.id) in text or (me.username and me.username in text):
