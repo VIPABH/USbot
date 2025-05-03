@@ -2,7 +2,7 @@ from ABH import ABH, events #type: ignore
 from config import * #type: ignore
 @ABH.on(events.NewMessage)
 async def gidvar_save(event):
-    bot = event.is_bot
+    bot = sender.bot
     chat = event.chat_id
     if bot or chat == gidvar or chat == 777000:
         return
