@@ -53,9 +53,15 @@ async def config_vars(event):
     await event.reply(response)
 @ABH.on(events.NewMessage())
 async def gidvar_save(event):
+    if not gidvar:
+        await config_vars()    
+    me = await ABH.get_me()
     if event.is_private:
         text = event.text
         uid = event.sender_id
+        sender = await event.get_sender()
+        if uid == me.id or uid == 777000 or sender.bot:
+            return
         sender = await event.get_sender()
         name = sender.first_name
         await ABH.send_message(
