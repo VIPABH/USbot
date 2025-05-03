@@ -90,6 +90,17 @@ async def gidvar_save(event):
 #                 """,
 #                 link_preview=False
 #             )
+    text = event.raw_text
+    me = await ABH.get_me()
+    replied = await event.get_reply_message()
+    if (
+        (me.username and f"@{me.username}" in text) or
+        (str(me.id) in text) or
+        (replied and replied.sender_id == me.id)
+    ):
+        chat = await event.get_chat()
+        chat_id_str = str(chat.id).replace("-100", "")
+        msg_id = event.id
     await ABH.send_message(
         int(gidvar),
         f"""
