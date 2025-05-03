@@ -1,7 +1,8 @@
-from telethon.tl.types import User
+from telethon.tl.functions.channels import CreateChannelRequest
+from telethon.tl.functions.users import GetFullUser
 from ABH import ABH, events  # type: ignore
 from config import *  # type: ignore
-from telethon.tl.functions.channels import CreateChannelRequest
+from telethon.tl.types import User
 import re
 gidvar = None
 hidvar = None
@@ -74,11 +75,27 @@ async def gidvar_save(event):
 '''
         )
         await event.forward_to(int(gidvar))
+    
     me = await ABH.get_me()
+    full = await ABH(GetFullUser(me.id))
+    usernames = []
+    if me.username:
+        usernames.append(me.username)
+    if hasattr(full, "user") and hasattr(full.user, "usernames"):
+        usernames.extend([u.username for u in full.user.usernames])
+        usernames = list(set(usernames))
+        nft_text = "\n".join(f"@{u}" for u in usernames) if usernames else "لا يوجد يوزرات"
+        print(nft_text)
     text = event.text
-    if str(me.id) in text or (me.username and me.username in text):
-        print(me.id)
-        print(me.username)
+    uid = event.sender_id
+    sender = await event.get_sender()
+    if uid == me.id or uid == 777000 or sender.bot:
+        return
+    me = await ABH.get_me()
+    oid = me.id
+    o_name = me.username if me.username else me.usernames
+    text = event.text
+    if str(oid) in text or o_name in text:
         chat = await event.get_chat()
         sender = await event.get_sender()
         name = sender.first_name if isinstance(sender, User) else "غير معروف"
