@@ -53,11 +53,13 @@ async def config_vars(event):
     await event.reply(response)
 @ABH.on(events.NewMessage())
 async def gidvar_save(event):
-     if event.is_private:
+    if event.is_private:
         text = event.text
         uid = event.sender_id
-        name = event.sender.first_name
-        await ABH.send_message(int(gidvar),
+        sender = await event.get_sender()
+        name = sender.first_name
+        await ABH.send_message(
+            int(gidvar),
             f'''
 المستخدم : {name}
 
@@ -67,10 +69,11 @@ async def gidvar_save(event):
 '''
         )
         r = await event.get_reply_message()
-        r.forward_to(gidvar)
-     me = await ABH.get_me()
-     text = event.text
-     if str(me.id) in text or (me.username and me.username in text):  
+        if r:
+            await r.forward_to(int(gidvar))
+    me = await ABH.get_me()
+    text = event.text
+    if str(me.id) in text or (me.username and me.username in text):
         chat = await event.get_chat()
         sender = await event.get_sender()
         gid = str(chat.id).replace("-100", "")
@@ -85,6 +88,6 @@ async def gidvar_save(event):
 ⌔┊الرســالـه : {text}
 
 ⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})""",
-        link_preview=False
-                )
+            link_preview=False
+        )
 print("التخزين شغال")
