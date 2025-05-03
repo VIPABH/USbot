@@ -51,7 +51,7 @@ async def config_vars(event):
 {hidvar or "لم يتم العثور على الفار"}
 '''
     await event.reply(response)
-@ABH.on(events.NewMessage()
+@ABH.on(events.NewMessage())
 async def gidvar_save(event):
     me = await ABH.get_me()
     text = event.text
@@ -73,4 +73,4 @@ async def gidvar_save(event):
 ⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})""",
             link_preview=False
         )
-print("التخزين شغال")
+        print("التخزين شغال")  # داخل الدالة الآن
