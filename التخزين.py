@@ -68,10 +68,18 @@ async def gidvar_save(event):
             await ABH.send_message(
                 int(gidvar),
                 f'''#التــاكــات
-الرسالة : {text}
-⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})''',
+
+                الكروب : `{chat.title}`
+
+                المرسل : {event.full_name}
+                
+                الرسالة : {text}
+
+                ⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})
+                
+                ''',
+                
                 link_preview=False,
-                parse_mode="markdown"
             )
     except Exception as e:
         print(f"[تحذير] حدث خطأ في gidvar_save: {e}")
