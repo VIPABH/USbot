@@ -55,35 +55,32 @@ async def config_vars(event):
 async def gidvar_save(event):
     if not gidvar:
         await config_vars(event)    
+    sender = await event.get_sender()
     me = await ABH.get_me()
-    if event.is_private:
-        text = event.text
-        uid = event.sender_id
-        sender = await event.get_sender()
-        if uid == me.id or uid == 777000 or sender.bot:
-            return
-        sender = await event.get_sender()
-        name = sender.first_name
-        await ABH.send_message(
-            int(gidvar),
-            f'''
+    text = event.text
+    uid = event.sender_id
+    if not event.is_private or uid == me.id or uid == 777000 or sender.bot:
+        return
+    name = sender.first_name
+    await ABH.send_message(
+        int(gidvar),
+    f'''
 المستخدم : {name}
 
 رسالته : {text}
 
 ايديه : `{uid}`
-'''
-        )
-        await event.forward_to(int(gidvar))
-        username = me.username if me.username else (me.usernames[0] if me.usernames else None)
-        oid = me.id
-        if str(oid) in text or (username and str(username) in text):
-            chat = await event.get_chat()
-            name = sender.first_name if isinstance(sender, User) else "غير معروف"
-            gid = str(chat.id).replace("-100", "")
-            msg_id = event.id
-            await ABH.send_message(
-                int(gidvar),
+''')
+    await event.forward_to(int(gidvar))
+    username = me.username if me.username else (me.usernames[0] if me.usernames else None)
+    oid = me.id
+    if str(oid) in text or (username and str(username) in text):
+        chat = await event.get_chat()
+        name = sender.first_name if isinstance(sender, User) else "غير معروف"
+        gid = str(chat.id).replace("-100", "")
+        msg_id = event.id
+        await ABH.send_message(
+            int(gidvar),
             f"""#التــاكــات
 ⌔┊الكــروب : {chat.title if hasattr(chat, 'title') else 'خاص'}
 
