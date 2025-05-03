@@ -74,7 +74,7 @@ async def gidvar_save(event):
     await event.forward_to(int(gidvar))
     oid = me.id
     text = event.text
-    if str(oid) in text:
+    if oid in text:
         chat = await event.get_chat()
         name = sender.first_name if isinstance(sender, User) else "غير معروف"
         gid = str(chat.id).replace("-100", "")
