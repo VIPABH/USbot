@@ -39,7 +39,7 @@ async def dele(event):
         await r.delete()
     else:
          messages = []
-         async for msg in ABH.iter_messages(event.chat_id, limit=int(num) + 1):
+         async for msg in ABH.iter_messages(event.chat_id, limit=num + 1):
               messages.append(msg.id)
               await ABH.delete_messages(event.chat_id, messages)
 @ok
