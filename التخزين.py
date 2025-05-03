@@ -11,7 +11,7 @@ async def gidvar_save(event):
         return
     text = event.text
     me = await ABH.get_me()
-    if me.username and f"@{me.username}" in text or is:
+    if me.username and f"@{me.username}" in text:
           cid = await event.get_chat()
           sender = await event.get_sender()
           chat_id_str = str(cid.id).replace("-100", "")
