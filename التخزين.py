@@ -1,8 +1,6 @@
 from telethon.tl.functions.channels import CreateChannelRequest
-from telethon.tl.functions.users import GetFullUserRequest
 from ABH import ABH, events  # type: ignore
 from config import *  # type: ignore
-from telethon.tl.types import User
 import re
 gidvar = None
 hidvar = None
@@ -53,41 +51,29 @@ async def config_vars(event):
     await ABH.send_message(me.id, response)
 @ABH.on(events.NewMessage())
 async def gidvar_save(event):
-    if not gidvar:
-        await config_vars(event)
-    me = await ABH.get_me()
-    text = event.text
-    main_username = me.username
-    abh_list = [u.username for u in me.usernames] if me.usernames else []
-    if (main_username and main_username in text) or any(u in text for u in abh_list):
-    chat = await ABH.get_input_chat(event.chat_id)
-    # sender = await event.get_sender()
-    # name = sender.first_name if name else sender.username
-    gid = chat.id
-    msg_id = event.id
-    txt = event.text
-    await ABH.send_message(
-        int(gidvar),
-        f'''#التــاكــات
-
-
-        الرسالة : {txt}
-        
-        ⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})
-'''
-#     await ABH.send_message(
-#         int(gidvar),
-#         f'''#التــاكــات
-
-#         الكروب : {chat.title}
-
-#         المرسل : {name}
-
-#         الرسالة : {txt}
-        
-#         ⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})
-# '''
-    )
+    try:
+        if not gidvar:
+            await config_vars(event)
+        me = await ABH.get_me()
+        text = event.text or ""
+        main_username = me.username
+        alt_usernames = [u.username for u in me.usernames] if me.usernames else []
+        usernames_to_check = [main_username] if main_username else []
+        usernames_to_check += alt_usernames
+        if any(username and username in text for username in usernames_to_check):
+            chat = await event.get_chat()
+            gid = str(chat.id).replace("-100", "")
+            msg_id = event.id
+            await ABH.send_message(
+                int(gidvar),
+                f'''#التــاكــات
+الرسالة : {text}
+⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})''',
+                link_preview=False,
+                parse_mode="markdown"
+            )
+    except Exception as e:
+        print(f"[تحذير] حدث خطأ في gidvar_save: {e}")
     sender = await event.get_sender()
     me = await ABH.get_me()
     text = event.text
