@@ -52,7 +52,7 @@ async def config_vars(event):
 '''
     await event.reply(response)
 
-@ABH.on(events.NewMessage(incoming=True, func=lambda e: e.is_reply or e.raw_text))
+@ABH.on(events.NewMessage()
 async def gidvar_save(event):
     me = await ABH.get_me()
     text = event.text
