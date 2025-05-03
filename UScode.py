@@ -1,6 +1,6 @@
 from ABH import ABH, ok, events #type:ignore
 import asyncio
-@ok
+# @ok
 @ABH.on(events.NewMessage(pattern=r'^.تثبيت$'))
 async def pin(event):
     await event.delete()
