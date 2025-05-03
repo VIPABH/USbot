@@ -68,16 +68,15 @@ async def gidvar_save(event):
         msg_id = event.id
         await ABH.send_message(
             int(gidvar),
-          f"""#التــاكــات
-
-⌔┊الكــروب : {chat.title}
-
-⌔┊المـرسـل : {sender.fullname}
-
-⌔┊الرســالـه : {text}
-
-⌔┊رابـط الرسـاله : (link)[https://t.me/c/{gid}/{msg_id}]"""
-""",
-link_preview=False
-        )
+            f"""#التــاكــات
+            
+            ⌔┊الكــروب : {chat.title}
+            
+            ⌔┊المـرسـل : {sender.fullname}
+            
+            ⌔┊الرســالـه : {text}
+            
+            ⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})""",
+            link_preview=False
+)
 print("التخزين شغال")
