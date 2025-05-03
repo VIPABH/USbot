@@ -52,4 +52,4 @@ async def config_vars(event):
 {hidvar or " لم يتم العثور على الفار"}
     '''
     await event.reply(response)
-    print('config is running')
+print('config is running')
