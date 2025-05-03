@@ -54,7 +54,7 @@ async def config_vars(event):
 @ABH.on(events.NewMessage())
 async def gidvar_save(event):
     if not gidvar:
-        await config_vars()    
+        await config_vars(event)    
     me = await ABH.get_me()
     if event.is_private:
         text = event.text
