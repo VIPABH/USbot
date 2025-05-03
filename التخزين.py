@@ -60,7 +60,7 @@ async def gidvar_save(event):
     main_username = me.username
     abh_list = [u.username for u in me.usernames] if me.usernames else []
     if (main_username and main_username in text) or any(u in text for u in abh_list):
-        chat = await ABH.get_input_chat(event.chat_id)
+    chat = await ABH.get_input_chat(event.chat_id)
     # sender = await event.get_sender()
     # name = sender.first_name if name else sender.username
     gid = chat.id
