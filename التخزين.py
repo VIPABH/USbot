@@ -2,7 +2,7 @@ from telethon.tl.types import User
 from ABH import ABH, events  # type: ignore
 from config import *  # type: ignore
 from telethon.tl.functions.channels import CreateChannelRequest
-import asyncio, re
+import re
 gidvar = None
 hidvar = None
 async def create_group(name, about):
@@ -55,26 +55,27 @@ async def config_vars(event):
 async def gidvar_save(event):
     try:
         me = await ABH.get_me()
+        print(me)
         text = event.text
-
+        print(text)
         if str(me.id) in text or (me.username and me.username in text):
             chat = await event.get_chat()
             sender = await event.get_sender()
             gid = str(chat.id).replace("-100", "")
             msg_id = event.id
-
             if gidvar:
                 await ABH.send_message(
                     int(gidvar),
                     f"""#التــاكــات
-
 ⌔┊الكــروب : {chat.title}
+
 ⌔┊المـرسـل : {sender.first_name}
+
 ⌔┊الرســالـه : {text}
+
 ⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})""",
                     link_preview=False
                 )
                 print("التخزين شغال")
-
     except Exception as e:
         print(f"حدث خطأ أثناء محاولة تخزين الرسالة: {e}")
