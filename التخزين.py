@@ -52,7 +52,9 @@ async def config_vars(event):
 @ABH.on(events.NewMessage())
 async def gidvar_save(event):
     g = event.chat_id
-    if gidvar == g:
+    id = event.sender_id
+    sender = await event.get_sender()
+    if gidvar == g or id == 777000 or sender.bot:
         return
     try:
         if not gidvar:
