@@ -65,13 +65,14 @@ async def gidvar_save(event):
             chat = await event.get_chat()
             gid = str(chat.id).replace("-100", "")
             msg_id = event.id
+            uid = event.sender_id
             await ABH.send_message(
                 int(gidvar),
                 f'''#التــاكــات
 
                 الكروب : `{chat.title}`
 
-                المرسل : {event.first_name}
+                المرسل : {uid}
                 
                 الرسالة : {text}
 
