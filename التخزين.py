@@ -54,7 +54,7 @@ async def gidvar_save(event):
     g = event.chat_id
     id = event.sender_id
     sender = await event.get_sender()
-    if int(gidvar) == int(g) or id == 777000 or sender.bot:
+    if gidvar == g or id == 777000 or sender.bot:
         return
     try:
         if not gidvar:
