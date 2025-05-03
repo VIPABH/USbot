@@ -1,8 +1,7 @@
 from telethon import events
 from UScode import *
 from ABH import *
-# from config import * 
-# from موارد import * 
+from config import * 
 import asyncio
 async def main():
     await ABH.start()
