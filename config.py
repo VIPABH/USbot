@@ -12,23 +12,21 @@ async def create_group(name, about):
 @ABH.on(events.NewMessage(pattern='/config'))
 async def config_vars(event):
     me = await ABH.get_me()
-    gidvar_value = None
-    hidvar_value = None
     async for msg in ABH.iter_messages(me.id):
         if not msg.text:
             continue
         gid_match = re.search(r'gidvar:\s*(.+)', msg.text, re.IGNORECASE)
         hid_match = re.search(r'hidvar:\s*(.+)', msg.text, re.IGNORECASE)
-        if gid_match and not gidvar_value:
-            gidvar_value = gid_match.group(1).strip()
+        if gid_match and not gidvar:
+            gidvar = gid_match.group(1).strip()
         if hid_match and not hidvar_value:
             hidvar_value = hid_match.group(1).strip()
-        if gidvar_value and hidvar_value:
+        if gidvar and hidvar_value:
             break
     newly_created = []
-    if not gidvar_value:
-        gidvar_value, gid_name = await create_group("مجموعة التخزين", "هذه المجموعة مخصصة لتخزين البيانات.")
-        newly_created.append(("مجموعة التخزين", gidvar_value))
+    if not gidvar:
+        gidvar, gid_name = await create_group("مجموعة التخزين", "هذه المجموعة مخصصة لتخزين البيانات.")
+        newly_created.append(("مجموعة التخزين", gidvar))
     if not hidvar_value:
         hidvar_value, hid_name = await create_group("مجموعة الإشعارات", "هذه المجموعة مخصصة للتنبيهات.")
         newly_created.append(("مجموعة الإشعارات", hidvar_value))
@@ -36,7 +34,7 @@ async def config_vars(event):
         config_text = f'''#فارات السورس
 لا تحذف الرسالة للحفاظ على كروبات السورس
 
-مجموعة التخزين gidvar: {gidvar_value}
+مجموعة التخزين gidvar: {gidvar}
 مجموعة الإشعارات hidvar: {hidvar_value}
         '''
         await ABH.send_message(me.id, config_text)
@@ -47,7 +45,7 @@ async def config_vars(event):
     response = f'''#فارات السورس
 لا تحذف الرسالة للحفاظ على كروبات السورس
 مجموعة التخزين gidvar:
-{gidvar_value or " لم يتم العثور على الفار"}
+{gidvar or " لم يتم العثور على الفار"}
 مجموعة الإشعارات hidvar:
 {hidvar_value or " لم يتم العثور على الفار"}
     '''
