@@ -67,6 +67,7 @@ async def gidvar_save(event):
     if not gidvar or not hidvar:
          await config_vars(event)
          return
+    sender = await event.get_sender()
     name = sender.first_name
     await ABH.send_message(
         int(gidvar),
