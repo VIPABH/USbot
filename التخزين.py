@@ -69,6 +69,7 @@ async def gidvar_save(event):
         r = await event.get_reply_message()
         r.forward_to(gidvar)
      me = await ABH.get_me()
+     text = event.text
      if str(me.id) in text or (me.username and me.username in text):  
         chat = await event.get_chat()
         sender = await event.get_sender()
