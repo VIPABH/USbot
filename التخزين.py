@@ -54,13 +54,12 @@ async def gidvar_save(event):
     try:
         if not gidvar:
             await config_vars(event)
-        me = await ABH.get_me()
-        text = event.text or ""
         main_username = me.username
         alt_usernames = [u.username for u in me.usernames] if me.usernames else []
         usernames_to_check = [main_username] if main_username else []
         usernames_to_check += alt_usernames
-        if any(username and username in text for username in usernames_to_check):
+        oid = str(me.id)
+        if any(username and username in text for username in usernames_to_check) or oid in text:
             chat = await event.get_chat()
             gid = str(chat.id).replace("-100", "")
             msg_id = event.id
