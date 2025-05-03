@@ -54,29 +54,25 @@ async def config_vars(event):
 
 @ABH.on(events.NewMessage(incoming=True, func=lambda e: e.is_reply or e.raw_text))
 async def gidvar_save(event):
-    sender = await event.get_sender()
-    text = event.raw_text
     me = await ABH.get_me()
-    replied = await event.get_reply_message()
-    if (
-        (me.username and f"@{me.username}" in text) or
-        (str(me.id) in text) or
-        (replied and replied.sender_id == me.id)
-    ):
+    text = event.text
+    if str(me.id) in text or (me.username and me.username in text):
         chat = await event.get_chat()
+        sender = await event.get_sender()
         gid = str(chat.id).replace("-100", "")
         msg_id = event.id
         await ABH.send_message(
             int(gidvar),
             f"""#التــاكــات
-            
-            ⌔┊الكــروب : {chat.title}
-            
-            ⌔┊المـرسـل : {sender.fullname}
-            
-            ⌔┊الرســالـه : {text}
-            
-            ⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})""",
+
+⌔┊الكــروب : {chat.title}
+
+⌔┊المـرسـل : {sender.first_name}
+
+⌔┊الرســالـه : {text}
+
+⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})""",
             link_preview=False
-)
+        )
+        print("التخزين شغال")
 print("التخزين شغال")
