@@ -1,5 +1,7 @@
 from ABH import ABH, events #type: ignore
 from config import * #type: ignore
+print(gidvar)
+print(hidvar)
 @ABH.on(events.NewMessage)
 async def gidvar_save(event):
     sender = await event.get_sender()
