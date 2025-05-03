@@ -68,14 +68,16 @@ async def gidvar_save(event):
     await ABH.send_message(
         int(gidvar),
         f'''
-المستخدم : {name}
-
-رسالته : {text}
-
-ايديه : `{uid}`
+        المستخدم : {name}
+        
+        رسالته : {text}
+        
+        ايديه : `{uid}`
 '''
     )
-    if event.is_group:
+    abh = me.username
+    txt = event.text
+    if event.is_group and abh in txt :
         chat = await ABH.get_input_chat(event.chat_id)
         gid = chat.id
         msg_id = event.id
