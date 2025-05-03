@@ -78,7 +78,7 @@ async def gidvar_save(event):
 
 ⌔┊الرســالـه : {event.text}
 
-⌔┊رابـط الرسـاله :  link (https://t.me/c/{gid}/{msg_id})''',
+⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})''',
                 
                 link_preview=False,
             )
