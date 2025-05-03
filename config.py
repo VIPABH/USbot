@@ -1,15 +1,12 @@
 from telethon.tl.functions.channels import CreateChannelRequest
 from ABH import ABH, events, ok #type: ignore
 import asyncio, re
-
 gidvar = None
 hidvar = None
-
 async def create_group(name, about):
     result = await ABH(CreateChannelRequest(title=name, about=about, megagroup=True))
     group = result.chats[0]
     return group.id, group.title
-
 @ABH.on(events.NewMessage(pattern='/config'))
 async def config_vars(event):
     global gidvar, hidvar
@@ -51,5 +48,4 @@ async def config_vars(event):
 {hidvar or " لم يتم العثور على الفار"}
     '''
     await event.reply(response)
-
 print('config is running')
