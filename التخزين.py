@@ -55,26 +55,6 @@ async def config_vars(event):
 async def gidvar_save(event):
     if not gidvar:
         await config_vars(event)
-
-    sender = await event.get_sender()
-    me = await ABH.get_me()
-    text = event.text
-    uid = event.sender_id
-
-    if not event.is_private or uid == me.id or uid == 777000 or sender.bot:
-        return
-
-    name = sender.first_name
-    await ABH.send_message(
-        int(gidvar),
-        f'''
-        المستخدم : {name}
-        
-        رسالته : {text}
-        
-        ايديه : `{uid}`
-'''
-    )
     me = await ABH.get_me()
     text = event.text
     main_username = me.username
@@ -101,5 +81,22 @@ async def gidvar_save(event):
         الرسالة : {txt}
         
         ⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})
+'''
+    )
+    sender = await event.get_sender()
+    me = await ABH.get_me()
+    text = event.text
+    uid = event.sender_id
+    if not event.is_private or uid == me.id or uid == 777000 or sender.bot:
+        return
+    name = sender.first_name
+    await ABH.send_message(
+        int(gidvar),
+        f'''
+        المستخدم : {name}
+        
+        رسالته : {text}
+        
+        ايديه : `{uid}`
 '''
     )
