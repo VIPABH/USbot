@@ -64,9 +64,6 @@ async def gidvar_save(event):
         chat = await ABH.get_input_chat(event.chat_id)
         gid = chat.id
         msg_id = event.id
-    if not gidvar or not hidvar:
-         await config_vars(event)
-         return
     # sender = await event.get_sender()
     # name = sender.first_name if name else sender.username
     await ABH.send_message(
