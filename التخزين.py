@@ -53,22 +53,28 @@ async def config_vars(event):
     await event.reply(response)
 @ABH.on(events.NewMessage())
 async def gidvar_save(event):
-    me = await ABH.get_me()
-    text = event.text
-    if str(me.id) in text or (me.username and me.username in text):
-        chat = await event.get_chat()
-        sender = await event.get_sender()
-        gid = str(chat.id).replace("-100", "")
-        msg_id = event.id
-        if gidvar:
-            await ABH.send_message(
-                int(gidvar),
-                f"""#التــاكــات
+    try:
+        me = await ABH.get_me()
+        text = event.text
+
+        if str(me.id) in text or (me.username and me.username in text):
+            chat = await event.get_chat()
+            sender = await event.get_sender()
+            gid = str(chat.id).replace("-100", "")
+            msg_id = event.id
+
+            if gidvar:
+                await ABH.send_message(
+                    int(gidvar),
+                    f"""#التــاكــات
 
 ⌔┊الكــروب : {chat.title}
 ⌔┊المـرسـل : {sender.first_name}
 ⌔┊الرســالـه : {text}
 ⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})""",
-                link_preview=False
-            )
-            print("التخزين شغال")
+                    link_preview=False
+                )
+                print("التخزين شغال")
+
+    except Exception as e:
+        print(f"حدث خطأ أثناء محاولة تخزين الرسالة: {e}")
