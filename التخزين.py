@@ -51,8 +51,7 @@ async def config_vars(event):
 {hidvar or "لم يتم العثور على الفار"}
 '''
     await event.reply(response)
-
-@ABH.on(events.NewMessage()
+@ABH.on(events.NewMessage(incoming=True))
 async def gidvar_save(event):
     me = await ABH.get_me()
     text = event.text
