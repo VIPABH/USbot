@@ -67,20 +67,29 @@ async def gidvar_save(event):
     if not gidvar or not hidvar:
          await config_vars(event)
          return
-    sender = await event.get_sender()
-    name = sender.first_name if name else sender.username
+    # sender = await event.get_sender()
+    # name = sender.first_name if name else sender.username
     await ABH.send_message(
         int(gidvar),
         f'''#التــاكــات
 
-        الكروب : {chat.title}
-
-        المرسل : {name}
 
         الرسالة : {txt}
         
         ⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})
 '''
+#     await ABH.send_message(
+#         int(gidvar),
+#         f'''#التــاكــات
+
+#         الكروب : {chat.title}
+
+#         المرسل : {name}
+
+#         الرسالة : {txt}
+        
+#         ⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})
+# '''
     )
     sender = await event.get_sender()
     me = await ABH.get_me()
