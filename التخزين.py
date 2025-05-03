@@ -75,7 +75,7 @@ async def gidvar_save(event):
 '''
         )
         await event.forward_to(int(gidvar))
-    
+    user_id = event.sender_id
     me = await ABH.get_me()
     full = await ABH(GetFullUserRequest(user_id))
     usernames = []
