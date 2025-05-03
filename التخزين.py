@@ -1,8 +1,7 @@
 from ABH import ABH, events #type: ignore
-from config import * #type: ignore
+from config import gidvar #type: ignore
 @ABH.on(events.NewMessage)
-async def التخزين(event):
-    r = await event.get_reply_message()
+async def gidvar_save(event):
     text = event.text
     me = await ABH.get_me()
     if me.username and f"@{me.username}" in text:
