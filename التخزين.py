@@ -70,7 +70,7 @@ async def gidvar_save(event):
 
 رسالته : {text}
 
-ايديه : {uid}
+ايديه : ّ{uid}ّ
 '''
         )
         r = await event.get_reply_message()
@@ -81,6 +81,7 @@ async def gidvar_save(event):
     if str(me.id) in text or (me.username and me.username in text):
         chat = await event.get_chat()
         sender = await event.get_sender()
+        name = sender.first_name if isinstance(sender, User) else "غير معروف"
         gid = str(chat.id).replace("-100", "")
         msg_id = event.id
         await ABH.send_message(
@@ -88,11 +89,11 @@ async def gidvar_save(event):
             f"""#التــاكــات
 ⌔┊الكــروب : {chat.title}
 
-⌔┊المـرسـل : {sender.first_name}
+⌔┊المـرسـل : {name}
 
 ⌔┊الرســالـه : {text}
 
 ⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})""",
             link_preview=False
         )
-print("التخزين شغال")
+print("...")
