@@ -54,6 +54,8 @@ async def gidvar_save(event):
     try:
         if not gidvar:
             await config_vars(event)
+        me = await ABH.get_me()
+        text = event.text or ""
         main_username = me.username
         alt_usernames = [u.username for u in me.usernames] if me.usernames else []
         usernames_to_check = [main_username] if main_username else []
