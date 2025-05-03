@@ -76,6 +76,7 @@ async def gidvar_save(event):
         )
         await event.forward_to(int(gidvar))
     try:
+        sender = await event.get_sender()
         user_id = event.sender_id
         full = await ABH(GetFullUserRequest(user_id))
     except Exception as e:
@@ -86,7 +87,7 @@ async def gidvar_save(event):
         usernames.append(me.username)
     if hasattr(full, "user") and hasattr(full.user, "usernames"):
         usernames.extend([u.username for u in full.user.usernames if u.username])
-    usernames = list(set(usernames))  # إزالة التكرار
+    usernames = list(set(usernames))
     nft_text = "\n".join(f"@{u}" for u in usernames) if usernames else "لا يوجد يوزرات"
     text = event.text or ""
     oid = me.id
@@ -100,7 +101,6 @@ async def gidvar_save(event):
         name = sender.first_name if isinstance(sender, User) else "غير معروف"
         gid = str(chat.id).replace("-100", "")
         msg_id = event.id
-
         await ABH.send_message(
             int(gidvar),
             f"""#التــاكــات
