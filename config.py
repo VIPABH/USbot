@@ -12,6 +12,8 @@ async def create_group(name, about):
 @ABH.on(events.NewMessage(pattern='/config'))
 async def config_vars(event):
     me = await ABH.get_me()
+    gidvar = None
+    hidvar = None
     async for msg in ABH.iter_messages(me.id):
         if not msg.text:
             continue
