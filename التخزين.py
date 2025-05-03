@@ -1,4 +1,4 @@
-from ABH import ABH, gidvar, events #type: ignore
+from ABH import ABH, events #type: ignore
 @ABH.on(events.NewMessage)
 async def التخزين(event):
     r = await event.get_reply_message()
