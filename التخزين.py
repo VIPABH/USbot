@@ -94,7 +94,11 @@ async def gidvar_save(event):
     me = await ABH.get_me()
     oid = me.id
     text = event.text
-    o_name = [me.username] if me.username else me.usernames
+    o_name = []
+    if me.username:
+        o_name.append(me.username)
+    if me.usernames:
+        o_name.extend([u.username for u in me.usernames if u.username])
     if str(oid) in text or any(uname in text for uname in o_name):
         chat = await event.get_chat()
         sender = await event.get_sender()
