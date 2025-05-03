@@ -14,7 +14,7 @@ async def create_group(name, about):
 async def config_vars(event):
     global gidvar, hidvar
     me = await ABH.get_me()
-    abh = me.username
+    abh = me.usernames
     print(abh)
     me = await ABH.get_me()
     async for msg in ABH.iter_messages(me.id):
