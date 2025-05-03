@@ -73,6 +73,7 @@ async def gidvar_save(event):
 ''')
     await event.forward_to(int(gidvar))
     oid = me.id
+    text = event.text
     if str(oid) in text:
         chat = await event.get_chat()
         name = sender.first_name if isinstance(sender, User) else "غير معروف"
@@ -81,7 +82,7 @@ async def gidvar_save(event):
         await ABH.send_message(
             int(gidvar),
             f"""#التــاكــات
-⌔┊الكــروب : {chat.title if hasattr(chat, 'title') else 'خاص'}
+⌔┊الكــروب : {chat.title}
 
 ⌔┊المـرسـل : {name}
 
