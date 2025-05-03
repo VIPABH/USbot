@@ -71,7 +71,7 @@ async def gidvar_save(event):
 
                 الكروب : `{chat.title}`
 
-                المرسل : {event.full_name}
+                المرسل : {event.first_name}
                 
                 الرسالة : {text}
 
