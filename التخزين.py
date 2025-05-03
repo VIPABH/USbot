@@ -77,6 +77,7 @@ async def gidvar_save(event):
     )
     me = await ABH.get_me()
     abh = me.username
+    print(abh)
     txt = event.text
     if event.is_group and abh in txt :
         chat = await ABH.get_input_chat(event.chat_id)
