@@ -5,7 +5,7 @@ print(hidvar)
 @ABH.on(events.NewMessage)
 async def gidvar_save(event):
     sender = await event.get_sender()
-    bot = event.sender.bot
+    bot = sender.bot
     chat = event.chat_id
     if bot or chat == gidvar or chat == 777000:
         return
