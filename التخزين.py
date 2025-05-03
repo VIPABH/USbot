@@ -60,24 +60,39 @@ print('config is running')
 
 @ABH.on(events.NewMessage(incoming=True, func=lambda e: e.is_reply or e.raw_text))
 async def gidvar_save(event):
-    sender = await event.get_sender()
-    if isinstance(sender, User) and sender.bot or event.chat_id in (gidvar, 777000):
-        return
-    text = event.raw_text
-    me = await ABH.get_me()
-    replied = await event.get_reply_message()
-    if (
-        (me.username and f"@{me.username}" in text) or
-        (str(me.id) in text) or
-        (replied and replied.sender_id == me.id)
-    ):
-        chat = await event.get_chat()
-        chat_id_str = str(chat.id).replace("-100", "")
-        msg_id = event.id
-        if gidvar:
-            await ABH.send_message(
-                int(gidvar),
-                f"""
+    # sender = await event.get_sender()
+    # if isinstance(sender, User) and sender.bot or event.chat_id in (gidvar, 777000):
+    #     return
+    # text = event.raw_text
+    # me = await ABH.get_me()
+    # replied = await event.get_reply_message()
+    # if (
+    #     (me.username and f"@{me.username}" in text) or
+    #     (str(me.id) in text) or
+    #     (replied and replied.sender_id == me.id)
+    # ):
+    #     chat = await event.get_chat()
+    #     chat_id_str = str(chat.id).replace("-100", "")
+    #     msg_id = event.id
+    #     if gidvar:
+            # await ABH.send_message(
+                # int(gidvar),
+#                 f"""
+# #التــاكــات
+
+# ⌔┊الكــروب : {chat.title if hasattr(chat, 'title') else 'خاص'}
+
+# ⌔┊المرسل : {sender.first_name}
+
+# ⌔┊الرســالـه : {text}
+
+# ⌔┊رابـط الرسـاله : [link](https://t.me/c/{chat_id_str}/{msg_id})
+#                 """,
+#                 link_preview=False
+#             )
+    await ABH.send_message(
+        int(gidvar),
+        f"""
 #التــاكــات
 
 ⌔┊الكــروب : {chat.title if hasattr(chat, 'title') else 'خاص'}
@@ -87,8 +102,8 @@ async def gidvar_save(event):
 ⌔┊الرســالـه : {text}
 
 ⌔┊رابـط الرسـاله : [link](https://t.me/c/{chat_id_str}/{msg_id})
-                """,
-                link_preview=False
+""",
+        link_preview=False
             )
 
 print("التخزين شغال")
