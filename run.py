@@ -1,4 +1,4 @@
-from telethon.tl.functions.messages import CreateChannelRequest
+from telethon.tl.functions.channels import CreateChannelRequest
 from ABH import ABH, events, ok #type: ignore
 import asyncio, re
 from UScode import *
