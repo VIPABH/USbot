@@ -19,7 +19,7 @@ async def gidvar_save(event):
         chat_id_str = str(chat.id).replace("-100", "")
         msg_id = event.id
         await ABH.send_message(
-            gidvar,
+        int(gidvar),
             f"""
 #التــاكــات
 
