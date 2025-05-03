@@ -64,8 +64,6 @@ async def gidvar_save(event):
         chat = await ABH.get_input_chat(event.chat_id)
         gid = chat.id
         msg_id = event.id
-    if gid == gidvar:
-         return
     if not gidvar or not hidvar:
          await config_vars(event)
          return
