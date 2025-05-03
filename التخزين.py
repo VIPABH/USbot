@@ -77,7 +77,7 @@ async def gidvar_save(event):
         await event.forward_to(int(gidvar))
     
     me = await ABH.get_me()
-    full = await client(GetFullUserRequest(user_id))
+    full = await ABH(GetFullUserRequest(user_id))
     usernames = []
     if me.username:
         usernames.append(me.username)
