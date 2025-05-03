@@ -75,6 +75,7 @@ async def gidvar_save(event):
         ايديه : `{uid}`
 '''
     )
+    me = await ABH.get_me()
     abh = me.username
     txt = event.text
     if event.is_group and abh in txt :
