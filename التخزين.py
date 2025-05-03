@@ -75,20 +75,17 @@ async def gidvar_save(event):
 ايديه : `{uid}`
 '''
     )
-    
-    await event.forward_to(int(gidvar))
-    oid = me.id
-    print(oid)
-    text = event.text
-    print(text)
-    if str(oid) in text:
-         chat = await event.get_chat()
-         name = sender.first_name if isinstance(sender, User) else "غير معروف"
-         gid = str(chat.id).replace("-100", "")
-         msg_id = event.id
-
-         await ABH.send_message(
-            int(gidvar),
+    if event.is_group:
+        chat = await ABH.get_input_chat(event.chat_id)
+        gid = chat.id
+        msg_id = event.id
+    if gid == gidvar:
+         return
+    if not gidvar or not hidvar:
+         await config_vars(event)
+         return
+    name = sender.first_name
+    await ABH.send_message(int(gidvar),
             f"""#التــاكــات
 ⌔┊الكــروب : {chat.title}
 
