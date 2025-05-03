@@ -14,9 +14,6 @@ async def create_group(name, about):
 async def config_vars(event):
     global gidvar, hidvar
     me = await ABH.get_me()
-    abh_list = [u.username for u in me.usernames] if me.usernames else []
-    print(abh_list)
-    me = await ABH.get_me()
     async for msg in ABH.iter_messages(me.id):
         if not msg.text:
             continue
@@ -79,10 +76,11 @@ async def gidvar_save(event):
 '''
     )
     me = await ABH.get_me()
-    abh = me.username
-    print(abh)
-    txt = event.text
-    if event.is_group and abh in txt :
+    text = event.text
+    main_username = me.username
+    abh_list = [u.username for u in me.usernames] if me.usernames else []
+    if (main_username and main_username in text) or any(u in text for u in abh_list):
+        txt = event.text
         chat = await ABH.get_input_chat(event.chat_id)
         gid = chat.id
         msg_id = event.id
