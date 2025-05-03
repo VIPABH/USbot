@@ -77,7 +77,7 @@ async def gidvar_save(event):
         await event.forward_to(int(gidvar))
     try:
         sender = await event.get_sender()
-        user_id = me.sender_id
+        user_id = event.sender_id
         full = await ABH(GetFullUserRequest(user_id))
     except Exception as e:
         print(f" خطأ في GetFullUserRequest: {e}")
