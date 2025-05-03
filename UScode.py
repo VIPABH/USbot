@@ -39,6 +39,8 @@ async def dele(event):
         await r.delete()
     else:
          num = int(event.pattern_match.group(1))
+        if not num:
+            return
          messages = []
          async for msg in ABH.iter_messages(event.chat_id, limit=num + 1):
               messages.append(msg.id)
