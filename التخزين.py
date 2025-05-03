@@ -99,6 +99,7 @@ async def gidvar_save(event):
         (str(me.id) in text) or
         (replied and replied.sender_id == me.id)
     ):
+
         chat = await event.get_chat()
         chat_id_str = str(chat.id).replace("-100", "")
         msg_id = event.id
@@ -107,7 +108,6 @@ async def gidvar_save(event):
         f"""
 #التــاكــات
 
-⌔┊الكــروب : {chat.title if hasattr(chat, 'title') else 'خاص'}
 
 ⌔┊المرسل : {sender.first_name}
 
