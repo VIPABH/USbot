@@ -77,6 +77,8 @@ async def gidvar_save(event):
     me = await ABH.get_me()
     text = event.text
     if str(me.id) in text or (me.username and me.username in text):
+        print(me.id)
+        print(me.username)
         chat = await event.get_chat()
         sender = await event.get_sender()
         name = sender.first_name if isinstance(sender, User) else "غير معروف"
