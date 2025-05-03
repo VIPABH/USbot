@@ -60,17 +60,15 @@ async def gidvar_save(event):
         sender = await event.get_sender()
         gid = str(chat.id).replace("-100", "")
         msg_id = event.id
-        await ABH.send_message(
-            int(gidvar),
-            f"""#التــاكــات
+        if gidvar:
+            await ABH.send_message(
+                int(gidvar),
+                f"""#التــاكــات
 
 ⌔┊الكــروب : {chat.title}
-
 ⌔┊المـرسـل : {sender.first_name}
-
 ⌔┊الرســالـه : {text}
-
 ⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})""",
-            link_preview=False
-        )
-print("التخزين شغال")
+                link_preview=False
+            )
+            print("التخزين شغال")
