@@ -51,6 +51,9 @@ async def config_vars(event):
     await ABH.send_message(me.id, response)
 @ABH.on(events.NewMessage())
 async def gidvar_save(event):
+    g = event.chat_id
+    if gidvar == g:
+        return
     try:
         if not gidvar:
             await config_vars(event)
