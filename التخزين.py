@@ -87,15 +87,16 @@ async def gidvar_save(event):
          await config_vars(event)
          return
     name = sender.first_name
-    await ABH.send_message(int(gidvar),
-            f"""#التــاكــات
-⌔┊الكــروب : {chat.title}
+    await ABH.send_message(
+        int(gidvar),
+        f'''#التــاكــات
 
-⌔┊المـرسـل : {name}
+        الكروب : {chat.title}
 
-⌔┊الرســالـه : {text}
+        المرسل : {name}
 
-⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})
-""",
-            link_preview=False
-        )
+        الرسالة : {txt}
+        
+        ⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})
+'''
+    )
