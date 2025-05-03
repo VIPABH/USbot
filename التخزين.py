@@ -1,5 +1,5 @@
 from telethon.tl.functions.channels import CreateChannelRequest
-from telethon.tl.functions.users import GetFullUser
+from telethon.tl.functions.users import GetFullUserRequest
 from ABH import ABH, events  # type: ignore
 from config import *  # type: ignore
 from telethon.tl.types import User
@@ -77,7 +77,7 @@ async def gidvar_save(event):
         await event.forward_to(int(gidvar))
     
     me = await ABH.get_me()
-    full = await ABH(GetFullUser(me.id))
+    full = await client(GetFullUserRequest(user_id))
     usernames = []
     if me.username:
         usernames.append(me.username)
