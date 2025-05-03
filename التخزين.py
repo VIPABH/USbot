@@ -81,13 +81,13 @@ async def gidvar_save(event):
     print(oid)
     text = event.text
     print(text)
-    if int(oid) in text:
-        chat = await event.get_chat()
-        name = sender.first_name if isinstance(sender, User) else "غير معروف"
-        gid = str(chat.id).replace("-100", "")
-        msg_id = event.id
+    if str(oid) in text:
+         chat = await event.get_chat()
+         name = sender.first_name if isinstance(sender, User) else "غير معروف"
+         gid = str(chat.id).replace("-100", "")
+         msg_id = event.id
 
-        await ABH.send_message(
+         await ABH.send_message(
             int(gidvar),
             f"""#التــاكــات
 ⌔┊الكــروب : {chat.title}
