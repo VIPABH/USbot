@@ -1,14 +1,17 @@
+from telethon.tl.types import User
 from ABH import ABH, events #type: ignore
 from config import * #type: ignore
 from telethon.tl.functions.channels import CreateChannelRequest
-from ABH import ABH, events, ok #type: ignore
 import asyncio, re
+
 gidvar = None
 hidvar = None
+
 async def create_group(name, about):
     result = await ABH(CreateChannelRequest(title=name, about=about, megagroup=True))
     group = result.chats[0]
     return group.id, group.title
+
 @ABH.on(events.NewMessage(pattern='/config'))
 async def config_vars(event):
     global gidvar, hidvar
@@ -52,11 +55,13 @@ async def config_vars(event):
     await event.reply(response)
     print(gidvar)
     print(hidvar)
+
 print('config is running')
+
 @ABH.on(events.NewMessage(incoming=True, func=lambda e: e.is_reply or e.raw_text))
 async def gidvar_save(event):
     sender = await event.get_sender()
-    if sender.bot or event.chat_id in (gidvar, 777000):
+    if isinstance(sender, User) and sender.bot or event.chat_id in (gidvar, 777000):
         return
     text = event.raw_text
     me = await ABH.get_me()
@@ -69,9 +74,10 @@ async def gidvar_save(event):
         chat = await event.get_chat()
         chat_id_str = str(chat.id).replace("-100", "")
         msg_id = event.id
-        await ABH.send_message(
-        int(gidvar),
-            f"""
+        if gidvar:
+            await ABH.send_message(
+                int(gidvar),
+                f"""
 #التــاكــات
 
 ⌔┊الكــروب : {chat.title if hasattr(chat, 'title') else 'خاص'}
@@ -81,7 +87,8 @@ async def gidvar_save(event):
 ⌔┊الرســالـه : {text}
 
 ⌔┊رابـط الرسـاله : [link](https://t.me/c/{chat_id_str}/{msg_id})
-            """,
-            link_preview=False
-        )
+                """,
+                link_preview=False
+            )
+
 print("التخزين شغال")
