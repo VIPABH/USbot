@@ -70,12 +70,10 @@ async def gidvar_save(event):
 
 رسالته : {text}
 
-ايديه : ّ{uid}ّ
+ايديه : `{uid}`
 '''
         )
-        r = await event.get_reply_message()
-        if r:
-            await r.forward_to(int(gidvar))
+        await event.forward_to(int(gidvar))
     me = await ABH.get_me()
     text = event.text
     if str(me.id) in text or (me.username and me.username in text):
@@ -96,4 +94,4 @@ async def gidvar_save(event):
 ⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})""",
             link_preview=False
         )
-print("...")
+print("التخزين شغال")
