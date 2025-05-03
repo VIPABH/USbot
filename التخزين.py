@@ -109,11 +109,9 @@ async def gidvar_save(event):
 #التــاكــات
 
 
-⌔┊المرسل : {sender.first_name}
 
 ⌔┊الرســالـه : {text}
 
-⌔┊رابـط الرسـاله : [link](https://t.me/c/{chat_id_str}/{msg_id})
 """,
         link_preview=False
             )
