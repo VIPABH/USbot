@@ -1,16 +1,18 @@
 from telethon.tl.functions.channels import CreateChannelRequest
 from ABH import ABH, events, ok #type: ignore
 import asyncio, re
+
+gidvar = None
+hidvar = None
+
 async def create_group(name, about):
-    result = await ABH(CreateChannelRequest(
-        title=name,
-        about=about,
-        megagroup=True
-    ))
+    result = await ABH(CreateChannelRequest(title=name, about=about, megagroup=True))
     group = result.chats[0]
     return group.id, group.title
+
 @ABH.on(events.NewMessage(pattern='/config'))
 async def config_vars(event):
+    global gidvar, hidvar
     me = await ABH.get_me()
     async for msg in ABH.iter_messages(me.id):
         if not msg.text:
@@ -33,7 +35,6 @@ async def config_vars(event):
     if newly_created:
         config_text = f'''#فارات السورس
 لا تحذف الرسالة للحفاظ على كروبات السورس
-
 مجموعة التخزين gidvar: {gidvar}
 مجموعة الإشعارات hidvar: {hidvar}
         '''
@@ -50,4 +51,5 @@ async def config_vars(event):
 {hidvar or " لم يتم العثور على الفار"}
     '''
     await event.reply(response)
+
 print('config is running')
