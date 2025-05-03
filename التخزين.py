@@ -70,15 +70,13 @@ async def gidvar_save(event):
                 int(gidvar),
                 f'''#التــاكــات
 
-                الكروب : `{chat.title}`
+⌔┊الكــروب : `{chat.title}`
 
-                المرسل : {uid}
-                
-                الرسالة : {text}
+⌔┊المـرسـل :  {event.sender_id}
 
-                ⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})
-                
-                ''',
+⌔┊الرســالـه : {event.text}
+
+⌔┊رابـط الرسـاله :  link (https://t.me/c/{gid}/{msg_id})''',
                 
                 link_preview=False,
             )
