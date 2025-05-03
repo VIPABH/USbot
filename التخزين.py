@@ -1,5 +1,5 @@
 from ABH import ABH, events #type: ignore
-from config import gidvar #type: ignore
+from config import * #type: ignore
 @ABH.on(events.NewMessage)
 async def gidvar_save(event):
     text = event.text
