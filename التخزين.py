@@ -2,7 +2,7 @@ from ABH import ABH, events #type: ignore
 from config import * #type: ignore
 print(gidvar)
 print(hidvar)
-@ABH.on(events.NewMessage)
+@ABH.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
 async def gidvar_save(event):
     sender = await event.get_sender()
     bot = sender.bot
@@ -11,7 +11,7 @@ async def gidvar_save(event):
         return
     text = event.text
     me = await ABH.get_me()
-    if me.username and f"@{me.username}" in text:
+    if me.username and f"@{me.username}" in text or is:
           cid = await event.get_chat()
           sender = await event.get_sender()
           chat_id_str = str(cid.id).replace("-100", "")
