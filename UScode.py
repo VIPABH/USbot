@@ -33,7 +33,7 @@ async def save(event):
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.مسح(?: (\d+))?$'))
 async def dele(event):
-    num = event.event.pattern_match(1)
+    num = event.pattern_match(1)
     r = await event.get_reply_message()
     if r:
         await event.delete()
@@ -62,8 +62,8 @@ async def send(event):
     if r:
          await event.delete()
          to = r.sender_id
-         t1 = event.event.pattern_match(1)
-         txt = event.event.pattern_match(2)
+         t1 = event.pattern_match(1)
+         txt = event.pattern_match(2)
          text = f"{t1} {txt}"
          entity = await ABH.get_input_entity(to)
          await ABH.send_message(entity, text)
