@@ -54,33 +54,41 @@ async def config_vars(event):
 @ABH.on(events.NewMessage())
 async def gidvar_save(event):
     if not gidvar:
-        await config_vars(event)    
+        await config_vars(event)
+
     sender = await event.get_sender()
     me = await ABH.get_me()
     text = event.text
     uid = event.sender_id
+
     if not event.is_private or uid == me.id or uid == 777000 or sender.bot:
         return
+
     name = sender.first_name
     await ABH.send_message(
         int(gidvar),
-    f'''
+        f'''
 المستخدم : {name}
 
 رسالته : {text}
 
 ايديه : `{uid}`
-''')
+'''
+    )
+    
     await event.forward_to(int(gidvar))
+
     oid = me.id
     print(oid)
     text = event.text
     print(text)
+
     if oid in text:
         chat = await event.get_chat()
         name = sender.first_name if isinstance(sender, User) else "غير معروف"
         gid = str(chat.id).replace("-100", "")
         msg_id = event.id
+
         await ABH.send_message(
             int(gidvar),
             f"""#التــاكــات
@@ -92,6 +100,5 @@ async def gidvar_save(event):
 
 ⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})
 """,
-link_preview=False
+            link_preview=False
         )
-print("التخزين شغال")
