@@ -74,29 +74,11 @@ async def gidvar_save(event):
 ايديه : `{uid}`
 '''
         )
+    
         await event.forward_to(int(gidvar))
-    try:
-        sender = await event.get_sender()
-        user_id = event.sender_id
-        full = await ABH(GetFullUserRequest(user_id))
-    except Exception as e:
-        print(f" خطأ في GetFullUserRequest: {e}")
-        return
-    usernames = []
-    if me.username:
-        usernames.append(me.username)
-    if hasattr(full, "user") and hasattr(full.user, "usernames"):
-        usernames.extend([u.username for u in full.user.usernames if u.username])
-    usernames = list(set(usernames))
-    nft_text = "\n".join(f"@{u}" for u in usernames) if usernames else "لا يوجد يوزرات"
-    text = event.text or ""
-    oid = me.id
-    o_name = []
-    if me.username:
-        o_name.append(me.username)
-    if me.usernames:
-        o_name.extend([u.username for u in me.usernames if u.username])
-    if str(oid) in text or any(uname in text for uname in o_name):
+        username = me.username if me.username else (me.usernames[0] if me.usernames else None)
+        oid = me.id
+    if str(oid) in text or (username and str(username) in text):
         chat = await event.get_chat()
         name = sender.first_name if isinstance(sender, User) else "غير معروف"
         gid = str(chat.id).replace("-100", "")
@@ -111,9 +93,6 @@ async def gidvar_save(event):
 ⌔┊الرســالـه : {text}
 
 ⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})
-
-⌔┊اليوزرات المرتبطة : 
-{nft_text}
 """,
 link_preview=False
         )
