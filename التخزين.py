@@ -1,10 +1,11 @@
 from telethon.tl.functions.channels import CreateChannelRequest
+from shortcuts import shortcuts  # type: ignore
 from ABH import ABH, events  # type: ignore
 from config import *  # type: ignore
-from telethon.tl.types import User
 import re
 gidvar = None
 hidvar = None
+s = shortcuts(event)
 async def create_group(name, about):
     result = await ABH(CreateChannelRequest(title=name, about=about, megagroup=True))
     group = result.chats[0]
@@ -52,67 +53,34 @@ async def config_vars(event):
     await ABH.send_message(me.id, response)
 @ABH.on(events.NewMessage())
 async def gidvar_save(event):
-    sender = await event.get_sender()
-    me = await ABH.get_me()
-    text = event.text
-    uid = event.sender_id
-    if not event.is_group or uid == me.id or uid == 777000 or sender.bot:
-        return
-    try:
-        if not gidvar:
-            await config_vars(event)
-        me = await ABH.get_me()
-        text = event.text or ""
-        main_username = me.username
-        alt_usernames = [u.username for u in me.usernames] if me.usernames else []
-        usernames_to_check = [main_username] if main_username else []
-        usernames_to_check += alt_usernames
-        oid = str(me.id)
-    except Exception as e:
+    s = shortcuts(event)
+    if not gidvar and hidvar:
+        await config_vars(event)
+    if s.is_private:
+        await ABH.send_message(gidvar, 
+    f'''المرسل : {s.name}
+
+ايديه : `{s.id}`
+
+ارسل : {s.text}
+''')
+        await s.message.forward_to(gidvar)
+    if s.is_group:
+        gid = s.chat_id
+        gid = gid[4:] if gid.startswith("-100") else gid
         await ABH.send_message(
-                int(hidvar),
-                f"حدث خطأ في gidvar_save: {e}"
-            )
-        if any(username and username in text for username in usernames_to_check) or oid in text:
-            chat = await event.get_chat()
-            gid = str(chat.id).replace("-100", "")
-            msg_id = event.id
-            sender = await event.get_sender()
-            nam = sender.first_name
-            uid = event.sender_id
-            chattitle = chat.title
-            if not chattitle:
-                chattitle = "خاص"
-            await ABH.send_message(
-                int(gidvar),
-                f'''#التــاكــات
+            gidvar,
+            f'''#التــاكــات
 
-⌔┊الكــروب : `{chattitle}`
+⌔┊الكــروب : {s.title}
 
-⌔┊المـرسـل :  {nam}
+⌔┊المـرسـل : {s.name}
 
-⌔┊الرســالـه : {event.text}
+⌔┊الرســالـه : {s.text}
 
-⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})''',
-                
-                link_preview=False,
-            )
-    except Exception as e:
-        print(f"[تحذير] حدث خطأ في gidvar_save: {e}")
-    sender = await event.get_sender()
-    me = await ABH.get_me()
-    text = event.text
-    uid = event.sender_id
-    if not event.is_private or uid == me.id or uid == 777000 or sender.bot:
-        return
-    name = sender.first_name
-    await ABH.send_message(
-        int(gidvar),
-        f'''
-        المستخدم : {name}
-        
-        رسالته : {text}
-        
-        ايديه : `{uid}`
-'''
-    )
+⌔┊رابـط الرسـاله :  [link](https://t.me/c/{gid}/{s.id}
+)
+''',
+            parse_mode="html",
+        )
+        await s.message.forward_to(gidvar)
