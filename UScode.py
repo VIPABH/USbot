@@ -3,24 +3,35 @@ import asyncio
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.تثبيت$'))
 async def pin(event):
-    await event.delete()
-    gid = event.chat_id
-    r = await event.get_reply_message()
-    await ABH.pin_message(gid, r.id)
+    uid = event.sender_id
+    me = await ABH.get_me()
+    uid == me.id
+    if uid == me.id:
+        await event.delete()
+        gid = event.chat_id
+        r = await event.get_reply_message()
+        await ABH.pin_message(gid, r.id)
 @ok
 @ABH.on(events.NewMessage(pattern=r'^الغاء تثبيت$'))
 async def pin(event):
-    await event.delete()
-    gid = event.chat_id
-    r = await event.get_reply_message()
-    await ABH.unpin_message(gid, r.id)
+    uid = event.sender_id
+    me = await ABH.get_me()
+    uid == me.id
+    if uid == me.id:
+        await event.delete()
+        gid = event.chat_id
+        r = await event.get_reply_message()
+        await ABH.unpin_message(gid, r.id)
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.خاص$'))
 async def save(event):
     uid = event.sender_id
     me = await ABH.get_me()
     r = await event.get_reply_message()
-    if not r:
+    uid = event.sender_id
+    me = await ABH.get_me()
+    uid == me.id    
+    if not r and uid == me.id:
         await event.edit('🤔 يجب أن ترد على رسالة.')
         await asyncio.sleep(3)
         await event.delete()
@@ -35,7 +46,10 @@ async def save(event):
 async def dele(event):
     num = event.pattern_match.group(1)
     r = await event.get_reply_message()
-    if r:
+    uid = event.sender_id
+    me = await ABH.get_me()
+    uid == me.id    
+    if r and uid == me.id:
         await event.delete()
         await r.delete()
     else:
@@ -46,20 +60,27 @@ async def dele(event):
 @ok
 @ABH.on(events.NewMessage(pattern=r'^؟؟$'))
 async def edit(event):
-    for i in range(5):
-        await event.edit('`|`')
-        await asyncio.sleep(0.4)
-        await event.edit('`/`')
-        await asyncio.sleep(0.4)
-        await event.edit('`-`')
-        await asyncio.sleep(0.4)
-        await event.edit("`\`")
-        await asyncio.sleep(0.4)
+    uid = event.sender_id
+    me = await ABH.get_me()
+    uid == me.id
+    if uid == me.id:
+        for i in range(5):
+            await event.edit('`|`')
+            await asyncio.sleep(0.4)
+            await event.edit('`/`')
+            await asyncio.sleep(0.4)
+            await event.edit('`-`')
+            await asyncio.sleep(0.4)
+            await event.edit("`\`")
+            await asyncio.sleep(0.4)
 @ok
 @ABH.on(events.NewMessage(pattern=r'^رسالة (\S+) (.+)$'))
 async def send(event):
+    uid = event.sender_id
+    me = await ABH.get_me()
+    uid == me.id
     r = await event.get_reply_message()
-    if r:
+    if r and uid == me.id:
          await event.delete()
          to = r.sender_id
          t1 = event.pattern_match(1)
@@ -80,7 +101,9 @@ async def timi(event):
     t = int(event.pattern_match.group(1))
     m = event.pattern_match.group(2)
     r = await event.get_reply_message()
-    if r:
+    uid = event.sender_id
+    me = await ABH.get_me()
+    if r and uid == me.id:
         await event.delete()
         msg = await r.reply(f'{m}')
         await asyncio.sleep(t)
@@ -92,18 +115,23 @@ async def timi(event):
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.مسح رسائلي$'))
 async def dele(event):
-    try:
-        owner = (await ABH.get_me()).id
-        await event.delete()
-        async for msg in ABH.iter_messages(event.chat_id, from_user=owner):
-            await msg.delete()
-    except Exception as e:
-        await event.reply(f"حدث خطأ أثناء محاولة حذف الرسائل:\n{e}")
+    uid = event.sender_id
+    me = await ABH.get_me()
+    if uid == me.id:
+        try:
+            owner = (await ABH.get_me()).id
+            await event.delete()
+            async for msg in ABH.iter_messages(event.chat_id, from_user=owner):
+                await msg.delete()
+        except Exception as e:
+            await event.reply(f"حدث خطأ أثناء محاولة حذف الرسائل:\n{e}")
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.مسح مشاركاته$'))
 async def dele(event):
+    uid = event.sender_id
+    me = await ABH.get_me()
     r = await event.get_reply_message()
-    if not r:
+    if not r and uid == me.id:
         await event.edit('🤔 يجب أن ترد على رسالة.')
         await asyncio.sleep(3)
         await event.delete()
@@ -115,15 +143,21 @@ async def dele(event):
 @ok
 @ABH.on(events.NewMessage(pattern=r".وسبام (.+)"))
 async def tmeme(event):
-    text = event.pattern_match.group(1)
-    words = text.split()
-    await event.delete()
-    for word in words:
-        await event.respond(word)
+    uid = event.sender_id
+    me = await ABH.get_me()
+    if uid == me.id:
+        text = event.pattern_match.group(1)
+        words = text.split()
+        await event.delete()
+        for word in words:
+            await event.respond(word)
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.كلمة (.+)$'))
 async def word(event):
-    input_value = event.pattern_match.group(1)
+    uid = event.sender_id
+    me = await ABH.get_me()
+    if uid == me.id:
+        input_value = event.pattern_match.group(1)
     try:
         word = int(input_value)
     except ValueError:
