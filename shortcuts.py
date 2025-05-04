@@ -14,7 +14,7 @@ class shortcuts:
         self.is_private = event.is_private
         self.raw_text = getattr(event.message, 'raw_text', "")
         self.media = event.message.media if event.message else None
-        self.name = event.sender.first_name if event.sender else None
+        self.name = event.sender.first_name if event.sender else '.'
         self.buttons = event.message.buttons if event.message else None
         self.fwd_from = event.message.fwd_from if event.message else None
         self.entities = event.message.entities if event.message else None
