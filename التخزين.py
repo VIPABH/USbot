@@ -53,10 +53,11 @@ async def config_vars(event):
 @ABH.on(events.NewMessage())
 async def gidvar_save(event):
     s = shortcuts(event)
+    await s.sender()
     if not gidvar and hidvar:
         await config_vars(event)
-    if s.is_private:
-        await ABH.send_message(int(gidvar), 
+        if s.is_private:
+            await ABH.send_message(int(gidvar), 
     f'''المرسل : {s.name}
 
 ايديه : `{s.id}`
