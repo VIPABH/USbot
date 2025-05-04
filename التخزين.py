@@ -52,9 +52,10 @@ async def config_vars(event):
     await ABH.send_message(me.id, response)
 @ABH.on(events.NewMessage())
 async def gidvar_save(event):
-    g = event.chat_id
-    id = event.sender_id
     sender = await event.get_sender()
+    me = await ABH.get_me()
+    text = event.text
+    uid = event.sender_id
     if not event.is_group or uid == me.id or uid == 777000 or sender.bot:
         return
     try:
