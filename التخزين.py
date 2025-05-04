@@ -5,7 +5,6 @@ from config import *  # type: ignore
 import re
 gidvar = None
 hidvar = None
-s = shortcuts(event)
 async def create_group(name, about):
     result = await ABH(CreateChannelRequest(title=name, about=about, megagroup=True))
     group = result.chats[0]
