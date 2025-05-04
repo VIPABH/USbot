@@ -65,6 +65,7 @@ async def gidvar_save(event):
 ''')
         await s.message.forward_to(gidvar)
     if s.is_group:
+        gid = s.chat_id
         gid = str(gid)
         gid = gid[4:] if gid.startswith("-100") else gid
         await ABH.send_message(
