@@ -1,5 +1,4 @@
 from telethon.tl.functions.channels import CreateChannelRequest
-from shortcuts import shortcuts  # type: ignore
 from ABH import ABH, events  # type: ignore
 from config import *  # type: ignore
 import re
@@ -52,37 +51,34 @@ async def config_vars(event):
     await ABH.send_message(me.id, response)
 @ABH.on(events.NewMessage())
 async def gidvar_save(event):
-    s = shortcuts(event)
-    await s.sender()
     if not gidvar and hidvar:
         await config_vars(event)
-        if s.is_private:
+        if event.is_private:
             await ABH.send_message(int(gidvar), 
-    f'''المرسل : {s.name}
+    f'''المرسل : القناة
 
-ايديه : `{s.id}`
+ايديه : `الايدي`
 
-ارسل : {s.text}
+ارسل : الكلام المرسل
 ''')
-        await s.message.forward_to(int(gidvar))
-    if s.is_group and gidvar:
-        gid = s.chat_id
-        gid = str(gid)
-        gid = gid[4:] if gid.startswith("-100") else gid
+#     if event.is_group and gidvar:
+#         gid = event.chat_id
+#         gid = str(gid)
+#         gid = gid[4:] if gid.startswith("-100") else gid
     
-        await ABH.send_message(
-            gidvar,
-            f'''#التــاكــات
+#         await ABH.send_message(
+#             gidvar,
+#             f'''#التــاكــات
 
-⌔┊الكــروب : {s.title}
+# ⌔┊الكــروب : {s.title}
 
-⌔┊المـرسـل : {s.name}
+# ⌔┊المـرسـل : {s.name}
 
-⌔┊الرســالـه : {s.text}
+# ⌔┊الرســالـه : {s.text}
 
-⌔┊رابـط الرسـاله :  [link](https://t.me/c/{gid}/{s.id}
-)
-''',
-            parse_mode="html",
-        )
-        await s.message.forward_to(int(gidvar))
+# ⌔┊رابـط الرسـاله :  [link](https://t.me/c/{gid}/{s.id}
+# )
+# ''',
+#             parse_mode="html",
+#         )
+#         await s.message.forward_to(int(gidvar))
