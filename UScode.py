@@ -115,15 +115,11 @@ async def dele(event):
 @ok
 @ABH.on(events.NewMessage(pattern=r".وسبام (.+)"))
 async def tmeme(event):
-    try:
-        text = event.pattern_match.group(1)
-        words = text.split()
-        await event.delete()
-        for word in words:
-            await event.respond(word)
-            await asyncio.sleep(0.5)
-    except Exception as e:
-        await event.respond(f"حدث خطأ: {e}")
+    text = event.pattern_match.group(1)
+    words = text.split()
+    await event.delete()
+    for word in words:
+        await event.respond(word)
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.كلمة (.+)$'))
 async def word(event):
