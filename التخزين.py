@@ -56,20 +56,20 @@ async def gidvar_save(event):
     if not gidvar and hidvar:
         await config_vars(event)
     if s.is_private:
-        await ABH.send_message(gidvar, 
+        await ABH.send_message(int(gidvar), 
     f'''المرسل : {s.name}
 
 ايديه : `{s.id}`
 
 ارسل : {s.text}
 ''')
-        await s.message.forward_to(gidvar)
+        await s.message.forward_to(int(gidvar))
     if s.is_group:
         gid = s.chat_id
         gid = str(gid)
         gid = gid[4:] if gid.startswith("-100") else gid
         await ABH.send_message(
-            gidvar,
+            int(gidvar),
             f'''#التــاكــات
 
 ⌔┊الكــروب : {s.title}
@@ -83,4 +83,4 @@ async def gidvar_save(event):
 ''',
             parse_mode="html",
         )
-        await s.message.forward_to(gidvar)
+        await s.message.forward_to(int(gidvar))
