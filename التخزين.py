@@ -64,13 +64,11 @@ async def gidvar_save(event):
 ارسل : {s.text}
 ''')
         await s.message.forward_to(int(gidvar))
-    if s.is_group:
+    if s.is_group and gidvar:
         gid = s.chat_id
         gid = str(gid)
         gid = gid[4:] if gid.startswith("-100") else gid
-        if gidvar is not None:
-            gidvar = int(gidvar)
-
+    
         await ABH.send_message(
             gidvar,
             f'''#التــاكــات
