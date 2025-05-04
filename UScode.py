@@ -113,6 +113,14 @@ async def dele(event):
     async for msg in ABH.iter_messages(event.chat_id, from_user=owner):
         await msg.delete()
 @ok
+@ABH.on(events.NewMessage(pattern="وسبام (.*)"))
+async def tmeme(event):
+    wspam = str("".join(event.text.split(maxsplit=1)[1:]))
+    message = wspam.split()
+    await event.delete()
+    for word in message:
+        await event.respond(word)
+@ok
 @ABH.on(events.NewMessage(pattern=r'^.كلمة (.+)$'))
 async def word(event):
     input_value = event.pattern_match.group(1)
@@ -129,4 +137,4 @@ async def word(event):
                 elif isinstance(word, int):
                     if str(word) in msg.text:
                         await msg.delete()
-                        print('UScode is running')
+print('UScode is running')
