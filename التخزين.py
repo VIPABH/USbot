@@ -68,8 +68,11 @@ async def gidvar_save(event):
         gid = s.chat_id
         gid = str(gid)
         gid = gid[4:] if gid.startswith("-100") else gid
+        if gidvar is not None:
+            gidvar = int(gidvar)
+
         await ABH.send_message(
-            int(gidvar),
+            gidvar,
             f'''#التــاكــات
 
 ⌔┊الكــروب : {s.title}
