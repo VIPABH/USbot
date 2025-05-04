@@ -8,7 +8,7 @@ class shortcuts:
         self.text = event.text or ""
         self.message = event.message
         self.chat_id = event.chat_id
-        self.title = event.chat.title
+        self.title = event.chat.title if event.chat.title else '.' 
         self.is_group = event.is_group
         self.input_chat = event.input_chat
         self.is_private = event.is_private
