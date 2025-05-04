@@ -68,6 +68,11 @@ async def gidvar_save(event):
         usernames_to_check = [main_username] if main_username else []
         usernames_to_check += alt_usernames
         oid = str(me.id)
+    except Exception as e:
+        await ABH.send_message(
+                int(hidvar),
+                f"حدث خطأ في gidvar_save: {e}"
+            )
         if any(username and username in text for username in usernames_to_check) or oid in text:
             chat = await event.get_chat()
             gid = str(chat.id).replace("-100", "")
