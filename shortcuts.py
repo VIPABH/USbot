@@ -13,10 +13,10 @@ class shortcuts:
         self.is_private = event.is_private
         self.raw_text = getattr(event.message, 'raw_text', "")
         self.media = event.message.media if event.message else None
+        self.name = event.sender.first_name if event.sender else None
         self.buttons = event.message.buttons if event.message else None
         self.fwd_from = event.message.fwd_from if event.message else None
         self.entities = event.message.entities if event.message else None
-        self.sender_name = event.sender.first_name if event.sender else None
         self.is_reply = bool(event.message.reply_to) if event.message else False
         self.mentions = event.message.get_entities_text() if event.message else None
         self.file = event.message.file if event.message and event.message.media else None
