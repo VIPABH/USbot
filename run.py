@@ -1,9 +1,10 @@
 from telethon import events
-from UScode import *
 from config import *
-from ABH import *
+from UScode import *
 from التخزين import *
+from ABH import *
 from ذاتية import *
+from ميمز import *
 import asyncio
 async def main():
     await ABH.start()
