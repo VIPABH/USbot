@@ -6,7 +6,7 @@ ABH = TelegramClient('session', api_id, api_hash)
 def ok(func):
     async def wrapper(event):
         uid = event.sender_id
-        owner = (await event.ABH.get_me()).id
+        owner = (await event.client.get_me()).id
         if uid != owner:
             return
         await func(event)
