@@ -52,7 +52,7 @@ async def Hussein(event, caption):
     os.remove(media)
 @ABH.on(events.NewMessage(func=lambda e: e.is_private and joker_unread_media(e)))
 async def Reda(event):
-       caption = """**
+       caption = f"""**
        ♡ تم حفظ الذاتية بنجاح ✓
 ♡ أسم المرسل : [{0}](tg://user?id={1})
 ♡  تاريخ الذاتية : `{2}`
