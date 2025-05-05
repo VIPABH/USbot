@@ -1,6 +1,7 @@
 from telethon.tl.functions.channels import CreateChannelRequest
 from ABH import ABH, events  # type: ignore
 from config import *  # type: ignore
+from telethon.tl.types import User
 import re
 gidvar = None
 hidvar = None
@@ -76,9 +77,9 @@ async def group_save(event):
     if not gidvar and hidvar:
         print("gidvar not found")
         await config_vars(event)
-        uid = event.sender_id
         sender = await event.get_sender()
-        if uid == 777000 or (hasattr(sender, 'bot') and sender.bot):
+        uid = event.sender_id
+        if not isinstance(sender, User) or uid == 777000 or sender.bot:
             return
     s = await event.get_sender()
     gid = event.chat_id
