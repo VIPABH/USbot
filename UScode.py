@@ -189,6 +189,7 @@ async def delete(event):
 async def set(event):
     global t
     t = int(event.pattern_match.group(1))
+    await event.edit(f'تم تعيين وقت الحذف التلقائي إلى {t} ثواني')
+    await asyncio.sleep(3)
     await event.delete()
-    await event.respond(f'تم تعيين وقت الحذف التلقائي إلى {t} ثواني')
 print('UScode is running')
