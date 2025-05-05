@@ -49,7 +49,7 @@ async def config_vars(event):
 {hidvar or "لم يتم العثور على الفار"}
 '''
     await ABH.send_message(me.id, response)
-@ABH.on(events.NewMessage(func=lambda e: e.is_private, incoming=True))
+@ABH.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
 async def privte_save(event):
     if not gidvar and hidvar:
         await config_vars(event)
