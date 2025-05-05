@@ -128,4 +128,21 @@ async def word(event):
                 elif isinstance(word, int):
                     if str(word) in msg.text:
                         await msg.delete()
+@ok
+@ABH.on(events.NewMessage(pattern=r"^كرر\s+(\d+\s+\d+(?:\.\d+)?)$"))
+async def repeat(event):
+    await event.delete()
+    r = await event.get_reply_message()
+    if not r:
+        await event.edit('🤔 يجب أن ترد على رسالة.')
+        await asyncio.sleep(3)
+        await event.delete()
+        return
+    else:
+        time = event.pattern_match.group(1)
+        much = event.pattern_match.group(2)
+        for i in range(int(much)):
+            await asyncio.sleep(float(time))
+            await r.reply(r.text)
+        await event.respond(r.text)
 print('UScode is running')
