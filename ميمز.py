@@ -8,5 +8,5 @@ async def meme(event):
     if not r:
         return
     url = f"https://t.me/vipabh/1115"
-    await r.ABH.send_file(r.id, url, caption="**Meme**", reply_to=r.id)
+    await ABH.send_file(r.id, url, caption="**Meme**", reply_to=r.id)
 print('meme is running')
