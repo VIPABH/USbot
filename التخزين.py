@@ -71,3 +71,31 @@ f'''المرسل : {name}
         messages=event.message.id,
         from_peer=event.chat_id
     )
+@ABH.on(events.NewMessage(incoming=True, func=lambda e: e.mentioned))
+async def group_save(event):
+    if not gidvar and hidvar:
+        print("gidvar not found")
+        await config_vars(event)
+    uid = event.sender_id
+    s = await event.get_sender()
+    text = event.raw_text
+    gid = event.chat_id
+    gid = str(gid).replace("-100", "").replace(" ", "")
+    name = s.first_name or s.username or "Unknown"
+    await ABH.send_message(
+        int(gidvar),
+f'''#التــاكــات
+
+⌔┊الكــروب : {event.chat.title}
+
+⌔┊المـرسـل :  {name}
+
+⌔┊الرســالـه : {event.message.text}
+
+⌔┊رابـط الرسـاله :  [link](https://t.me/c/{gid}/{event.message.id})
+''')
+    await ABH.forward_messages(
+        entity=int(gidvar),
+        messages=event.message.id,
+        from_peer=event.chat_id
+    )
