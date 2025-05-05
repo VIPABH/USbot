@@ -52,15 +52,15 @@ async def Hussein(event, caption):
     os.remove(media)
 @ABH.on(events.NewMessage(func=lambda e: e.is_private and joker_unread_media(e)))
 async def Reda(event):
-       0 = event.sender.first_name
-       1 = event.sender_id
-       2 = event.date.strftime("%Y-%m-%d")
-       3 = ABH_Asbo3[event.date.strftime("%A")]
+       a = event.sender.first_name
+       b = event.sender_id
+       c = event.date.strftime("%Y-%m-%d")
+       d = ABH_Asbo3[event.date.strftime("%A")]
        caption = f"""**
        ♡ تم حفظ الذاتية بنجاح ✓
-♡ أسم المرسل : [{0}](tg://user?id={1})
-♡  تاريخ الذاتية : `{2}`
-♡  أرسلت في يوم `{3}`
+♡ أسم المرسل : [{a}](tg://user?id={b})
+♡  تاريخ الذاتية : `{c}`
+♡  أرسلت في يوم `{d}`
        ♡    ABH    ♡
         **"""
        await Hussein(event, caption)
