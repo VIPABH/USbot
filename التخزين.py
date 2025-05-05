@@ -42,14 +42,14 @@ async def config_vars(event):
         for title, gid in newly_created:
             ids_text += f"**{title}**\nID: `{gid}`\n\n"
         await ABH.send_message(me.id, ids_text)
-    response = f'''فارات السورس
-لا تحذف الرسالة للحفاظ على كروبات السورس
-مجموعة التخزين gidvar:
-{gidvar or "لم يتم العثور على الفار"}
-مجموعة الإشعارات hidvar:
-{hidvar or "لم يتم العثور على الفار"}
-'''
-    await ABH.send_message(me.id, response)
+#     response = f'''فارات السورس
+# لا تحذف الرسالة للحفاظ على كروبات السورس
+# مجموعة التخزين gidvar:
+# {gidvar or "لم يتم العثور على الفار"}
+# مجموعة الإشعارات hidvar:
+# {hidvar or "لم يتم العثور على الفار"}
+# '''
+    # await ABH.send_message(me.id, response)
 @ABH.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
 async def privte_save(event):
     if not gidvar and hidvar:
