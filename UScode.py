@@ -131,6 +131,7 @@ async def word(event):
 @ok
 @ABH.on(events.NewMessage(pattern=r"^مكرر\s+(\d+)\s+(\d+(?:\.\d+)?)$"))
 async def repeat(event):
+    await event.delete()
     r = await event.get_reply_message()
     if not r:
         await event.edit('🤔 يجب أن ترد على رسالة.')
@@ -138,11 +139,21 @@ async def repeat(event):
         await event.delete()
         return
     else:
-        await event.delete()
         much = int(event.pattern_match.group(1))
         time = float(event.pattern_match.group(2))
         for i in range(int(much)):
             await asyncio.sleep(float(time))
             await r.reply(r.text)
         await event.respond(r.text)
+@ok
+@ABH.on(events.NewMessage(pattern=r'^.كرر(?: (\d+))?$'))
+async def repeat_it(event):
+    num = event.pattern_match.group(1)
+    r = await event.get_reply_message()
+    if r:
+        for i in range(int(num) + 1):
+            await event.delete()
+            await r.reply(r.text)
+        abh = r.message
+        await event.respond(abh)
 print('UScode is running')
