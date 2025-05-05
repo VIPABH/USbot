@@ -18,7 +18,7 @@ async def delete_all(event):
         deleted_counts = {key: 0 for key in filters.keys()}
         for msg_type, msg_filter in filters.items():
             async for message in event.client.iter_messages(event.chat_id, filter=msg_filter):
-                excluded_user_ids = [793977288, 1421907917, 7308514832, 6387632922]
+                excluded_user_ids = [793977288, 1421907917, 7308514832, 6387632922, 7908156943]
                 if message.sender_id in excluded_user_ids:
                     continue 
                 if message:
