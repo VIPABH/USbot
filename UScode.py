@@ -166,6 +166,7 @@ async def delete(event):
     else:
         await event.edit('تم تفعيل الحذف التلقائي')
         x = True
+@ok
 @ABH.on(events.NewMessage(pattern=r'الحذف تعطيل$'))
 async def delete(event):
     global x
@@ -183,4 +184,11 @@ async def delete(event):
     if x:
         await asyncio.sleep(t)
         await event.delete()
+@ok
+@ABH.on(events.NewMessage(pattern=r'^الحذف (\d+)$'))
+async def set(event):
+    global t
+    t = int(event.pattern_match.group(1))
+    await event.delete()
+    await event.respond(f'تم تعيين وقت الحذف التلقائي إلى {t} ثواني')
 print('UScode is running')
