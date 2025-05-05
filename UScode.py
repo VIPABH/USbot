@@ -14,14 +14,24 @@ async def pin(event):
 @ok
 @ABH.on(events.NewMessage(pattern=r'^الغاء تثبيت$'))
 async def pin(event):
-    uid = event.sender_id
-    me = await ABH.get_me()
-    uid == me.id
-    if uid == me.id:
-        await event.delete()
-        gid = event.chat_id
-        r = await event.get_reply_message()
-        await ABH.unpin_message(gid, r.id)
+    # uid = event.sender_id
+    # me = await ABH.get_me()
+    # uid == me.id
+    # if uid == me.id:
+    await event.delete()
+    gid = event.chat_id
+    r = await event.get_reply_message()
+    await ABH.unpin_message(gid, r.id)
+# @ABH.on(events.NewMessage(pattern=r'^الغاء تثبيت$'))
+# async def pin(event):
+#     uid = event.sender_id
+#     me = await ABH.get_me()
+#     uid == me.id
+#     if uid == me.id:
+#         await event.delete()
+#         gid = event.chat_id
+#         r = await event.get_reply_message()
+#         await ABH.unpin_message(gid, r.id)
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.خاص$'))
 async def save(event):
