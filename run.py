@@ -6,6 +6,7 @@ from التخزين import *
 import asyncio
 async def main():
     await ABH.start()
-    print("✅ البوت يعمل الآن")
+    print("run is running")
+    await config_vars()
     await ABH.run_until_disconnected()
 asyncio.run(main())
