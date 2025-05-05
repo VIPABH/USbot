@@ -79,7 +79,6 @@ async def group_save(event):
         uid = event.sender_id
         sender = await event.get_sender()
         if uid == 777000 or sender.bot:
-            print(sender)
             return
     s = await event.get_sender()
     gid = event.chat_id
