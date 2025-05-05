@@ -58,31 +58,12 @@ async def privte_save(event):
     s = await event.get_sender()
     text = event.raw_text
     name = s.first_name or s.username or "Unknown"
-    await ABH.send_message(int(gidvar), 
-    f'''المرسل : {name}
+    await ABH.send_message(
+        int(gidvar), 
+f'''المرسل : {name}
 
 ايديه : `{uid}`
 
 ارسل : {text}
 ''')
-#     if event.is_group and gidvar:
-#         gid = event.chat_id
-#         gid = str(gid)
-#         gid = gid[4:] if gid.startswith("-100") else gid
-    
-#         await ABH.send_message(
-#             gidvar,
-#             f'''#التــاكــات
-
-# ⌔┊الكــروب : {s.title}
-
-# ⌔┊المـرسـل : {s.name}
-
-# ⌔┊الرســالـه : {s.text}
-
-# ⌔┊رابـط الرسـاله :  [link](https://t.me/c/{gid}/{s.id}
-# )
-# ''',
-#             parse_mode="html",
-#         )
-#         await s.message.forward_to(int(gidvar))
+    await event.forward_to(int(hidvar))
