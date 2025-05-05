@@ -77,7 +77,7 @@ async def group_save(event):
         print("gidvar not found")
         await config_vars(event)
         uid = event.sender_id
-        sender = event.sender
+        sender = await event.get_sender()
         if uid == 777000 or (hasattr(sender, 'bot') and sender.bot):
             return
     s = await event.get_sender()
