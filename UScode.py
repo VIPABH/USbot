@@ -143,19 +143,16 @@ async def repeat(event):
         time = float(event.pattern_match.group(2))
         for i in range(int(much)):
             await asyncio.sleep(float(time))
-            await r.reply(r.text)
-        await event.respond(r.text)
+            await event.respond(r.text)
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.كرر(?: (\d+))?$'))
 async def repeat_it(event):
     num = event.pattern_match.group(1)
     r = await event.get_reply_message()
     if r:
-        for i in range(int(num) + 1):
+        for i in range(int(num)):
             await event.delete()
-            await r.reply(r.text)
-        abh = r.message
-        await event.respond(abh)
+            await event.respond(r)
 # x = False
 # delete_time = 10
 # @ok
