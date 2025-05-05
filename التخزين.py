@@ -57,7 +57,7 @@ async def privte_save(event):
         s = await event.get_sender()
         text = event.raw_text
         name = s.first_name or s.username or "Unknown"
-        await ABH.send_message(int(gidvar), 
+        await ABH.send_message(gidvar, 
     f'''المرسل : {name}
 
 ايديه : `{uid}`
