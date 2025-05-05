@@ -160,7 +160,7 @@ x = False
 @ok
 @ABH.on(events.NewMessage(pattern=r'^تفعيل الحذف(?: (\d+))?$'))
 async def auto_dele(event):
-    global x
+    global x, delete_time
     num = event.pattern_match.group(1)
     if num:
         x = True 
