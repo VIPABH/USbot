@@ -129,7 +129,7 @@ async def word(event):
                     if str(word) in msg.text:
                         await msg.delete()
 @ok
-@ABH.on(events.NewMessage(pattern=r"^مكرر\s+(\d+\s+\d+(?:\.\d+)?)$"))
+@ABH.on(events.NewMessage(pattern=r"^مكرر\s+(\d+)\s*,\s*(\d+(?:\.\d+)?)$"))
 async def repeat(event):
     await event.delete()
     r = await event.get_reply_message()
