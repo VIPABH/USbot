@@ -153,22 +153,34 @@ async def repeat_it(event):
         for i in range(int(num)):
             await event.delete()
             await event.respond(r)
-# x = False
-# delete_time = 10
-# @ok
-# @ABH.on(events.NewMessage(pattern=r'^تفعيل الحذف(?: (\d+))?$'))
-# async def auto_dele(event):
-#     global x, delete_time
-#     num = event.pattern_match.group(1)
-#     if num:
-#         x = True
-#         delete_time = int(num)
-#     else:
-#         x = True
-#     await event.respond(f"✅ تم تفعيل الحذف بعد {delete_time} ثانية.")
-#     @ABH.on(events.NewMessage(incoming=True))
-#     async def delete_message(event):
-#         if event.sender_id == (await event.client.get_me()).id and x:
-#             await asyncio.sleep(delete_time)
-#             await event.delete()
+x = False
+t = 3 
+@ok
+@ABH.on(events.NewMessage(pattern=r'الحذف تفعيل$'))
+async def delete(event):
+    global x
+    if x:
+        await event.edit('الحذف التلقائي مفعل بالفعل')
+        await asyncio.sleep(3)
+        await event.delete()
+    else:
+        await event.edit('تم تفعيل الحذف التلقائي')
+        x = True
+@ABH.on(events.NewMessage(pattern=r'الحذف تعطيل$'))
+async def delete(event):
+    global x
+    if not x:
+        await event.edit('الحذف التلقائي معطل بالفعل')
+        await asyncio.sleep(3)
+        await event.delete()
+    else:
+        await event.edit('تم تعطيل الحذف التلقائي')
+        x = False
+@ok
+@ABH.on(events.NewMessage(outgoing=True))
+async def delete(event):
+    global x
+    if x:
+        await asyncio.sleep(t)
+        await event.delete()
 print('UScode is running')
