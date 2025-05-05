@@ -49,17 +49,20 @@ async def config_vars(event):
 {hidvar or "لم يتم العثور على الفار"}
 '''
     await ABH.send_message(me.id, response)
-@ABH.on(events.NewMessage())
-async def gidvar_save(event):
+@ABH.on(events.NewMessage(func=lambda e: e.is_private, incoming=True))
+async def privte_save(event):
     if not gidvar and hidvar:
         await config_vars(event)
-        if event.is_private:
-            await ABH.send_message(int(gidvar), 
-    f'''المرسل : القناة
+        uid = event.sender_id
+        s = await event.get_sender()
+        text = event.raw_text
+        name = s.first_name or s.username or "Unknown"
+        await ABH.send_message(int(gidvar), 
+    f'''المرسل : {name}
 
-ايديه : `الايدي`
+ايديه : `{uid}`
 
-ارسل : الكلام المرسل
+ارسل : {text}
 ''')
 #     if event.is_group and gidvar:
 #         gid = event.chat_id
