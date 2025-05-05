@@ -3,6 +3,7 @@ from UScode import *
 from config import *
 from ABH import *
 from التخزين import *
+from ذاتية import *
 import asyncio
 async def main():
     await ABH.start()
