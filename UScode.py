@@ -131,7 +131,6 @@ async def word(event):
 @ok
 @ABH.on(events.NewMessage(pattern=r"^مكرر\s+(\d+)\s+(\d+(?:\.\d+)?)$"))
 async def repeat(event):
-    await event.delete()
     r = await event.get_reply_message()
     if not r:
         await event.edit('🤔 يجب أن ترد على رسالة.')
@@ -139,6 +138,7 @@ async def repeat(event):
         await event.delete()
         return
     else:
+        await event.delete()
         much = int(event.pattern_match.group(1))
         time = float(event.pattern_match.group(2))
         for i in range(int(much)):
