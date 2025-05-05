@@ -177,6 +177,8 @@ async def delete(event):
     else:
         await event.edit('تم تعطيل الحذف التلقائي')
         x = False
+        await asyncio.sleep(3)
+        await event.delete()
 @ok
 @ABH.on(events.NewMessage(outgoing=True))
 async def delete(event):
