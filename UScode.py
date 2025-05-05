@@ -171,7 +171,7 @@ async def auto_dele(event):
     await event.respond(f"✅ تم تفعيل الحذف بعد {delete_time} ثانية.")
     @ABH.on(events.NewMessage(incoming=True))
     async def delete_message(event):
-        if event.sender_id != (await event.client.get_me()).id and x:
+        if event.sender_id == (await event.client.get_me()).id and x:
             await asyncio.sleep(delete_time)
             await event.delete()
 
