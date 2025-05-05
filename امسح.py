@@ -6,7 +6,7 @@ from telethon.tl.types import (
 from ABH import ABH, events, ok #type: ignore
 from التخزين import hidvar #type: ignore
 @ok
-@ABH.on(events.NewMessage(pattern="^امسح$"))
+@ABH.on(events.NewMessage(pattern="^.امسح$"))
 async def delete_all(event):
         filters = {
             "الملفات": InputMessagesFilterDocument,
