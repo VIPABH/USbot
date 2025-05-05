@@ -156,17 +156,18 @@ async def repeat_it(event):
             await r.reply(r.text)
         abh = r.message
         await event.respond(abh)
+x = False
 @ok
 @ABH.on(events.NewMessage(pattern=r'^تفعيل الحذف(?: (\d+))?$'))
 async def auto_dele(event):
     global x
     num = event.pattern_match.group(1)
     if num:
-        x = True
-    delete_time = int(num) if num else 10
+        x = True 
+        delete_time = int(num) if num else 10
     await event.respond(f"✅ تم تفعيل الحذف بعد {delete_time} ثانية.")
     @ABH.on(events.NewMessage(incoming=True))
-    async def deletemessage(event):
+    async def delete_message(event):
         if event.sender_id != (await event.client.get_me()).id and x:
             await asyncio.sleep(delete_time)
             await event.delete()
