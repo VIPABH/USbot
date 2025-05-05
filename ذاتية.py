@@ -43,7 +43,7 @@ async def Hussein(event, caption):
     sender_id = event.sender_id
     lMl10l_date = event.date.strftime("%Y-%m-%d")
     lMl10l_day = Aljoker_Asbo3[event.date.strftime("%A")]
-    await bot.send_file(
+    await ABH.send_file(
         "me",
         media,
         caption=caption.format(sender.first_name, sender_id, lMl10l_date, lMl10l_day),
