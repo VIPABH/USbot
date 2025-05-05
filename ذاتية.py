@@ -50,9 +50,7 @@ async def Hussein(event, caption):
         parse_mode="markdown"
     )
     os.remove(media)
-
-    os.remove(media)
-@ABH.on(events.NewMessage(func=lambda e: e.is_private and joker_unread_media(e) and e.sender_id != ABH.uid))
+@ABH.on(events.NewMessage(func=lambda e: e.is_private and joker_unread_media(e)))
 async def Reda(event):
        caption = """**
        ♡ تم حفظ الذاتية بنجاح ✓
