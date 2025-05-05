@@ -9,7 +9,7 @@ async def pin(event):
     await ABH.pin_message(gid, r.id)
 @ok
 @ABH.on(events.NewMessage(pattern=r'^الغاء تثبيت$'))
-async def pin(event):
+async def unpin(event):
     await event.delete()
     gid = event.chat_id
     r = await event.get_reply_message()
@@ -30,7 +30,7 @@ async def save(event):
         await r.forward_to(me.id)
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.مسح(?: (\d+))?$'))
-async def dele(event):
+async def delet(event):
     num = event.pattern_match.group(1)
     r = await event.get_reply_message()
     if r:
@@ -89,7 +89,7 @@ async def timi(event):
         await msg2.delete()
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.مسح رسائلي$'))
-async def dele(event):
+async def dele_me(event):
      owner = (await ABH.get_me()).id
      await event.delete()
      async for msg in ABH.iter_messages(event.chat_id, from_user=owner):
@@ -157,7 +157,7 @@ x = False
 t = 3 
 @ok
 @ABH.on(events.NewMessage(pattern=r'الحذف تفعيل$'))
-async def delete(event):
+async def delete_on(event):
     global x
     if x:
         await event.edit('الحذف التلقائي مفعل بالفعل')
@@ -168,7 +168,7 @@ async def delete(event):
         x = True
 @ok
 @ABH.on(events.NewMessage(pattern=r'الحذف تعطيل$'))
-async def delete(event):
+async def delete_off(event):
     global x
     if not x:
         await event.edit('الحذف التلقائي معطل بالفعل')
@@ -181,7 +181,7 @@ async def delete(event):
         await event.delete()
 @ok
 @ABH.on(events.NewMessage(outgoing=True))
-async def delete(event):
+async def delete_auto(event):
     global x
     if x:
         await asyncio.sleep(t)
