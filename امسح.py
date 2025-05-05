@@ -8,6 +8,7 @@ from التخزين import hidvar #type: ignore
 @ok
 @ABH.on(events.NewMessage(pattern="^.امسح$"))
 async def delete_all(event):
+    await event.delete()
         filters = {
             "الملفات": InputMessagesFilterDocument,
             "الروابط": InputMessagesFilterUrl,
