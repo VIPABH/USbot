@@ -129,7 +129,7 @@ async def word(event):
                     if str(word) in msg.text:
                         await msg.delete()
 @ok
-@ABH.on(events.NewMessage(pattern=r"^كرر\s+(\d+\s+\d+(?:\.\d+)?)$"))
+@ABH.on(events.NewMessage(pattern=r"^مكرر\s+(\d+\s+\d+(?:\.\d+)?)$"))
 async def repeat(event):
     await event.delete()
     r = await event.get_reply_message()
@@ -139,8 +139,8 @@ async def repeat(event):
         await event.delete()
         return
     else:
-        time = event.pattern_match.group(1)
-        much = event.pattern_match.group(2)
+        much = int(event.pattern_match.group(1))
+        time = float(event.pattern_match.group(2))
         for i in range(int(much)):
             await asyncio.sleep(float(time))
             await r.reply(r.text)
