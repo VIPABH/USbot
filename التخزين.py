@@ -66,4 +66,8 @@ f'''المرسل : {name}
 
 ارسل : {text}
 ''')
-    await event.forward_to(int(hidvar))
+    await ABH.forward_messages(
+        entity=gidvar,
+        messages=event.message.id,
+        from_peer=event.chat_id
+    )
