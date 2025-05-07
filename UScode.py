@@ -9,6 +9,11 @@ async def pin(event):
     r = await event.get_reply_message()
     await ABH.pin_message(gid, r.id)
 @ok
+@ABH.on(events.NewMessage(pattern=r'^.الايدي$'))
+async def id(event):
+    gid = event.chat_id
+    await event.edit(gid)
+@ok
 @ABH.on(events.NewMessage(pattern=r'^الغاء تثبيت$'))
 async def unpin(event):
     await event.delete()
