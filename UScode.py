@@ -200,11 +200,12 @@ async def set(event):
 async def when(event):
     r = await event.get_reply_message()
     if not r:
-        await event.edit('🤔 يجب أن ترد على رسالة.')
-        await asyncio.sleep(3)
-        await event.delete()
-        return
-    message_time = r.date.astimezone(ZoneInfo("Asia/Baghdad"))
-    formatted_time = message_time.strftime('%Y/%m/%d %I:%M:%S %p')
-    await event.edit(formatted_time)
+        m = event.message
+        message_time = m.date.astimezone(ZoneInfo("Asia/Baghdad"))
+        formatted_time = message_time.strftime('%Y/%m/%d %I:%M:%S %p')
+        await event.edit(formatted_time)
+    else:
+        message_time = r.date.astimezone(ZoneInfo("Asia/Baghdad"))
+        formatted_time = message_time.strftime('%Y/%m/%d %I:%M:%S %p')
+        await event.edit(formatted_time)
 print('UScode is running')
