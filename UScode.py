@@ -116,12 +116,12 @@ async def tmeme(event):
     await event.delete()
     for word in words:
         await event.respond(word)
-@ok
 def normalize_text(text):
     return ''.join(
         c for c in unicodedata.normalize('NFKD', text)
         if not unicodedata.combining(c)
     ).lower().strip()
+@ok
 @ABH.on(events.NewMessage(pattern=r'^.كلمة (.+)$'))
 async def word(event):
     keyword_raw = event.pattern_match.group(1)
