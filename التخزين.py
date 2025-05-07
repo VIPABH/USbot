@@ -44,11 +44,11 @@ async def config_vars(event):
         await ABH.send_message(me.id, ids_text)
 @ABH.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
 async def privte_save(event):
+    uid = event.sender_id
     if uid == 777000 or sender.bot:
         return
     if not gidvar and hidvar:
         await config_vars(event)
-    uid = event.sender_id
     s = await event.get_sender()
     text = event.raw_text
     name = s.first_name or s.username or "Unknown"
