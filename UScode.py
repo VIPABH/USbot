@@ -120,7 +120,8 @@ async def tmeme(event):
 @ABH.on(events.NewMessage(pattern=r'^.كلمة (.+)$'))
 async def word(event):
      input_value = event.pattern_match.group(1)
-     word = int(input_value)
+    #  word = int(input_value)
+     word = input_value
      async for msg in ABH.iter_messages(event.chat_id):
         if msg.text:
             if isinstance(word, str):
