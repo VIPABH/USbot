@@ -1,7 +1,6 @@
 from ABH import ABH, ok, events #type:ignore
 from zoneinfo import ZoneInfo  
 import asyncio
-
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.تثبيت$'))
 async def pin(event):
