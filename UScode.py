@@ -1,5 +1,7 @@
 from ABH import ABH, ok, events #type:ignore
+from zoneinfo import ZoneInfo  
 import asyncio
+
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.تثبيت$'))
 async def pin(event):
@@ -194,4 +196,16 @@ async def set(event):
     await event.edit(f'تم تعيين وقت الحذف التلقائي إلى {t} ثواني')
     await asyncio.sleep(3)
     await event.delete()
+@ok 
+@ABH.on(events.NewMessage(pattern=r'^متى$'))
+async def when(event):
+    r = await event.get_reply_message()
+    if not r:
+        await event.edit('🤔 يجب أن ترد على رسالة.')
+        await asyncio.sleep(3)
+        await event.delete()
+        return
+    message_time = r.date.astimezone(ZoneInfo("Asia/Baghdad"))
+    formatted_time = message_time.strftime('%Y-%m-%d %H:%M:%S')
+    await event.reply(formatted_time)
 print('UScode is running')
