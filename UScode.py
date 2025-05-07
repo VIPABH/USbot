@@ -12,7 +12,7 @@ async def pin(event):
 @ABH.on(events.NewMessage(pattern=r'^.الايدي$'))
 async def id(event):
     gid = event.chat_id
-    await event.edit(gid)
+    await event.edit(str(gid))
 @ok
 @ABH.on(events.NewMessage(pattern=r'^الغاء تثبيت$'))
 async def unpin(event):
