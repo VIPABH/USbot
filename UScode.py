@@ -1,6 +1,6 @@
 from ABH import ABH, ok, events #type:ignore
 from zoneinfo import ZoneInfo  
-import asyncio
+import asyncio, unicodedata
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.تثبيت$'))
 async def pin(event):
@@ -117,12 +117,20 @@ async def tmeme(event):
     for word in words:
         await event.respond(word)
 @ok
+def normalize_text(text):
+    return ''.join(
+        c for c in unicodedata.normalize('NFKD', text)
+        if not unicodedata.combining(c)
+    ).lower().strip()
 @ABH.on(events.NewMessage(pattern=r'^.كلمة (.+)$'))
 async def word(event):
-    keyword = event.pattern_match.group(1).strip().lower()
+    keyword_raw = event.pattern_match.group(1)
+    keyword = normalize_text(keyword_raw)
     async for msg in ABH.iter_messages(event.chat_id):
-        if msg.text and keyword in msg.text.lower():
-            await msg.delete()
+        if msg.text:
+            msg_normalized = normalize_text(msg.text)
+            if keyword in msg_normalized:
+                await msg.delete()
 @ok
 @ABH.on(events.NewMessage(pattern=r"^مكرر\s+(\d+)\s+(\d+(?:\.\d+)?)$"))
 async def repeat(event):
