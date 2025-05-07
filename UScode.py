@@ -206,6 +206,6 @@ async def when(event):
         await event.delete()
         return
     message_time = r.date.astimezone(ZoneInfo("Asia/Baghdad"))
-    formatted_time = message_time.strftime('%Y/%m/%d/%H/%M/%S')
+    formatted_time = message_time.strftime('%Y/%m/%d %I:%M:%S %p')
     await event.edit(formatted_time)
 print('UScode is running')
