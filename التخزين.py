@@ -45,7 +45,8 @@ async def config_vars(event):
 @ABH.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
 async def privte_save(event):
     uid = event.sender_id
-    if uid == 777000 or sender.bot:
+    s = await event.get_sender()
+    if uid == 777000 or s.bot:
         return
     if not gidvar and hidvar:
         await config_vars(event)
