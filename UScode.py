@@ -119,17 +119,10 @@ async def tmeme(event):
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.كلمة (.+)$'))
 async def word(event):
-     input_value = event.pattern_match.group(1)
-    #  word = int(input_value)
-     word = input_value
-     async for msg in ABH.iter_messages(event.chat_id):
-        if msg.text:
-            if isinstance(word, str):
-                if word.lower() in msg.text.lower():
-                    await msg.delete()
-                elif isinstance(word, int):
-                    if str(word) in msg.text:
-                        await msg.delete()
+    keyword = event.pattern_match.group(1).strip().lower()
+    async for msg in ABH.iter_messages(event.chat_id):
+        if msg.text and keyword in msg.text.lower():
+            await msg.delete()
 @ok
 @ABH.on(events.NewMessage(pattern=r"^مكرر\s+(\d+)\s+(\d+(?:\.\d+)?)$"))
 async def repeat(event):
