@@ -1,4 +1,5 @@
 from امسح import HVAR, GVAR #type: ignore
+from telethon import events
 class shortcuts:
     def __init__(self, event):
         self.event = event
