@@ -23,9 +23,8 @@ async def id(event):
         uid = r.sender_id
         await event.edit(f"ايدي المستخدم: `{uid}`\n ايدي المجموعة: `{gid}`")
     else:
-        u = await ABH.get_me()
-
-        await event.edit(f" ايدي حسابك: `{u.id}`\n ايدي المجموعة: `{gid}`")
+        u = await event.get_chat()
+        await event.edit(f"ايدي المستخدم - `{u.id}`")
 @ABH.on(events.NewMessage(pattern=r'^.خاص$', outgoing=True))
 async def save(event):
     uid = event.sender_id
