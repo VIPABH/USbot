@@ -1,5 +1,5 @@
 from ABH import ABH, events, ok  # type: ignore
-from التخزين import *
+from التخزين import HVAR 
 from telethon.tl.types import (
     InputMessagesFilterDocument,
     InputMessagesFilterPhotos,
@@ -30,8 +30,8 @@ async def delete_all(event):
     else:
         message_text = "لم يتم العثور على رسائل مطابقة للفلاتر المحددة."
     try:
-        await ABH.send_message(HVAR, message_text)
+        await ABH.send_message(int(HVAR), message_text)
     except Exception as e:
-        print(e)
-        print(HVAR)
+        print("Error:", e)
+        print("HVAR:", HVAR)
         await ABH.send_message(event.chat_id, "حدث خطأ أثناء إرسال الرسالة إلى مجموعة الإشعارات.")
