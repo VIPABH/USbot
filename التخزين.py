@@ -1,8 +1,8 @@
 from telethon.tl.functions.channels import CreateChannelRequest
 from ABH import ABH, events  # type: ignore
 import re
-gidvar = None
-hidvar = None
+# gidvar = None
+# hidvar = None
 async def create_group(name, about):
     result = await ABH(CreateChannelRequest(title=name, about=about, megagroup=True))
     group = result.chats[0]
