@@ -9,7 +9,6 @@ class shortcuts:
         self.text = event.text or ""
         self.message = event.message
         self.chat_id = event.chat_id
-        self.title = event.chat.title if event.chat.title else event.sender_id
         self.is_group = event.is_group
         self.input_chat = event.input_chat
         self.is_private = event.is_private
@@ -17,8 +16,10 @@ class shortcuts:
         self.media = event.message.media if event.message else None
         self.name = event.sender.first_name if event.sender else '.'
         self.buttons = event.message.buttons if event.message else None
+        self.link = f"https://t.me/c/{str(event.chat_id)[4:]}/{event.id}"
         self.fwd_from = event.message.fwd_from if event.message else None
         self.entities = event.message.entities if event.message else None
+        self.title = event.chat.title if event.chat.title else event.sender_id
         self.is_reply = bool(event.message.reply_to) if event.message else False
         self.mentions = event.message.get_entities_text() if event.message else None
         self.file = event.message.file if event.message and event.message.media else None
