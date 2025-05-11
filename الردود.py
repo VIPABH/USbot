@@ -44,16 +44,11 @@ async def add_reply(event):
         await event.reply(f"✅ تم حفظ النص كـ رد للكلمة: `{keyword}`")
     else:
         await event.reply("❌ الرد لا يحتوي على نص أو وسائط.")
-from telethon import events
-from ABH import ABH  # تأكد أن ABH معرف بشكل صحيح
-from ردود import add_response, get_response
-
 @ABH.on(events.NewMessage(pattern=r'^رد\s+(\S+)$', outgoing=True))
 async def add_reply(event):
     reply = await event.get_reply_message()
     if not reply:
         return await event.reply("❌ يجب الرد على رسالة تحتوي على رد.")
-
     keyword = event.pattern_match.group(1).strip()
     chat_id = event.chat_id
 
