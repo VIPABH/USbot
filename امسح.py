@@ -1,13 +1,13 @@
 from ABH import ABH, events, ok  # type: ignore
 from التخزين import *
-from config import get_json_value
+from config import vars
 from telethon.tl.types import (
     InputMessagesFilterDocument,
     InputMessagesFilterPhotos,
     InputMessagesFilterUrl
 )
-HVAR = get_json_value("hidvar")
-GVAR = get_json_value("gidvar")
+HVAR = vars("hidvar")
+GVAR = vars("gidvar")
 @ok
 @ABH.on(events.NewMessage(pattern="^.امسح$", outgoing=True))
 async def delete_all(event):
