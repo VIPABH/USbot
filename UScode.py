@@ -2,10 +2,10 @@ from ABH import ABH, ok, events #type:ignore
 from zoneinfo import ZoneInfo  
 from shortcuts import shortcuts, hint #type: ignore
 import asyncio, unicodedata
-s = shortcuts(event)
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.تثبيت$'))
 async def pin(event):
+    s = shortcuts(event)
     await event.delete()
     gid = event.chat_id
     r = await event.get_reply_message()
