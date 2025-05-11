@@ -6,7 +6,7 @@ from telethon.tl.types import (
     InputMessagesFilterUrl
 )
 @ok
-@ABH.on(events.NewMessage(pattern="^.امسح$"))
+@ABH.on(events.NewMessage(pattern="^.امسح$", outgoing=True))
 async def delete_all(event):
     await event.delete()
     filters = {
