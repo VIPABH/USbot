@@ -5,8 +5,8 @@ from telethon.tl.types import (
     InputMessagesFilterPhotos,
     InputMessagesFilterUrl
 )
-@ok
 print(hidvar)
+@ok
 @ABH.on(events.NewMessage(pattern="^.امسح$"))
 async def delete_all(event):
     await event.delete()
