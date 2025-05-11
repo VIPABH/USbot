@@ -25,6 +25,6 @@ class shortcuts:
         self.mentions = event.message.get_entities_text() if event.message else None
         self.file = event.message.file if event.message and event.message.media else None
         self.reply_msg_id = event.message.reply_to_msg_id if event.message and event.message.reply_to else None
-        self.link = None if event.is_private else f"https://t.me/c/{str(event.chat_id)[4:]}/{event.id}"
+        self.link = f"https://t.me/c/{str(event.chat_id)[4:]}/{event.id}" if getattr(event, 'is_group', False) and str(event.chat_id).startswith("-100") else None
 async def hint(text):
     await ABH.send_message(int(HVAR), text)
