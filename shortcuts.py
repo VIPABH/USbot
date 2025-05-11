@@ -1,3 +1,4 @@
+from امسح import HVAR, GVAR #type: ignore
 class shortcuts:
     def __init__(self, event):
         self.event = event
@@ -22,3 +23,5 @@ class shortcuts:
         self.mentions = event.message.get_entities_text() if event.message else None
         self.file = event.message.file if event.message and event.message.media else None
         self.reply_msg_id = event.message.reply_to_msg_id if event.message and event.message.reply_to else None
+async def hint(self, text):
+    await self.send_message(int(HVAR), text)
