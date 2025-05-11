@@ -1,6 +1,6 @@
 from ABH import ABH, ok, events #type:ignore
 from zoneinfo import ZoneInfo  
-from shortcuts import shortcuts, hint #type: ignore
+from shortcuts import shortcuts #type: ignore
 import asyncio, unicodedata
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.تثبيت$'))
@@ -10,11 +10,6 @@ async def pin(event):
     gid = event.chat_id
     r = await event.get_reply_message()
     await ABH.pin_message(gid, r.id)
-    text = f'''
-    تم تثبيت رساله في ( {s.title} ) - ( {s.chat_id} )
-    رابط الرسالة - ( {s.link} )
-'''
-    await hint(text)
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.الايدي$'))
 async def id(event):
