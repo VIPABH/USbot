@@ -65,7 +65,7 @@ async def add_reply(event):
         await event.reply(f"✅ تم حفظ النص كـ رد للكلمة: `{keyword}`")
     else:
         await event.reply("❌ الرد لا يحتوي على نص أو وسائط.")
-@ABH.on(events.NewMessage(incoming=True))
+@ABH.on(events.NewMessage())
 async def auto_reply(event):
     text = event.raw_text.strip()
     if not text:
