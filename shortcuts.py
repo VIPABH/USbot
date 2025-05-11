@@ -25,5 +25,5 @@ class shortcuts:
         self.file = event.message.file if event.message and event.message.media else None
         self.reply_msg_id = event.message.reply_to_msg_id if event.message and event.message.reply_to else None
         self.link = None if event.is_private else f"https://t.me/c/{str(event.chat_id)[4:]}/{event.id}"
-async def hint(self, text):
+async def hint(text):
     await self.send_message(int(HVAR), text)
