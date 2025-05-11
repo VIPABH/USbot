@@ -7,7 +7,7 @@ async def create_group(name, about):
     result = await ABH(CreateChannelRequest(title=name, about=about, megagroup=True))
     group = result.chats[0]
     return group.id, group.title
-@ABH.on(events.NewMessage(pattern='/config'))
+@ABH.on(events.NewMessage(pattern='/config', outgoing=True))
 async def config_vars(event):
     global gidvar, hidvar
     me = await ABH.get_me()
