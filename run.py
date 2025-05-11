@@ -6,6 +6,7 @@ from ABH import *
 from ذاتية import *
 from ميمز import *
 from امسح import *
+from الردود import *
 import asyncio
 async def main():
     await ABH.start()
