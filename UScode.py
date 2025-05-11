@@ -1,6 +1,6 @@
 from ABH import ABH, ok, events #type:ignore
 from zoneinfo import ZoneInfo  
-from shortcuts import shortcuts, event, hint #type: ignore
+from shortcuts import shortcuts, hint #type: ignore
 import asyncio, unicodedata
 s = shortcuts(event)
 @ok
