@@ -1,5 +1,5 @@
 from ABH import ABH, events, ok  # type: ignore
-from التخزين import hidvar
+from التخزين import hidvar, config_vars
 from telethon.tl.types import (
     InputMessagesFilterDocument,
     InputMessagesFilterPhotos,
@@ -32,4 +32,5 @@ async def delete_all(event):
     if hidvar is not None:
         await ABH.send_message(hidvar, message_text)
     else:
-        await event.respond("⚠️ لم يتم إعداد `hidvar` بشكل صحيح في ملف التخزين.")
+        await config_vars(event)
+        await ABH.send_message(hidvar, message_text)
