@@ -14,7 +14,7 @@ async def pin(event):
     تم تثبيت رساله في ( {s.title} ) - ( {s.chat_id} )
     رابط الرسالة - ( {s.link} )
 '''
-    await hint(ABH, text)
+    await hint(text)
 @ok
 @ABH.on(events.NewMessage(pattern=r'^.الايدي$'))
 async def id(event):
