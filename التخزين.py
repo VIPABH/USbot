@@ -74,8 +74,8 @@ async def group_save(event):
     if not gidvar and hidvar:
         print("gidvar not found")
         await config_vars(event)
-    sender = await event.get_sender()
     uid = event.sender_id
+    sender = await event.get_sender()
     if uid == 777000 or sender.bot:
         return
     s = await event.get_sender()
@@ -99,5 +99,3 @@ f'''#التــاكــات
         messages=event.message.id,
         from_peer=event.chat_id
     )
-print(hidvar)
-print(gidvar)
