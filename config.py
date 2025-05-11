@@ -1,6 +1,6 @@
 import json
 import os
-def get_json_value(key: str, file_path: str = "config.json"):
+def vars(key: str, file_path: str = "config.json"):
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"لم يتم العثور على الملف: {file_path}")
     try:
