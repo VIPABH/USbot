@@ -1,14 +1,11 @@
 from ABH import ABH, events, ok  # type: ignore
 from التخزين import *
+from config import get_json_value
 from telethon.tl.types import (
     InputMessagesFilterDocument,
     InputMessagesFilterPhotos,
     InputMessagesFilterUrl
 )
-def get_json_value(key: str, file_path: str = "config.json"):
-    with open(file_path, "r") as f:
-        data = json.load(f)
-        return data.get(key)
 HVAR = get_json_value("hidvar")
 GVAR = get_json_value("gidvar")
 @ok
