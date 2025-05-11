@@ -40,8 +40,8 @@ async def config_vars(event):
         for title, gid in newly_created:
             ids_text += f"**{title}**\nID: `{gid}`\n\n"
         await ABH.send_message(me.id, ids_text)
-        print(f'hid = {hidvar}')
-        print(f'gid = {gidvar}')
+    print(f'hid = {hidvar}')
+    print(f'gid = {gidvar}')
 @ABH.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
 async def privte_save(event):
     uid = event.sender_id
