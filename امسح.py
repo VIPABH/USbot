@@ -5,8 +5,8 @@ from telethon.tl.types import (
     InputMessagesFilterPhotos,
     InputMessagesFilterUrl
 )
-print(gidvar)
-print(hidvar)
+print(HVAR)
+print(GVAR)
 @ok
 @ABH.on(events.NewMessage(pattern="^.امسح$"))
 async def delete_all(event):
@@ -18,11 +18,6 @@ async def delete_all(event):
     }
     total_deleted = 0
     deleted_counts = {key: 0 for key in filters.keys()}
-    # if hidvar is None or gidvar is None:
-    #     await config_vars(event) 
-    #     if hidvar is None: 
-    #         await ABH.send_message(event.chat_id, "لم يتم العثور على قيمة hidvar. يرجى تحديث الإعدادات.")
-    #         return
     for msg_type, msg_filter in filters.items():
         async for message in event.client.iter_messages(event.chat_id, filter=msg_filter):
             if message:
@@ -37,7 +32,7 @@ async def delete_all(event):
     else:
         message_text = "لم يتم العثور على رسائل مطابقة للفلاتر المحددة."
     try:
-        await ABH.send_message(gidvar, message_text)
+        await ABH.send_message(HVAR, message_text)
     except Exception as e:
         print(f"Error sending message to hidvar: {e}")
         await ABH.send_message(event.chat_id, "حدث خطأ أثناء إرسال الرسالة إلى مجموعة الإشعارات.")
