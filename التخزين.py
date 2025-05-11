@@ -3,6 +3,14 @@ from ABH import ABH, events
 import json, os, re
 gidvar = None
 hidvar = None
+CONFIG_PATH = "config.json"
+def load_vars():
+    if not os.path.exists(CONFIG_PATH):
+        return None, None
+    with open(CONFIG_PATH, "r") as f:
+        data = json.load(f)
+        return data.get("gidvar"), data.get("hidvar")
+GVAR, HVAR = load_vars()
 async def create_group(name, about):
     result = await ABH(CreateChannelRequest(title=name, about=about, megagroup=True))
     group = result.chats[0]
