@@ -40,10 +40,10 @@ async def add_reply(event):
     chat_id = event.chat_id
 
     if reply.media and reply.file:
-        # تحميل الملف إلى السيرفر
-        path = await reply.download_media()
+        # تحميل الملف إلى السيرفر وحفظه في المجلد الحالي
+        path = await reply.download_media(file="files/")
         file_info = {
-            "file_path": path,
+            "file_path": path,  # حفظ المسار المحلي للملف
             "name": reply.file.name or "file"
         }
         add_response(chat_id, keyword, "file", file_info)
@@ -72,6 +72,7 @@ async def auto_reply(event):
         await event.reply(reply_data["data"])
     elif reply_data["type"] == "file":
         try:
+            # إرسال الملف المحفوظ من المسار المحلي
             await ABH.send_file(
                 event.chat_id,
                 file=reply_data["data"]["file_path"],
