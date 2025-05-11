@@ -1,5 +1,5 @@
 from ABH import ABH, ok, events #type:ignore
-@ok
+
 @ABH.on(events.NewMessage(pattern='^الميمز$', outgoing=True))
 async def list(event):
     await event.edit(
@@ -37,7 +37,6 @@ async def list(event):
 البصمة : `زيج`
 البصمة : `الكعبة`
 ''')
-@ok
 @ABH.on(events.NewMessage(pattern='^اللهي$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -46,7 +45,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^سيد$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -55,7 +54,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^ايرور$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -64,7 +63,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^نيو$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -73,7 +72,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^انجب$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -82,7 +81,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^ماذا$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -91,7 +90,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^يولن$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -100,7 +99,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^هه$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -109,7 +108,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^لاا$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -118,7 +117,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^مرهم$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -127,7 +126,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^لتكفرونه$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -136,7 +135,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^وخر$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -145,7 +144,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^اش$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -154,7 +153,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^انعل$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -163,7 +162,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^طاح$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -172,7 +171,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^لب$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -181,7 +180,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^صل$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -190,7 +189,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^فد$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -199,7 +198,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^نعل$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -208,7 +207,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^الماوارثها$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -217,7 +216,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^يدكتور$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -226,7 +225,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^نوكيا$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -235,7 +234,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^امريكا$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -244,7 +243,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^هاا$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -253,7 +252,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^مي$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -262,7 +261,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^ببج$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -271,7 +270,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^فلا$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -280,7 +279,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^تف$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -289,7 +288,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^شيله عبود$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -298,7 +297,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^ههه$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -307,7 +306,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^صلاة$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -316,7 +315,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^زيج$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -325,7 +324,7 @@ async def meme(event):
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
-        await ABH.send_file(event.chat_id, url)@ok
+        await ABH.send_file(event.chat_id, url)
 @ABH.on(events.NewMessage(pattern='^الكعبة$', outgoing=True))
 async def meme(event):
     await event.delete()
