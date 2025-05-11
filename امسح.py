@@ -33,4 +33,5 @@ async def delete_all(event):
         await ABH.send_message(HVAR, message_text)
     except Exception as e:
         print(e)
+        print(HVAR)
         await ABH.send_message(event.chat_id, "حدث خطأ أثناء إرسال الرسالة إلى مجموعة الإشعارات.")
