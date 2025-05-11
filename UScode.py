@@ -2,28 +2,24 @@ from ABH import ABH, ok, events #type:ignore
 from zoneinfo import ZoneInfo  
 from shortcuts import shortcuts #type: ignore
 import asyncio, unicodedata
-@ok
-@ABH.on(events.NewMessage(pattern=r'^.تثبيت$'))
+@ABH.on(events.NewMessage(pattern=r'^.تثبيت$', outgoing=True))
 async def pin(event):
     s = shortcuts(event)
     await event.delete()
     gid = event.chat_id
     r = await event.get_reply_message()
     await ABH.pin_message(gid, r.id)
-@ok
-@ABH.on(events.NewMessage(pattern=r'^.الايدي$'))
-async def id(event):
-    gid = event.chat_id
-    await event.edit(str(gid))
-@ok
-@ABH.on(events.NewMessage(pattern=r'^الغاء تثبيت$'))
+@ABH.on(events.NewMessage(pattern=r'^الغاء تثبيت$', outgoing=True))
 async def unpin(event):
     await event.delete()
     gid = event.chat_id
     r = await event.get_reply_message()
     await ABH.unpin_message(gid, r.id)
-@ok
-@ABH.on(events.NewMessage(pattern=r'^.خاص$'))
+@ABH.on(events.NewMessage(pattern=r'^.الايدي$', outgoing=True))
+async def id(event):
+    gid = event.chat_id
+    await event.edit(str(gid))
+@ABH.on(events.NewMessage(pattern=r'^.خاص$', outgoing=True))
 async def save(event):
     uid = event.sender_id
     me = await ABH.get_me()
@@ -36,8 +32,7 @@ async def save(event):
     else:
         await event.delete()
         await r.forward_to(me.id)
-@ok
-@ABH.on(events.NewMessage(pattern=r'^.مسح(?: (\d+))?$'))
+@ABH.on(events.NewMessage(pattern=r'^.مسح(?: (\d+))?$', outgoing=True))
 async def delet(event):
     num = event.pattern_match.group(1)
     r = await event.get_reply_message()
@@ -49,8 +44,7 @@ async def delet(event):
          async for msg in ABH.iter_messages(event.chat_id, limit=int(num) + 1):
               messages.append(msg.id)
               await ABH.delete_messages(event.chat_id, messages)
-@ok
-@ABH.on(events.NewMessage(pattern=r'^؟؟$'))
+@ABH.on(events.NewMessage(pattern=r'^؟؟$', outgoing=True))
 async def edit(event):
     for i in range(5):
         await event.edit('`|`')
@@ -61,8 +55,7 @@ async def edit(event):
         await asyncio.sleep(0.4)
         await event.edit("`\`")
         await asyncio.sleep(0.4)
-@ok
-@ABH.on(events.NewMessage(pattern=r'^رسالة (\S+) (.+)$'))
+@ABH.on(events.NewMessage(pattern=r'^رسالة (\S+) (.+)$', outgoing=True))
 async def send(event):
     r = await event.get_reply_message()
     if r:
@@ -79,8 +72,7 @@ async def send(event):
         text = event.pattern_match.group(2)
         entity = await ABH.get_input_entity(to)
         await ABH.send_message(entity, text)
-@ok
-@ABH.on(events.NewMessage(pattern=r'^وقتي (\d+)\s+(.+)$'))
+@ABH.on(events.NewMessage(pattern=r'^وقتي (\d+)\s+(.+)$', outgoing=True))
 async def timi(event):
     await event.delete()
     t = int(event.pattern_match.group(1))
@@ -95,15 +87,13 @@ async def timi(event):
         msg2 = await event.respond(f'{m}')
         await asyncio.sleep(t)
         await msg2.delete()
-@ok
-@ABH.on(events.NewMessage(pattern=r'^.مسح رسائلي$'))
+@ABH.on(events.NewMessage(pattern=r'^.مسح رسائلي$', outgoing=True))
 async def dele_me(event):
      owner = (await ABH.get_me()).id
      await event.delete()
      async for msg in ABH.iter_messages(event.chat_id, from_user=owner):
          await msg.delete()
-@ok
-@ABH.on(events.NewMessage(pattern=r'^.حذف مشاركاته$'))
+@ABH.on(events.NewMessage(pattern=r'^.حذف مشاركاته$', outgoing=True))
 async def dele(event):
     r = await event.get_reply_message()
     if not r:
@@ -115,8 +105,7 @@ async def dele(event):
     await event.delete()
     async for msg in ABH.iter_messages(event.chat_id, from_user=owner):
         await msg.delete()
-@ok
-@ABH.on(events.NewMessage(pattern=r".وسبام (.+)"))
+@ABH.on(events.NewMessage(pattern=r".وسبام (.+)", outgoing=True))
 async def tmeme(event):
     text = event.pattern_match.group(1)
     words = text.split()
@@ -128,8 +117,7 @@ def normalize_text(text):
         c for c in unicodedata.normalize('NFKD', text)
         if not unicodedata.combining(c)
     ).lower().strip()
-@ok
-@ABH.on(events.NewMessage(pattern=r'^.كلمة (.+)$'))
+@ABH.on(events.NewMessage(pattern=r'^.كلمة (.+)$', outgoing=True))
 async def word(event):
     keyword_raw = event.pattern_match.group(1)
     keyword = normalize_text(keyword_raw)
@@ -138,8 +126,7 @@ async def word(event):
             msg_normalized = normalize_text(msg.text)
             if keyword in msg_normalized:
                 await msg.delete()
-@ok
-@ABH.on(events.NewMessage(pattern=r"^مكرر\s+(\d+)\s+(\d+(?:\.\d+)?)$"))
+@ABH.on(events.NewMessage(pattern=r"^مكرر\s+(\d+)\s+(\d+(?:\.\d+)?)$", outgoing=True))
 async def repeat(event):
     await event.delete()
     r = await event.get_reply_message()
@@ -154,8 +141,7 @@ async def repeat(event):
         for i in range(int(much)):
             await asyncio.sleep(float(time))
             await event.respond(r.text)
-@ok
-@ABH.on(events.NewMessage(pattern=r'^.كرر(?: (\d+))?$'))
+@ABH.on(events.NewMessage(pattern=r'^.كرر(?: (\d+))?$', outgoing=True))
 async def repeat_it(event):
     num = event.pattern_match.group(1)
     r = await event.get_reply_message()
@@ -165,8 +151,7 @@ async def repeat_it(event):
             await event.respond(r)
 x = False
 t = 3 
-@ok
-@ABH.on(events.NewMessage(pattern=r'الحذف تفعيل$'))
+@ABH.on(events.NewMessage(pattern=r'الحذف تفعيل$', outgoing=True))
 async def delete_on(event):
     global x
     if x:
@@ -176,8 +161,7 @@ async def delete_on(event):
     else:
         await event.edit('تم تفعيل الحذف التلقائي')
         x = True
-@ok
-@ABH.on(events.NewMessage(pattern=r'الحذف تعطيل$'))
+@ABH.on(events.NewMessage(pattern=r'الحذف تعطيل$', outgoing=True))
 async def delete_off(event):
     global x
     if not x:
@@ -189,23 +173,20 @@ async def delete_off(event):
         x = False
         await asyncio.sleep(3)
         await event.delete()
-@ok
 @ABH.on(events.NewMessage(outgoing=True))
 async def delete_auto(event):
     global x
     if x:
         await asyncio.sleep(t)
         await event.delete()
-@ok
-@ABH.on(events.NewMessage(pattern=r'^الحذف (\d+)$'))
+@ABH.on(events.NewMessage(pattern=r'^الحذف (\d+)$', outgoing=True))
 async def set(event):
     global t
     t = int(event.pattern_match.group(1))
     await event.edit(f'تم تعيين وقت الحذف التلقائي إلى {t} ثواني')
     await asyncio.sleep(3)
     await event.delete()
-@ok 
-@ABH.on(events.NewMessage(pattern=r'^متى$'))
+@ABH.on(events.NewMessage(pattern=r'^متى$', outgoing=True))
 async def when(event):
     r = await event.get_reply_message()
     if not r:
@@ -217,4 +198,3 @@ async def when(event):
         message_time = r.date.astimezone(ZoneInfo("Asia/Baghdad"))
         formatted_time = message_time.strftime('%Y/%m/%d %I:%M:%S %p')
         await event.edit(formatted_time)
-print('UScode is running')
