@@ -99,3 +99,5 @@ f'''#التــاكــات
         messages=event.message.id,
         from_peer=event.chat_id
     )
+    HVAR = hidvar
+    GVAR = gidvar
