@@ -28,5 +28,5 @@ async def delete_all(event):
         if total_deleted > 0:
             details = "\n".join([f"{msg_type}: {count}" for msg_type, count in deleted_counts.items() if count > 0])
             # await ABH.send_message(hidvar, f"تم حذف {total_deleted} رسالة.\nالتفاصيل:\n{details}")
-        else:
-            await ABH.send_message(int(hidvar), "لا توجد رسائل تطابق الفلاتر المحددة!")
+        # else:
+            # await ABH.send_message(int(hidvar), "لا توجد رسائل تطابق الفلاتر المحددة!")
