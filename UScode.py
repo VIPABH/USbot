@@ -17,8 +17,13 @@ async def unpin(event):
     await ABH.unpin_message(gid, r.id)
 @ABH.on(events.NewMessage(pattern=r'^.الايدي$', outgoing=True))
 async def id(event):
-    gid = event.chat_id
-    await event.edit(str(gid))
+    r = await event.get_reply_message()
+    uid = r.sender_id if r else None
+    gid = event.chat_id if not event.is_private else ""
+    if r:
+        await event.edit(f"ايدي المستخدم: `{uid}`\n ايدي المجموعة: `{gid}`")
+    else:
+        await event.edit(f" ايدي حسابك: `{uid}`\n ايدي المجموعة: `{gid}`")
 @ABH.on(events.NewMessage(pattern=r'^.خاص$', outgoing=True))
 async def save(event):
     uid = event.sender_id
