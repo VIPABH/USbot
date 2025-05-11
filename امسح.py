@@ -30,6 +30,6 @@ async def delete_all(event):
     else:
         message_text = "لم يتم العثور على رسائل مطابقة للفلاتر المحددة."
     if hidvar is not None:
-        await ABH.send_message(int(hidvar), message_text)
+        await ABH.send_message(hidvar, message_text)
     else:
         await event.respond("⚠️ لم يتم إعداد `hidvar` بشكل صحيح في ملف التخزين.")
