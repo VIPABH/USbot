@@ -6,6 +6,8 @@ from telethon.tl.types import (
     InputMessagesFilterUrl
 )
 @ok
+print(gidvar)
+print(hidvar)
 @ABH.on(events.NewMessage(pattern="^.امسح$"))
 async def delete_all(event):
     await event.delete()
@@ -16,11 +18,11 @@ async def delete_all(event):
     }
     total_deleted = 0
     deleted_counts = {key: 0 for key in filters.keys()}
-    if hidvar is None or gidvar is None:
-        await config_vars(event) 
-        if hidvar is None: 
-            await ABH.send_message(event.chat_id, "لم يتم العثور على قيمة hidvar. يرجى تحديث الإعدادات.")
-            return
+    # if hidvar is None or gidvar is None:
+    #     await config_vars(event) 
+    #     if hidvar is None: 
+    #         await ABH.send_message(event.chat_id, "لم يتم العثور على قيمة hidvar. يرجى تحديث الإعدادات.")
+    #         return
     for msg_type, msg_filter in filters.items():
         async for message in event.client.iter_messages(event.chat_id, filter=msg_filter):
             if message:
