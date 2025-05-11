@@ -1,6 +1,13 @@
 from telethon.tl.functions.channels import CreateChannelRequest
-from ABH import ABH, events  # type: ignore
-import re
+from ABH import ABH, events
+import json, os, re
+gidvar = None
+hidvar = None
+async def create_group(name, about):
+    result = await ABH(CreateChannelRequest(title=name, about=about, megagroup=True))
+    group = result.chats[0]
+    return group.id, group.title
+CONFIG_PATH = "config.json"
 gidvar = None
 hidvar = None
 async def create_group(name, about):
@@ -9,33 +16,36 @@ async def create_group(name, about):
     return group.id, group.title
 @ABH.on(events.NewMessage(pattern='/config', outgoing=True))
 async def config_vars(event):
-    global gidvar, hidvar, HVAR, GVAR
+    global gidvar, hidvar
     me = await ABH.get_me()
-    async for msg in ABH.iter_messages(me.id):
-        if not msg.text:
-            continue
-        gid_match = re.search(r'gidvar:\s*(.+)', msg.text, re.IGNORECASE)
-        hid_match = re.search(r'hidvar:\s*(.+)', msg.text, re.IGNORECASE)
-        if gid_match and not gidvar:
-            gidvar = gid_match.group(1).strip()
-        if hid_match and not hidvar:
-            hidvar = hid_match.group(1).strip()
-        if gidvar and hidvar:
-            break
+    if os.path.exists(CONFIG_PATH):
+        with open(CONFIG_PATH, "r") as f:
+            data = json.load(f)
+            gidvar = data.get("gidvar")
+            hidvar = data.get("hidvar")
+    if not gidvar or not hidvar:
+        async for msg in ABH.iter_messages(me.id):
+            if not msg.text:
+                continue
+            gid_match = re.search(r'gidvar:\s*(.+)', msg.text, re.IGNORECASE)
+            hid_match = re.search(r'hidvar:\s*(.+)', msg.text, re.IGNORECASE)
+            if gid_match and not gidvar:
+                gidvar = gid_match.group(1).strip()
+            if hid_match and not hidvar:
+                hidvar = hid_match.group(1).strip()
+            if gidvar and hidvar:
+                break
     newly_created = []
     if not gidvar:
-        gidvar, gid_name = await create_group("مجموعة التخزين", "هذه المجموعة مخصصة لتخزين البيانات.")
+        gidvar, _ = await create_group("مجموعة التخزين", "هذه المجموعة مخصصة لتخزين البيانات.")
         newly_created.append(("مجموعة التخزين", gidvar))
     if not hidvar:
-        hidvar, hid_name = await create_group("مجموعة الإشعارات", "هذه المجموعة مخصصة للتنبيهات.")
+        hidvar, _ = await create_group("مجموعة الإشعارات", "هذه المجموعة مخصصة للتنبيهات.")
         newly_created.append(("مجموعة الإشعارات", hidvar))
+    with open(CONFIG_PATH, "w") as f:
+        json.dump({"gidvar": gidvar, "hidvar": hidvar}, f)
     if newly_created:
-        config_text = f'''فارات السورس
-لا تحذف الرسالة للحفاظ على كروبات السورس
-مجموعة التخزين gidvar: {gidvar}
-مجموعة الإشعارات hidvar: {hidvar}
-'''
-        await ABH.send_message(me.id, config_text)
+        await ABH.send_message(me.id, f"فارات السورس\nلا تحذف الرسالة للحفاظ على كروبات السورس\nمجموعة التخزين gidvar: {gidvar}\nمجموعة الإشعارات hidvar: {hidvar}")
         ids_text = "تم إنشاء الكروبات التالية:\n\n"
         for title, gid in newly_created:
             ids_text += f"**{title}**\nID: `{gid}`\n\n"
