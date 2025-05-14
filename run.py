@@ -10,6 +10,7 @@ from الردود import *
 import asyncio
 async def main():
     await ABH.start()
+    await config_vars(event)
     print("run is running")
     await config_vars(events)
     await ABH.run_until_disconnected()
