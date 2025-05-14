@@ -1,4 +1,4 @@
-# from امسح import HVAR, GVAR #type: ignore
+from امسح import HVAR, GVAR #type: ignore
 from ABH import ABH
 from telethon import events
 class shortcuts:
