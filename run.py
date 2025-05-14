@@ -13,5 +13,5 @@ from ذاتية import *
 from ميمز import *
 from امسح import *
 from الردود import *
-    await ABH.run_until_disconnected()
+await ABH.run_until_disconnected()
 asyncio.run(main())
