@@ -12,7 +12,6 @@ from ميمز import *
 from امسح import *
 from الردود import *
 async def main():
- await ABH.start(bot_token=bot_token)
  print("✅ تم تشغيل البوت بنجاح.")
  if not await ABH.is_user_authorized():
   print("❌ البوت غير مفعل أو التوكن غير صحيح.")
