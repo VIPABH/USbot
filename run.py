@@ -3,7 +3,6 @@ from telethon import TelegramClient, events
 import os
 api_id = int(os.getenv("API_ID"))
 api_hash = os.getenv("API_HASH")
-bot_token = os.getenv("BOT_TOKEN")
 ABH = TelegramClient("bot", api_id, api_hash)
 from config import *
 from UScode import *
@@ -13,11 +12,11 @@ from ميمز import *
 from امسح import *
 from الردود import *
 async def main():
-    await ABH.start(bot_token=bot_token)
-    print("✅ تم تشغيل البوت بنجاح.")
-    if not await ABH.is_user_authorized():
-        print("❌ البوت غير مفعل أو التوكن غير صحيح.")
-        return
-    await config_vars(events)
-    await ABH.run_until_disconnected()
+ await ABH.start(bot_token=bot_token)
+ print("✅ تم تشغيل البوت بنجاح.")
+ if not await ABH.is_user_authorized():
+  print("❌ البوت غير مفعل أو التوكن غير صحيح.")
+  return
+ await config_vars(events)
+ await ABH.run_until_disconnected()
 asyncio.run(main())
