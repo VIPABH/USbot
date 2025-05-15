@@ -13,7 +13,6 @@ from امسح import *
 from الردود import *
 async def main():
  print("✅ تم تشغيل البوت بنجاح.")
-  print("❌ البوت غير مفعل أو التوكن غير صحيح.")
   return
  await config_vars(events)
 asyncio.run(main())
