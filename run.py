@@ -9,8 +9,8 @@ from ميمز import *
 from امسح import *
 from الردود import *
 async def main():
-    await config_vars(events)
     await ABH.start()
     print("run is running")
+    await config_vars(events)
     await ABH.run_until_disconnected()
 asyncio.run(main())
