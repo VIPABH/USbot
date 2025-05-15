@@ -1,71 +1,61 @@
 from telethon.tl.functions.channels import CreateChannelRequest
-from ABH import ABH, events
-import json, os, re
-gidvar = None
-hidvar = None
-CONFIG_PATH = "config.json"
-def load_vars():
-    if not os.path.exists(CONFIG_PATH):
-        return None, None
-    with open(CONFIG_PATH, "r") as f:
-        data = json.load(f)
-        return data.get("gidvar"), data.get("hidvar")
-GVAR, HVAR = load_vars()
-async def create_group(name, about):
-    result = await ABH(CreateChannelRequest(title=name, about=about, megagroup=True))
-    group = result.chats[0]
-    return group.id, group.title
-CONFIG_PATH = "config.json"
+from ABH import ABH, events  # type: ignore
+from config import *  # type: ignore
+from telethon.tl.types import User
+import re
 gidvar = None
 hidvar = None
 async def create_group(name, about):
     result = await ABH(CreateChannelRequest(title=name, about=about, megagroup=True))
     group = result.chats[0]
     return group.id, group.title
-@ABH.on(events.NewMessage(pattern='/config', outgoing=True))
+@ABH.on(events.NewMessage(pattern='/config'))
 async def config_vars(event):
     global gidvar, hidvar
     me = await ABH.get_me()
-    if os.path.exists(CONFIG_PATH):
-        with open(CONFIG_PATH, "r") as f:
-            data = json.load(f)
-            gidvar = data.get("gidvar")
-            hidvar = data.get("hidvar")
-    if not gidvar or not hidvar:
-        async for msg in ABH.iter_messages(me.id):
-            if not msg.text:
-                continue
-            gid_match = re.search(r'gidvar:\s*(.+)', msg.text, re.IGNORECASE)
-            hid_match = re.search(r'hidvar:\s*(.+)', msg.text, re.IGNORECASE)
-            if gid_match and not gidvar:
-                gidvar = gid_match.group(1).strip()
-            if hid_match and not hidvar:
-                hidvar = hid_match.group(1).strip()
-            if gidvar and hidvar:
-                break
+    async for msg in ABH.iter_messages(me.id):
+        if not msg.text:
+            continue
+        gid_match = re.search(r'gidvar:\s*(.+)', msg.text, re.IGNORECASE)
+        hid_match = re.search(r'hidvar:\s*(.+)', msg.text, re.IGNORECASE)
+        if gid_match and not gidvar:
+            gidvar = gid_match.group(1).strip()
+        if hid_match and not hidvar:
+            hidvar = hid_match.group(1).strip()
+        if gidvar and hidvar:
+            break
     newly_created = []
     if not gidvar:
-        gidvar, _ = await create_group("مجموعة التخزين", "هذه المجموعة مخصصة لتخزين البيانات.")
+        gidvar, gid_name = await create_group("مجموعة التخزين", "هذه المجموعة مخصصة لتخزين البيانات.")
         newly_created.append(("مجموعة التخزين", gidvar))
     if not hidvar:
-        hidvar, _ = await create_group("مجموعة الإشعارات", "هذه المجموعة مخصصة للتنبيهات.")
+        hidvar, hid_name = await create_group("مجموعة الإشعارات", "هذه المجموعة مخصصة للتنبيهات.")
         newly_created.append(("مجموعة الإشعارات", hidvar))
-    with open(CONFIG_PATH, "w") as f:
-        json.dump({"gidvar": gidvar, "hidvar": hidvar}, f)
     if newly_created:
-        await ABH.send_message(me.id, f"فارات السورس\nلا تحذف الرسالة للحفاظ على كروبات السورس\nمجموعة التخزين gidvar: {gidvar}\nمجموعة الإشعارات hidvar: {hidvar}")
+        config_text = f'''فارات السورس
+لا تحذف الرسالة للحفاظ على كروبات السورس
+مجموعة التخزين gidvar: {gidvar}
+مجموعة الإشعارات hidvar: {hidvar}
+'''
+        await ABH.send_message(me.id, config_text)
         ids_text = "تم إنشاء الكروبات التالية:\n\n"
         for title, gid in newly_created:
             ids_text += f"**{title}**\nID: `{gid}`\n\n"
         await ABH.send_message(me.id, ids_text)
+#     response = f'''فارات السورس
+# لا تحذف الرسالة للحفاظ على كروبات السورس
+# مجموعة التخزين gidvar:
+# {gidvar or "لم يتم العثور على الفار"}
+# مجموعة الإشعارات hidvar:
+# {hidvar or "لم يتم العثور على الفار"}
+# '''
+    # await ABH.send_message(me.id, response)
 @ABH.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
 async def privte_save(event):
-    uid = event.sender_id
-    s = await event.get_sender()
-    if uid == 777000 or s.bot:
-        return
     if not gidvar and hidvar:
+        print("gidvar not found")
         await config_vars(event)
+    uid = event.sender_id
     s = await event.get_sender()
     text = event.raw_text
     name = s.first_name or s.username or "Unknown"
@@ -90,8 +80,8 @@ async def group_save(event):
     if not gidvar and hidvar:
         print("gidvar not found")
         await config_vars(event)
-    uid = event.sender_id
     sender = await event.get_sender()
+    uid = event.sender_id
     if uid == 777000 or sender.bot:
         return
     s = await event.get_sender()
@@ -115,5 +105,3 @@ f'''#التــاكــات
         messages=event.message.id,
         from_peer=event.chat_id
     )
-HVAR = hidvar
-GVAR = gidvar
