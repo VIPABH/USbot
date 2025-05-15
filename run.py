@@ -1,17 +1,16 @@
+from telethon import events
 import asyncio
-from telethon import TelegramClient, events
-import os
-api_id = int(os.getenv("API_ID"))
-api_hash = os.getenv("API_HASH")
-ABH = TelegramClient("bot", api_id, api_hash)
 from config import *
 from UScode import *
 from التخزين import *
+from ABH import *
 from ذاتية import *
 from ميمز import *
 from امسح import *
 from الردود import *
 async def main():
- print("✅ تم تشغيل البوت بنجاح.")
- await config_vars(events)
+    await config_vars(events)
+    await ABH.start()
+    print("run is running")
+    await ABH.run_until_disconnected()
 asyncio.run(main())
