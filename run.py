@@ -13,6 +13,5 @@ from امسح import *
 from الردود import *
 async def main():
  print("✅ تم تشغيل البوت بنجاح.")
-  return
  await config_vars(events)
 asyncio.run(main())
