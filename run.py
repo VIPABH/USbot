@@ -17,5 +17,4 @@ async def main():
   print("❌ البوت غير مفعل أو التوكن غير صحيح.")
   return
  await config_vars(events)
- await ABH.run_until_disconnected()
 asyncio.run(main())
