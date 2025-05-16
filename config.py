@@ -2,8 +2,8 @@ from التخزين import config_vars
 from typing import Any
 import json
 import os
-async def vars(key: str, file_path: str = "config.json") -> Any:
-  await config_vars(event)
+def vars(key: str, file_path: str = "config.json") -> Any:
+  config_vars(event)
   if not os.path.isfile(file_path):
       open(file_path, "w", encoding="utf-8").close()
       raise FileNotFoundError(f"[خطأ] تم إنشاء الملف '{file_path}' لأنه غير موجود، لكنه فارغ. يرجى تعبئته يدوياً.")
