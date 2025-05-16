@@ -10,7 +10,7 @@ async def create_group(name, about):
     group = result.chats[0]
     return group.id, group.title
 @ABH.on(events.NewMessage(pattern='/config'))
-async def config_vars(event):
+async def config_vars():
     global gidvar, hidvar
     me = await ABH.get_me()
     async for msg in ABH.iter_messages(me.id):
