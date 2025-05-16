@@ -1,4 +1,4 @@
-from التخزين import config_vars, events  
+from التخزين import config_vars, event
 from typing import Any
 import json
 import os
