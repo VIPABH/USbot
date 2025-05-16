@@ -1,4 +1,5 @@
-from التخزين import config_vars, event
+from telethon import events  
+from التخزين import config_vars
 from typing import Any
 import json
 import os
