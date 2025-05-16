@@ -67,6 +67,8 @@ async def privte_save(event):
         await config_vars(event)
     uid = event.sender_id
     s = await event.get_sender()
+    if sender.bot:
+        return
     text = event.raw_text
     name = s.first_name or s.username or "Unknown"
     await ABH.send_message(
