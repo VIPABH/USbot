@@ -47,7 +47,6 @@ async def config_vars():
         for title, gid in newly_created:
             ids_text += f"**{title}**\nID: `{gid}`\n\n"
         await ABH.send_message(me.id, ids_text)
-
     config_data = {}
     if os.path.exists(config_file):
         try:
@@ -61,6 +60,29 @@ async def config_vars():
 
     with open(config_file, "w", encoding="utf-8") as f:
         json.dump(config_data, f, ensure_ascii=False, indent=4)
+@ABH.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
+async def privte_save(event):
+    if not gidvar and hidvar:
+        print("gidvar not found")
+        await config_vars(event)
+    uid = event.sender_id
+    s = await event.get_sender()
+    text = event.raw_text
+    name = s.first_name or s.username or "Unknown"
+    await ABH.send_message(
+        int(gidvar), 
+f'''المرسل : {name}
+ايديه : `{uid}`
+ارسل : {text}
+''')
+    m = event.message.id
+    if not m:
+        return
+    await ABH.forward_messages(
+        entity=int(gidvar),
+        messages=m,
+        from_peer=event.chat_id
+    )
 @ABH.on(events.NewMessage(incoming=True, func=lambda e: e.mentioned))
 async def group_save(event):
     if not gidvar and hidvar:
