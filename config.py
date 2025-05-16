@@ -1,4 +1,3 @@
-from telethon import event
 from التخزين import config_vars
 from typing import Any
 import json
