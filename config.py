@@ -4,9 +4,9 @@ import json
 import os
 def vars(key: str, file_path: str = "config.json") -> Any:
   await config_vars(event)
-    if not os.path.isfile(file_path):
-        open(file_path, "w", encoding="utf-8").close()
-        raise FileNotFoundError(f"[خطأ] تم إنشاء الملف '{file_path}' لأنه غير موجود، لكنه فارغ. يرجى تعبئته يدوياً.")
+  if not os.path.isfile(file_path):
+      open(file_path, "w", encoding="utf-8").close()
+      raise FileNotFoundError(f"[خطأ] تم إنشاء الملف '{file_path}' لأنه غير موجود، لكنه فارغ. يرجى تعبئته يدوياً.")
     try:
         with open(file_path, "r", encoding="utf-8") as f:
             data = json.load(f)
