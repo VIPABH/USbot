@@ -2,7 +2,7 @@ from telethon.tl.functions.channels import CreateChannelRequest
 from ABH import ABH, events  # type: ignore
 from config import *  # type: ignore
 from telethon.tl.types import User
-import re, os
+import re, os, json
 gidvar = None
 hidvar = None
 async def create_group(name, about):
