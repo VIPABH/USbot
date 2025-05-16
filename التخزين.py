@@ -9,13 +9,11 @@ async def create_group(name, about):
     result = await ABH(CreateChannelRequest(title=name, about=about, megagroup=True))
     group = result.chats[0]
     return group.id, group.title
-
 @ABH.on(events.NewMessage(pattern='/config'))
 async def config_vars():
     global gidvar, hidvar
     config_file = "var.json"
     me = await ABH.get_me()
-
     async for msg in ABH.iter_messages(me.id):
         if not msg.text:
             continue
@@ -27,7 +25,6 @@ async def config_vars():
             hidvar = hid_match.group(1).strip()
         if gidvar and hidvar:
             break
-
     newly_created = []
     if not gidvar:
         gidvar, gid_name = await create_group("مجموعة التخزين", "هذه المجموعة مخصصة لتخزين البيانات.")
@@ -54,10 +51,8 @@ async def config_vars():
                 config_data = json.load(f)
         except json.JSONDecodeError:
             config_data = {}
-
     config_data["gidvar"] = gidvar
     config_data["hidvar"] = hidvar
-
     with open(config_file, "w", encoding="utf-8") as f:
         json.dump(config_data, f, ensure_ascii=False, indent=4)
 @ABH.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
@@ -74,7 +69,9 @@ async def privte_save(event):
     await ABH.send_message(
         int(gidvar), 
 f'''المرسل : {name}
+
 ايديه : `{uid}`
+
 ارسل : {text}
 ''')
     m = event.message.id
