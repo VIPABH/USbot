@@ -2,7 +2,7 @@ from التخزين import config_vars
 from typing import Any
 import json
 import os
-def vars(key: str, file_path: str = "config.json") -> Any:
+async def vars(key: str, file_path: str = "config.json") -> Any:
   await config_vars(event)
   if not os.path.isfile(file_path):
       open(file_path, "w", encoding="utf-8").close()
