@@ -113,7 +113,7 @@ async def words(event):
                         normalized = re.sub(r"\s+", " ", cleaned).strip()
                         await conv.send_message(normalized)
                     else:
-                        await conv.send_message("لم أجد جملة داخل الأقواس.")
+                        return
                     break
             except asyncio.TimeoutError:
                 return
