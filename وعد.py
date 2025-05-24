@@ -106,9 +106,14 @@ async def words(event):
                     if msg.sender_id != target_user_id:
                         continue
                     text = msg.raw_text.strip()
-                    cleaned = re.sub(r"[↢⇜()'«»]", "", text)
-                    normalized = re.sub(r"\s+", " ", cleaned).strip()
-                    await conv.send_message(normalized)
+                    match = re.search(r"\((.*?)\)", text)
+                    if match:
+                        inside = match.group(1)
+                        cleaned = re.sub(r"[↢⇜'«»]", "", inside)
+                        normalized = re.sub(r"\s+", " ", cleaned).strip()
+                        await conv.send_message(normalized)
+                    else:
+                        await conv.send_message("لم أجد جملة بين الأقواس.")
                     break
             except asyncio.TimeoutError:
                 return
