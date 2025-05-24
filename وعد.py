@@ -2,8 +2,9 @@ from telethon import events
 from ABH import ABH
 import asyncio, re
 target_user_id = 1421907917
-@ABH.on(events.NewMessage(pattern=r"^كلمات (\d+)$"))
+@ABH.on(events.NewMessage(pattern=r"^كلمات (\d+)$", outgoing=True))
 async def words(event):
+    await event.delete()
     num = int(event.pattern_match.group(1)) or 1
     for i in range(num + 1):
         async with ABH.conversation(event.chat_id, timeout=10) as conv:
