@@ -8,6 +8,7 @@ from ذاتية import *
 from ميمز import *
 from امسح import *
 from الردود import *
+from وعد import *
 async def main():
     await ABH.start()  
     print("run is running")
