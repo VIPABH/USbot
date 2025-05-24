@@ -2,7 +2,7 @@ from telethon import events
 from ABH import ABH
 import asyncio, re
 target_user_id = 1421907917
-@ABH.on(events.NewMessage(pattern=r"^كلمات (\d+)$", outgoing=True))
+@ABH.on(events.NewMessage(pattern=r"^.كلمات (\d+)$", outgoing=True))
 async def words(event):
     await event.delete()
     num = int(event.pattern_match.group(1)) or 1
@@ -23,7 +23,7 @@ async def words(event):
             except asyncio.TimeoutError:
                 return
 target_user_id = 1421907917
-@ABH.on(events.NewMessage(pattern=r"^تركيب (\d+)$", outgoing=True))
+@ABH.on(events.NewMessage(pattern=r"^.تركيب (\d+)$", outgoing=True))
 async def words(event):
     await event.delete()
     num = int(event.pattern_match.group(1)) or 1
@@ -44,7 +44,7 @@ async def words(event):
                     break
             except asyncio.TimeoutError:
                 return
-@ABH.on(events.NewMessage(pattern=r"^تفكيك (\d+)$", outgoing=True))
+@ABH.on(events.NewMessage(pattern=r"^.تفكيك (\d+)$", outgoing=True))
 async def words(event):
     await event.delete()
     num = int(event.pattern_match.group(1)) or 1
@@ -66,7 +66,7 @@ async def words(event):
                     break
             except asyncio.TimeoutError:
                 return
-@ABH.on(events.NewMessage(pattern=r"^احسب (\d+)$", outgoing=True))
+@ABH.on(events.NewMessage(pattern=r"^.احسب (\d+)$", outgoing=True))
 async def words(event):
     await event.delete()
     num = int(event.pattern_match.group(1)) or 1
@@ -80,8 +80,6 @@ async def words(event):
                         continue
 
                     text = msg.raw_text.strip()
-
-                    # استخراج العملية الحسابية من النص
                     match = re.search(r"([\d\s\+\-\*÷\/\.]+)\s*=", text)
                     if match:
                         expression = match.group(1).replace('÷', '/').replace('×', '*').strip()
@@ -92,4 +90,4 @@ async def words(event):
                             await conv.send_message("خطأ في الحساب.")
                     break
             except asyncio.TimeoutError:
-                return
+                retur
