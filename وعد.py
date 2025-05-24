@@ -7,6 +7,7 @@ async def words(event):
     if not event.out:
         return
     num = int(event.pattern_match.group(1)) or 1
+    await conv.send_message("✏️ أرسل الكلمات المطلوبة الآن...")
     async with ABH.conversation(event.chat_id, timeout=60) as conv:
         try:
             while True:
