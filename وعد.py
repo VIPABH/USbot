@@ -66,7 +66,7 @@ async def words(event):
                     break
             except asyncio.TimeoutError:
                 return
-                @ABH.on(events.NewMessage(pattern=r"^احسب (\d+)$", outgoing=True))
+@ABH.on(events.NewMessage(pattern=r"^احسب (\d+)$", outgoing=True))
 async def words(event):
     await event.delete()
     num = int(event.pattern_match.group(1)) or 1
