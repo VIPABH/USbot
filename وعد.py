@@ -66,3 +66,30 @@ async def words(event):
                     break
             except asyncio.TimeoutError:
                 return
+                @ABH.on(events.NewMessage(pattern=r"^احسب (\d+)$", outgoing=True))
+async def words(event):
+    await event.delete()
+    num = int(event.pattern_match.group(1)) or 1
+    for _ in range(num):
+        async with ABH.conversation(event.chat_id, timeout=10) as conv:
+            await conv.send_message("احسب")
+            try:
+                while True:
+                    msg = await conv.get_response()
+                    if msg.sender_id != target_user_id:
+                        continue
+
+                    text = msg.raw_text.strip()
+
+                    # استخراج العملية الحسابية من النص
+                    match = re.search(r"([\d\s\+\-\*÷\/\.]+)\s*=", text)
+                    if match:
+                        expression = match.group(1).replace('÷', '/').replace('×', '*').strip()
+                        try:
+                            result = eval(expression)
+                            await conv.send_message(str(result))
+                        except Exception:
+                            await conv.send_message("خطأ في الحساب.")
+                    break
+            except asyncio.TimeoutError:
+                return
