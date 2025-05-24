@@ -44,3 +44,25 @@ async def words(event):
                     break
             except asyncio.TimeoutError:
                 return
+@ABH.on(events.NewMessage(pattern=r"^تفكيك (\d+)$", outgoing=True))
+async def words(event):
+    await event.delete()
+    num = int(event.pattern_match.group(1)) or 1
+    for i in range(num):
+        async with ABH.conversation(event.chat_id, timeout=10) as conv:
+            await conv.send_message("تفكيك")
+            try:
+                while True:
+                    msg = await conv.get_response()
+                    if msg.sender_id != target_user_id:
+                        continue
+                    text = msg.raw_text.strip()
+                    match = re.search(r"\(\s*(.+?)\s*\)", text)
+                    if match:
+                        text = match.group(1)
+                        clean = ''.join(text.split())
+                        separated = ' '.join(clean)
+                        await conv.send_message(separated)
+                    break
+            except asyncio.TimeoutError:
+                return
