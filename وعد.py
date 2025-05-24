@@ -85,9 +85,11 @@ async def words(event):
                         expression = match.group(1).replace('÷', '/').replace('×', '*').strip()
                         try:
                             result = eval(expression)
+                            if isinstance(result, float) and result.is_integer():
+                                result = int(result)
                             await conv.send_message(str(result))
                         except Exception:
                             await conv.send_message("خطأ في الحساب.")
                     break
             except asyncio.TimeoutError:
-                retur
+                return
