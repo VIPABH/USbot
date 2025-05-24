@@ -93,3 +93,22 @@ async def words(event):
                     break
             except asyncio.TimeoutError:
                 return
+@ABH.on(events.NewMessage(pattern=r"^.جمل (\d+)$", outgoing=True))
+async def words(event):
+    await event.delete()
+    num = int(event.pattern_match.group(1)) or 1
+    for _ in range(num):
+        async with ABH.conversation(event.chat_id, timeout=10) as conv:
+            await conv.send_message("جمل")
+            try:
+                while True:
+                    msg = await conv.get_response()
+                    if msg.sender_id != target_user_id:
+                        continue
+                    text = msg.raw_text.strip()
+                    cleaned = re.sub(r"[↢⇜()'«»]", "", text)
+                    normalized = re.sub(r"\s+", " ", cleaned).strip()
+                    await conv.send_message(normalized)
+                    break
+            except asyncio.TimeoutError:
+                return
