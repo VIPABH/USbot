@@ -155,34 +155,34 @@ async def repeat_it(event):
         for i in range(num):
             await event.delete()
             await event.respond(r)
-x = False
+الحذف = False
 t = 3 
 @ABH.on(events.NewMessage(pattern=r'الحذف تفعيل$', outgoing=True))
 async def delete_on(event):
-    global x
-    if x:
+    global الحذف
+    if الحذف:
         await event.edit('الحذف التلقائي مفعل بالفعل')
         await asyncio.sleep(3)
         await event.delete()
     else:
         await event.edit('تم تفعيل الحذف التلقائي')
-        x = True
+        الحذف = True
 @ABH.on(events.NewMessage(pattern=r'الحذف تعطيل$', outgoing=True))
 async def delete_off(event):
-    global x
-    if not x:
+    global الحذف
+    if not الحذف:
         await event.edit('الحذف التلقائي معطل بالفعل')
         await asyncio.sleep(3)
         await event.delete()
     else:
         await event.edit('تم تعطيل الحذف التلقائي')
-        x = False
+        الحذف = False
         await asyncio.sleep(3)
         await event.delete()
 @ABH.on(events.NewMessage(outgoing=True))
 async def delete_auto(event):
-    global x
-    if x:
+    global الحذف
+    if الحذف:
         await asyncio.sleep(t)
         await event.delete()
 @ABH.on(events.NewMessage(pattern=r'^الحذف (\d+)$', outgoing=True))
@@ -215,12 +215,12 @@ async def mute(event):
     else:
         gid = event.chat_id
         uid = r.sender_id
-        await ABH.edit_permissions(gid, uid, send_messages=False)
         await event.edit('الئ رحمة الله')
+        await ABH.edit_permissions(gid, uid, send_messages=False)
         await r.delete()
         await asyncio.sleep(3)
         await event.delete()
-x = {}
+الحذف = {}
 @ABH.on(events.NewMessage(pattern=r'^.كتم$', outgoing=True))
 async def muteINall(event):
     c = await event.get_chat()
@@ -230,8 +230,8 @@ async def muteINall(event):
         await asyncio.sleep(3)
         await event.delete()
         return
-    x[c.id] = {'uid': r.sender_id}
-    await event.edit(f'تم كتم المستخدم {r.sender_id} في الدردشة {c.title}')
+    الحذف[c.id] = {'uid': r.sender_id}
+    await event.edit("قل اهلا لقائمة المكتومين")
     await asyncio.sleep(3)
     await event.delete()
 @ABH.on(events.NewMessage(pattern=r'^.الغاء كتم$', outgoing=True))
@@ -243,8 +243,8 @@ async def unmute(event):
         await asyncio.sleep(3)
         await event.delete()
         return
-    if c.id in x and x[c.id]['uid'] == r.sender_id:
-        del x[c.id]
+    if c.id in الحذف and الحذف[c.id]['uid'] == r.sender_id:
+        del الحذف[c.id]
         await event.edit('تم الغاء كتم المستخدم')
     else:
         await event.edit('هذا المستخدم ليس مكتومًا')
@@ -253,5 +253,5 @@ async def unmute(event):
 @ABH.on(events.NewMessage)
 async def check_mute(event):
     c = await event.get_chat()
-    if c.id in x and x[c.id]['uid'] == event.sender_id:
+    if c.id in الحذف and الحذف[c.id]['uid'] == event.sender_id:
         await event.delete()
