@@ -224,8 +224,6 @@ x = []
 @ABH.on(events.NewMessage(pattern=r'^.كتم$', outgoing=True))
 async def muteINall(event):
     c = await event.get_chat()
-    if c.is_channel:
-        return
     r = await event.get_reply_message()
     if not r:
         await event.edit('🤔 يجب أن ترد على رسالة.')
@@ -237,8 +235,6 @@ async def muteINall(event):
 @ABH.on(events.NewMessage(pattern=r'^.الغاء كتم$', outgoing=True))
 async def unmute(event):
     c = await event.get_chat()
-    if c.is_channel:
-        return
     r = await event.get_reply_message()
     if not r:
         await event.edit('🤔 يجب أن ترد على رسالة.')
@@ -258,8 +254,6 @@ async def unmute(event):
 @ABH.on(events.NewMessage)
 async def check_mute(event):
     c = await event.get_chat()
-    if c.is_channel:
-        return
     if c.id in x and x[c.id]['uid'] == event.sender_id:
         await event.delete()
         return
