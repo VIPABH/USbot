@@ -1,6 +1,6 @@
+from shortcuts import shortcuts #type: ignore
 from ABH import ABH, ok, events #type:ignore
 from zoneinfo import ZoneInfo  
-from shortcuts import shortcuts #type: ignore
 import asyncio, unicodedata
 @ABH.on(events.NewMessage(pattern=r'^.تثبيت$', outgoing=True))
 async def pin(event):
@@ -149,10 +149,10 @@ async def repeat(event):
             await event.respond(r.text)
 @ABH.on(events.NewMessage(pattern=r'^.كرر(?: (\d+))?$', outgoing=True))
 async def repeat_it(event):
-    num = event.pattern_match.group(1)
+    num = int(event.pattern_match.group(1) or 1)
     r = await event.get_reply_message()
     if r:
-        for i in range(int(num)):
+        for i in range(num):
             await event.delete()
             await event.respond(r)
 x = False
