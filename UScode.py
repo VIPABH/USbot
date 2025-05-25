@@ -204,3 +204,72 @@ async def when(event):
         message_time = r.date.astimezone(ZoneInfo("Asia/Baghdad"))
         formatted_time = message_time.strftime('%Y/%m/%d %I:%M:%S %p')
         await event.edit(formatted_time)
+@ABH.on(events.NewMessage(pattern=r'^.تقييد|ت$', outgoing=True))
+async def mute(event):
+    r = await event.get_reply_message()
+    if not r:
+        await event.edit('🤔 يجب أن ترد على رسالة.')
+        await asyncio.sleep(3)
+        await event.delete()
+        return
+    else:
+        gid = event.chat_id
+        uid = r.sender_id
+        await ABH.edit_permissions(gid, uid, send_messages=False)
+        await event.edit('الئ رحمة الله')
+        await r.delete()
+        await asyncio.sleep(3)
+        await event.delete()
+x = []
+@ABH.on(events.NewMessage(pattern=r'^.كتم$', outgoing=True))
+async def muteINall(event):
+    c = await event.get_chat()
+    if c.is_channel:
+        return
+    r = await event.get_reply_message()
+    if not r:
+        await event.edit('🤔 يجب أن ترد على رسالة.')
+        await asyncio.sleep(3)
+        await event.delete()
+        return
+    else:
+        x[c.id] = {'uid': r.sender_id}
+@ABH.on(events.NewMessage(pattern=r'^.الغاء كتم$', outgoing=True))
+async def unmute(event):
+    c = await event.get_chat()
+    if c.is_channel:
+        return
+    r = await event.get_reply_message()
+    if not r:
+        await event.edit('🤔 يجب أن ترد على رسالة.')
+        await asyncio.sleep(3)
+        await event.delete()
+        return
+    else:
+        if c.id in x and x[c.id]['uid'] == r.sender_id:
+            del x[c.id]
+            await event.edit('تم الغاء كتمه')
+            await asyncio.sleep(3)
+            await event.delete()
+        else:
+            await event.edit('هذا المستخدم ليس مكتومًا')
+            await asyncio.sleep(3)
+            await event.delete()
+@ABH.on(events.NewMessage)
+async def check_mute(event):
+    c = await event.get_chat()
+    if c.is_channel:
+        return
+    if c.id in x and x[c.id]['uid'] == event.sender_id:
+        await event.delete()
+        return
+    if x and c.id not in x:
+        return
+    if not x:
+        return
+    if event.is_private:
+        return
+    if not event.text:
+        return
+    # if event.sender_id in (await ABH.get_blocked_users()):
+    #     return
