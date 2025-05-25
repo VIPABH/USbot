@@ -220,7 +220,7 @@ async def mute(event):
         await r.delete()
         await asyncio.sleep(3)
         await event.delete()
-x = []
+x = {}
 @ABH.on(events.NewMessage(pattern=r'^.كتم$', outgoing=True))
 async def muteINall(event):
     c = await event.get_chat()
@@ -265,5 +265,3 @@ async def check_mute(event):
         return
     if not event.text:
         return
-    # if event.sender_id in (await ABH.get_blocked_users()):
-    #     return
