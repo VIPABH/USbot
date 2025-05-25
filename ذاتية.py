@@ -10,13 +10,14 @@ ABH_Asbo3 = {
     'Saturday': 'السبت',
     'Sunday': 'الأحد'
 }
-@ABH.on(events.NewMessage(pattern="^جلب$"))
+@ABH.on(events.NewMessage(pattern="^جلب$", outgoing=True))
 async def dato(event):
     if not event.is_reply:
+          x = await event.get_client().get_me()
           ABH = await event.get_reply_message()
           pic = await ABH.download_media()
     await ABH.send_file(
-        "me",
+        x,
         pic,
         caption=f"""
 - تـم حفظ الصـورة بنجـاح ✓ 
