@@ -1,3 +1,5 @@
+from telethon.tl.functions.messages import SendReactionRequest
+from telethon.tl.types import InputPeerUser, ReactionEmoji
 from shortcuts import shortcuts #type: ignore
 from ABH import ABH, ok, events #type:ignore
 from zoneinfo import ZoneInfo  
@@ -255,3 +257,44 @@ async def check_mute(event):
     c = await event.get_chat()
     if c.id in الحذف and الحذف[c.id]['uid'] == event.sender_id:
         await event.delete()
+ازعاج = {}
+@ABH.on(events.NewMessage(pattern=r'^\.ازعاج(?: (.+))?$', outgoing=True))
+async def muteINall(event):
+    global ازعاج, p
+    p = event.pattern_match.group(1) or '👍'
+    c = await event.get_chat()
+    r = await event.get_reply_message()
+    if not r:
+        await event.edit('🤔 يجب أن ترد على رسالة.')
+        await asyncio.sleep(3)
+        await event.delete()
+        return
+    ازعاج[c.id] = {'uid': r.sender_id}
+    await event.edit("قل اهلا لقائمة الازعاج")
+    await asyncio.sleep(3)
+    await event.delete()
+@ABH.on(events.NewMessage(pattern=r'^.الغاء ازعاج$', outgoing=True))
+async def unmute(event):
+    c = await event.get_chat()
+    r = await event.get_reply_message()
+    if not r:
+        await event.edit('🤔 يجب أن ترد على رسالة.')
+        await asyncio.sleep(3)
+        await event.delete()
+        return
+    if c.id in ازعاج and ازعاج[c.id]['uid'] == r.sender_id:
+        del ازعاج[c.id]
+        await event.edit('تم الغاء الازعاج')
+    else:
+        await event.edit('هذا المستخدم لا يوجد عليه ازعاج')
+    await asyncio.sleep(3)
+    await event.delete()
+@ABH.on(events.NewMessage)
+async def check_mute(event):
+    c = await event.get_chat()
+    if c.id in ازعاج and ازعاج[c.id]['uid'] == event.sender_id:
+        await ABH(SendReactionRequest(
+            peer=event.chat_id,
+            msg_id=event.id,
+            reaction=[ReactionEmoji(emoticon=p)]
+    ))
