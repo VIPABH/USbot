@@ -230,8 +230,10 @@ async def muteINall(event):
         await asyncio.sleep(3)
         await event.delete()
         return
-    else:
-        x[c.id] = {'uid': r.sender_id}
+    x[c.id] = {'uid': r.sender_id}
+    await event.edit(f'تم كتم المستخدم {r.sender_id} في الدردشة {c.title}')
+    await asyncio.sleep(3)
+    await event.delete()
 @ABH.on(events.NewMessage(pattern=r'^.الغاء كتم$', outgoing=True))
 async def unmute(event):
     c = await event.get_chat()
@@ -241,27 +243,15 @@ async def unmute(event):
         await asyncio.sleep(3)
         await event.delete()
         return
+    if c.id in x and x[c.id]['uid'] == r.sender_id:
+        del x[c.id]
+        await event.edit('تم الغاء كتم المستخدم')
     else:
-        if c.id in x and x[c.id]['uid'] == r.sender_id:
-            del x[c.id]
-            await event.edit('تم الغاء كتمه')
-            await asyncio.sleep(3)
-            await event.delete()
-        else:
-            await event.edit('هذا المستخدم ليس مكتومًا')
-            await asyncio.sleep(3)
-            await event.delete()
+        await event.edit('هذا المستخدم ليس مكتومًا')
+    await asyncio.sleep(3)
+    await event.delete()
 @ABH.on(events.NewMessage)
 async def check_mute(event):
     c = await event.get_chat()
     if c.id in x and x[c.id]['uid'] == event.sender_id:
         await event.delete()
-        return
-    if x and c.id not in x:
-        return
-    if not x:
-        return
-    if event.is_private:
-        return
-    if not event.text:
-        return
