@@ -13,7 +13,7 @@ ABH_Asbo3 = {
 @ABH.on(events.NewMessage(pattern=r"^جلب(?: (.+))?$", outgoing=True))
 async def dato(event):
     input_link = event.pattern_match.group(1)
-    x = await client.get_me()
+    x = await ABH.get_me().id
     if input_link:
         try:
             pic = await event.client.download_media(input_link)
@@ -31,7 +31,7 @@ async def dato(event):
         await event.delete()
         return
     await ABH.client.send_file(
-        x.id,
+        x,
         pic,
         caption="- تـم حفظ الصـورة بنجـاح ✓"
     )
