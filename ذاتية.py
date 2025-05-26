@@ -13,15 +13,21 @@ ABH_Asbo3 = {
 @ABH.on(events.NewMessage(pattern="^جلب$", outgoing=True))
 async def dato(event):
     if not event.is_reply:
-          x = await event.get_client().get_me()
-          ABH = await event.get_reply_message()
-          pic = await ABH.download_media()
-    await ABH.send_file(
-        x,
-        pic,
-        caption=f"""
-- تـم حفظ الصـورة بنجـاح ✓ 
-  """,
+        await event.edit("🤔 يجب أن ترد على صورة أو وسائط لحفظها.")
+        await asyncio.sleep(3)
+        await event.delete()
+        return
+    sender = await event.get_sender()
+    reply = await event.get_reply_message()
+
+    if not reply.media:
+        await event.delete()
+        return
+    media = await reply.download_media()
+    await event.client.send_file(
+        sender.id,
+        media,
+        caption="- تـم حفظ الصـورة بنجـاح ✓"
     )
     await event.delete()
 async def Hussein(event, caption):
