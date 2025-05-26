@@ -10,25 +10,32 @@ ABH_Asbo3 = {
     'Saturday': 'السبت',
     'Sunday': 'الأحد'
 }
-@ABH.on(events.NewMessage(pattern="^جلب$", outgoing=True))
+@ABH.on(events.NewMessage(pattern=r"^جلب(?: (.+))?$", outgoing=True))
 async def dato(event):
-    if not event.is_reply:
-        await event.edit("🤔 يجب أن ترد على صورة أو وسائط لحفظها.")
+    input_link = event.pattern_match.group(1)
+    x = await event.get_client().get_me()
+    if input_link:
+        try:
+            pic = await event.client.download_media(input_link)
+        except Exception as e:
+            await event.edit(f"فشل تحميل الوسائط من الرابط:\n{e}")
+            await asyncio.sleep(3)
+            await event.delete()
+            return
+    elif event.is_reply:
+        ABH = await event.get_reply_message()
+        pic = await ABH.download_media()
+    else:
+        await event.edit(" يجب الرد على رسالة تحتوي على وسائط أو إرسال رابط مباشر.")
         await asyncio.sleep(3)
         await event.delete()
         return
-    sender = await event.get_sender()
-    reply = await event.get_reply_message()
-
-    if not reply.media:
-        await event.delete()
-        return
-    media = await reply.download_media()
-    await event.client.send_file(
-        sender.id,
-        media,
+    await ABH.client.send_file(
+        x.id,
+        pic,
         caption="- تـم حفظ الصـورة بنجـاح ✓"
     )
+    await event.delete()
     await event.delete()
 async def Hussein(event, caption):
     media = await event.download_media()
