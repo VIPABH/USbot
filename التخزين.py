@@ -90,7 +90,7 @@ f'''المرسل : {name}
     )
 @ABH.on(events.NewMessage(incoming=True, func=lambda e: e.mentioned))
 async def group_save(event):
-    gidvar, hidvar = load_config_vars()
+    gidvar, hidvar = LOADVARS()
     if not gidvar or not hidvar:
         await config_vars(event)
     sender = await event.get_sender()
