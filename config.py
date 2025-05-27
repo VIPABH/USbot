@@ -1,6 +1,7 @@
 from datetime import datetime
 from telethon import events
 from ABH import ABH
+import os, sys
 now = datetime.now()
 تاريخ = now.strftime("%Y-%m-%d")
 ساعة = now.strftime("%I:%M:%S %p")
@@ -23,11 +24,6 @@ async def testup(event):
     await event.delete()
     pic = 'https://files.catbox.moe/ebn0d8.jpg'
     await event.respond(file=pic, message=cap)
-import os
-import sys
-import asyncio
-from telethon import events
-
 async def run_cmd(command: str):
     """تشغيل أمر في الشيل بشكل غير متزامن وانتظار نهايته"""
     process = await asyncio.create_subprocess_shell(
@@ -37,7 +33,7 @@ async def run_cmd(command: str):
     )
     stdout, stderr = await process.communicate()
     return stdout.decode().strip(), stderr.decode().strip(), process.returncode
-@client.on(events.NewMessage(pattern="^اعادة تشغيل$", outgoing=True))
+@ABH.on(events.NewMessage(pattern="^اعادة تشغيل$", outgoing=True))
 async def restart_bot(event):
     msg = await event.respond(" جاري جلب آخر التحديثات من الريبو عبر ...")
     stdout, stderr, code = await run_cmd("git pull")
