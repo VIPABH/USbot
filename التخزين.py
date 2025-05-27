@@ -7,6 +7,16 @@ async def create_group(name, about):
     result = await ABH(CreateChannelRequest(title=name, about=about, megagroup=True))
     group = result.chats[0]
     return group.id, group.title
+def LOADVARS(config_file="var.json"):
+    if os.path.exists(config_file):
+        try:
+            with open(config_file, "r", encoding="utf-8") as f:
+                config_data = json.load(f)
+                gidvar = config_data.get("gidvar")
+                hidvar = config_data.get("hidvar")
+        except json.JSONDecodeError:
+            pass
+    return gidvar, hidvar
 @ABH.on(events.NewMessage(pattern='/config'))
 async def config_vars(event):
     global gidvar, hidvar
@@ -30,7 +40,6 @@ async def config_vars(event):
     if not hidvar:
         hidvar, hid_name = await create_group("مجموعة الإشعارات", "هذه المجموعة مخصصة للتنبيهات.")
         newly_created.append(("مجموعة الإشعارات", hidvar))
-
     if newly_created:
         config_text = f'''فارات السورس
 لا تحذف الرسالة للحفاظ على كروبات السورس
