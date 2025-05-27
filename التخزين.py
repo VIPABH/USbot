@@ -8,15 +8,14 @@ async def create_group(name, about):
     group = result.chats[0]
     return group.id, group.title
 def LOADVARS(config_file="var.json"):
+    config_file = "var.json"
     if os.path.exists(config_file):
-        try:
-            with open(config_file, "r", encoding="utf-8") as f:
-                config_data = json.load(f)
-                gidvar = config_data.get("gidvar")
-                hidvar = config_data.get("hidvar")
-        except json.JSONDecodeError:
-            pass
-    return gidvar, hidvar
+        with open(config_file, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            gidvar = data.get("gidvar")
+            hidvar = data.get("hidvar")
+            return gidvar, hidvar
+    return None, None
 @ABH.on(events.NewMessage(pattern='/config'))
 async def config_vars(event):
     global gidvar, hidvar
