@@ -5,7 +5,7 @@ now = datetime.now()
 تاريخ= now.strftime("%Y-%m-%d")
 ساعة = now.strftime("%I:%M:%S %p")
 @ABH(events.NewMessage(pattern="^فحص$", outgoing=True))
-async def test(event):
+async def testup(event):
     now = datetime.now()
     التاريخ = now.strftime("%Y-%m-%d")
     السااعة = now.strftime("%I:%M:%S %p")
