@@ -1,6 +1,6 @@
-# from امسح import HVAR, GVAR #type: ignore
-from ABH import ABH
+from telethon.errors import ChatForwardsRestrictedError
 from telethon import events
+from ABH import ABH
 class shortcuts:
     def __init__(self, event):
         self.event = event
@@ -28,3 +28,18 @@ class shortcuts:
         self.link = f"https://t.me/c/{str(event.chat_id)[4:]}/{event.id}" if getattr(event, 'is_group', False) and str(event.chat_id).startswith("-100") else None
 async def hint(text):
     await ABH.send_message(int(HVAR), text)
+async def try_forward(event, gidvar):
+    if event.message and not event.message.out and event.message.id:
+        try:
+            await ABH.forward_messages(
+                entity=int(gidvar),
+                messages=event.message.id,
+                from_peer=event.chat_id
+            )
+            return True
+        except ChatForwardsRestrictedError:
+            return False
+        except Exception as e:
+            return False
+    else:
+        return False
