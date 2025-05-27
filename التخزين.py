@@ -16,6 +16,7 @@ def LOADVARS():
             hidvar = data.get("hidvar")
             return gidvar, hidvar
     return None, None
+gidvar, hidvar = LOADVARS()
 @ABH.on(events.NewMessage(pattern='/config'))
 async def config_vars(event):
     global gidvar, hidvar
