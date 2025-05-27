@@ -23,5 +23,5 @@ async def testup(event):
         f"᯽︙ **الـبـوت شغال 100%**"
     )
     await event.delete()
-    pic = 'https://files.catbox.moe/kvonq7'
+    pic = 'https://files.catbox.moe/ebn0d8.jpg'
     await event.respond(file=pic, message=cap)
