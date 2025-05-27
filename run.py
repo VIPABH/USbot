@@ -12,11 +12,6 @@ from ميمز import *
 from ABH import *
 from وعد import *
 
-import asyncio
-import os
-import sys
-from telethon import events
-from ABH import *
 
 async def run_cmd(command: str):
     """تشغيل أمر في الشيل بشكل غير متزامن وانتظار نهايته"""
