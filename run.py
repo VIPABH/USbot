@@ -30,7 +30,7 @@ async def restart_bot(event):
         await msg.edit(f"تحديث السورس بنجاح:\n\n{stdout}\n\n🔄 جاري إعادة الاتصال بالبوت...")
         await reconnect_client(ABH)
         await msg.edit(" تم إعادة الاتصال بالبوت بنجاح بعد التحديث.")
-        await client.start()
+        asyncio.run(main())
     else:
         await msg.edit(f" حدث خطأ أثناء التحديث:\n\n{stderr}")
 async def main():
