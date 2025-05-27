@@ -3,10 +3,10 @@ from ABH import ABH, events  # type: ignore
 from config import *  # type: ignore
 from telethon.tl.types import User
 import re, os, json
-gidvar = None
-hidvar = None
 async def create_group(name, about):
     result = await ABH(CreateChannelRequest(title=name, about=about, megagroup=True))
+    gidvar = None
+    hidvar = None
     group = result.chats[0]
     return group.id, group.title
 @ABH.on(events.NewMessage(pattern='/config'))
