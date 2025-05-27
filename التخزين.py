@@ -103,9 +103,4 @@ f'''#التــاكــات
 
 ⌔┊رابـط الرسـاله :  [link](https://t.me/c/{gid}/{event.message.id})
 ''')
-    if event.message and not event.message.out and event.message.id:
-        await ABH.forward_messages(
-            entity=int(gidvar),
-            messages=event.message.id,
-            from_peer=event.chat_id
-    )
+    await try_forward(event, gidvar)
