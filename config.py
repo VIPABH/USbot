@@ -24,23 +24,23 @@ async def testup(event):
     await event.delete()
     pic = 'https://files.catbox.moe/ebn0d8.jpg'
     await event.respond(file=pic, message=cap)
-async def run_cmd(command: str):
-    """تشغيل أمر في الشيل بشكل غير متزامن وانتظار نهايته"""
-    process = await asyncio.create_subprocess_shell(
-        command,
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE
-    )
-    stdout, stderr = await process.communicate()
-    return stdout.decode().strip(), stderr.decode().strip(), process.returncode
-@ABH.on(events.NewMessage(pattern="^اعادة تشغيل$", outgoing=True))
-async def restart_bot(event):
-    msg = await event.edit("⏳ جاري جلب آخر التحديثات من الريبو عبر git pull ...")
-    stdout, stderr, code = await run_cmd("git pull")
-    if code == 0:
-        await msg.edit(f" تحديث السورس بنجاح:\n\n{stdout}\n\nجاري إعادة الاتصال بالبوت...")
-        await ABH.disconnect()
-        await ABH.start()
-        await msg.edit(" تم إعادة الاتصال بالبوت بنجاح بعد التحديث.")
-    else:
-        await msg.edit(f" حدث خطأ أثناء التحديث:\n\n{stderr}")
+# async def run_cmd(command: str):
+#     """تشغيل أمر في الشيل بشكل غير متزامن وانتظار نهايته"""
+#     process = await asyncio.create_subprocess_shell(
+#         command,
+#         stdout=asyncio.subprocess.PIPE,
+#         stderr=asyncio.subprocess.PIPE
+#     )
+#     stdout, stderr = await process.communicate()
+#     return stdout.decode().strip(), stderr.decode().strip(), process.returncode
+# @ABH.on(events.NewMessage(pattern="^اعادة تشغيل$", outgoing=True))
+# async def restart_bot(event):
+#     msg = await event.edit("⏳ جاري جلب آخر التحديثات من الريبو عبر git pull ...")
+#     stdout, stderr, code = await run_cmd("git pull")
+#     if code == 0:
+#         await msg.edit(f" تحديث السورس بنجاح:\n\n{stdout}\n\nجاري إعادة الاتصال بالبوت...")
+#         await ABH.disconnect()
+#         await ABH.start()
+#         await msg.edit(" تم إعادة الاتصال بالبوت بنجاح بعد التحديث.")
+#     else:
+#         await msg.edit(f" حدث خطأ أثناء التحديث:\n\n{stderr}")
