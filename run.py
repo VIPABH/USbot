@@ -1,15 +1,14 @@
-import os
-import sys
-import asyncio
 from telethon import events
+import asyncio, sys, os
+from ABH import *
 from UScode import *
 from config import *
+from shortcuts import *
 from التخزين import *
 from الردود import *
 from امسح import *
 from ذاتية import *
 from ميمز import *
-from ABH import *
 from وعد import *
 async def run_cmd(command: str):
     process = await asyncio.create_subprocess_shell(
