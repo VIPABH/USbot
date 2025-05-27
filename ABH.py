@@ -11,3 +11,13 @@ def ok(func):
             return
         await func(event)
     return wrapper
+def LOADVARS():
+    config_file = "var.json"
+    if os.path.exists(config_file):
+        with open(config_file, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            gidvar = data.get("gidvar")
+            hidvar = data.get("hidvar")
+            return gidvar, hidvar
+    return None, None
+gidvar, hidvar = LOADVARS()
