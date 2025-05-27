@@ -1,10 +1,10 @@
 from datetime import datetime
 from telethon import events
-from ABH import *
+from ABH import ABH
 now = datetime.now()
-تاريخ= now.strftime("%Y-%m-%d")
+تاريخ = now.strftime("%Y-%m-%d")
 ساعة = now.strftime("%I:%M:%S %p")
-@ABH(events.NewMessage(pattern="^فحص$", outgoing=True))
+@ABH.on(events.NewMessage(pattern="^فحص$", outgoing=True))
 async def testup(event):
     now = datetime.now()
     التاريخ = now.strftime("%Y-%m-%d")
@@ -13,4 +13,12 @@ async def testup(event):
     await event.edit("**᯽︙ جـاري فـحص الـبـوت**")
     end = datetime.now()
     ms = (end - start).microseconds / 1000
-    await event.edit(f"**᯽︙ السورس شغال**\n᯽︙ **الـتـاريخ ** `{التاريخ}`\n᯽︙ **الـسـاعه :** `{السااعة}`\n᯽︙ **الـزمن :** `{ms} ms` \n᯽︙ **تاريخ التشغيل :** `{تاريخ}`\n᯽︙ **ساعة التشغيل :** `{ساعة}`\n᯽︙ **الـبـوت شغال 100%**")
+    await event.edit(
+        f"**᯽︙ السورس شغال**\n"
+        f"᯽︙ **الـتـاريخ:** `{التاريخ}`\n"
+        f"᯽︙ **الـسـاعه:** `{السااعة}`\n"
+        f"᯽︙ **الـزمن:** `{ms} ms`\n"
+        f"᯽︙ **تاريخ التشغيل:** `{تاريخ}`\n"
+        f"᯽︙ **ساعة التشغيل:** `{ساعة}`\n"
+        f"᯽︙ **الـبـوت شغال 100%**"
+    )
