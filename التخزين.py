@@ -7,16 +7,6 @@ async def create_group(name, about):
     result = await ABH(CreateChannelRequest(title=name, about=about, megagroup=True))
     group = result.chats[0]
     return group.id, group.title
-def LOADVARS():
-    config_file = "var.json"
-    if os.path.exists(config_file):
-        with open(config_file, "r", encoding="utf-8") as f:
-            data = json.load(f)
-            gidvar = data.get("gidvar")
-            hidvar = data.get("hidvar")
-            return gidvar, hidvar
-    return None, None
-gidvar, hidvar = LOADVARS()
 @ABH.on(events.NewMessage(pattern='/config'))
 async def config_vars(event):
     global gidvar, hidvar
