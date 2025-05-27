@@ -5,8 +5,6 @@ from telethon.tl.types import User
 import re, os, json
 async def create_group(name, about):
     result = await ABH(CreateChannelRequest(title=name, about=about, megagroup=True))
-    gidvar = None
-    hidvar = None
     group = result.chats[0]
     return group.id, group.title
 @ABH.on(events.NewMessage(pattern='/config'))
