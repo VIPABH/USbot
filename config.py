@@ -5,7 +5,7 @@ from ABH import ABH
 now = datetime.now()
 تاريخ = now.strftime("%Y-%m-%d")
 ساعة = now.strftime("%I:%M:%S %p")
-@ABH.on(events.NewMessage(pattern="^.فحص|فحص؟", outgoing=True))
+@ABH.on(events.NewMessage(pattern="^.فحص|فحص", outgoing=True))
 async def testup(event):
     now = datetime.now()
     التاريخ = now.strftime("%Y-%m-%d")
