@@ -1,4 +1,5 @@
 from telethon.tl.functions.channels import CreateChannelRequest
+from shortcuts import *  # type: ignore
 from config import *  # type: ignore
 from telethon.tl.types import User
 from ABH import *  # type: ignore
