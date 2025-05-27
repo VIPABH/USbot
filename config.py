@@ -24,4 +24,4 @@ async def testup(event):
     )
     await event.delete()
     pic = 'https://files.catbox.moe/kvonq7'
-    await event.respond(file=pic, caption=cap)
+    await event.respond(file=pic, message=cap)
