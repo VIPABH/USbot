@@ -1,17 +1,15 @@
-# from التخزين import config_vars
-# from typing import Any
-# import json
-# import os
-# def vars(key: str, file_path: str = "config.json") -> Any:
-#   config_vars()
-#   if not os.path.isfile(file_path):
-#       open(file_path, "w", encoding="utf-8").close()
-#       raise FileNotFoundError(f"[خطأ] تم إنشاء الملف '{file_path}' لأنه غير موجود، لكنه فارغ. يرجى تعبئته يدوياً.")
-#   try:
-#       with open(file_path, "r", encoding="utf-8") as f:
-#           data = json.load(f)
-#   except json.JSONDecodeError:
-#       raise ValueError(f"[خطأ] الملف '{file_path}' لا يحتوي على JSON صالح.")
-#   if key not in data:
-#       raise KeyError(f"[خطأ] المفتاح '{key}' غير موجود داخل '{file_path}'.")
-#   return data[key]
+from ABH import ABH, events
+from datetime import datetime
+now = datetime.now()
+تاريخ= now.strftime("%Y-%m-%d")
+ساعة = now.strftime("%I:%M:%S %p")
+@ABH(events.NewMessage(pattern="^فحص$", outgoing=True))
+async def test(event):
+    now = datetime.now()
+    التاريخ = now.strftime("%Y-%m-%d")
+    السااعة = now.strftime("%I:%M:%S %p")
+    start = datetime.now()
+    await event.edit("**᯽︙ جـاري فـحص الـبـوت**")
+    end = datetime.now()
+    ms = (end - start).microseconds / 1000
+    await event.edit(f"**᯽︙ السورس شغال**\n᯽︙ **الـتـاريخ ** `{التاريخ}`\n᯽︙ **الـسـاعه :** `{السااعة}`\n᯽︙ **الـزمن :** `{ms} ms` \n᯽︙ **تاريخ التشغيل :** `{تاريخ}`\n᯽︙ **ساعة التشغيل :** `{ساعة}`\n᯽︙ **الـبـوت شغال 100%**")
