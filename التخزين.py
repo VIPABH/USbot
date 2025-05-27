@@ -1,7 +1,7 @@
 from telethon.tl.functions.channels import CreateChannelRequest
-from ABH import ABH, events  # type: ignore
 from config import *  # type: ignore
 from telethon.tl.types import User
+from ABH import *  # type: ignore
 import re, os, json
 async def create_group(name, about):
     result = await ABH(CreateChannelRequest(title=name, about=about, megagroup=True))
@@ -81,13 +81,12 @@ f'''المرسل : {name}
     )
 @ABH.on(events.NewMessage(incoming=True, func=lambda e: e.mentioned))
 async def group_save(event):
-    gidvar, hidvar = LOADVARS()
     if not gidvar or not hidvar:
         await config_vars(event)
     sender = await event.get_sender()
     uid = event.sender_id
-    if uid == 777000 or sender.bot:
-        return
+    # if uid == 777000 or sender.bot:
+        # return
     s = await event.get_sender()
     gid = event.chat_id
     gid = str(gid).replace("-100", "").replace(" ", "")
