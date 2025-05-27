@@ -1,7 +1,7 @@
 from telethon.tl.functions.messages import SendReactionRequest
 from telethon.tl.types import InputPeerUser, ReactionEmoji
-from shortcuts import shortcuts #type: ignore
 from ABH import ABH, ok, events #type:ignore
+from shortcuts import * #type: ignore
 from zoneinfo import ZoneInfo  
 import asyncio, unicodedata
 @ABH.on(events.NewMessage(pattern=r'^.تثبيت$', outgoing=True))
