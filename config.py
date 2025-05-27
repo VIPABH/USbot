@@ -39,7 +39,7 @@ async def restart_bot(event):
     stdout, stderr, code = await run_cmd("git pull")
     if code == 0:
         await msg.edit(f"تحديث السورس بنجاح:\n\n{stdout}\n\n جاري إعادة تشغيل البوت...")
-        await client.disconnect()
+        await ABH.disconnect()
         os.execv(sys.executable, [sys.executable] + sys.argv)
     else:
         await msg.edit(f"حدث خطأ أثناء التحديث:\n\n{stderr}")
