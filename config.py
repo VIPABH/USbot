@@ -35,7 +35,7 @@ async def run_cmd(command: str):
     return stdout.decode().strip(), stderr.decode().strip(), process.returncode
 @ABH.on(events.NewMessage(pattern="^اعادة تشغيل$", outgoing=True))
 async def restart_bot(event):
-    msg = await event.respond(" جاري جلب آخر التحديثات من الريبو عبر ...")
+    msg = await event.edit(" جاري جلب آخر التحديثات من الريبو عبر ...")
     stdout, stderr, code = await run_cmd("git pull")
     if code == 0:
         await msg.edit(f"تحديث السورس بنجاح:\n\n{stdout}\n\n جاري إعادة تشغيل البوت...")
