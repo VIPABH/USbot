@@ -35,11 +35,12 @@ async def run_cmd(command: str):
     return stdout.decode().strip(), stderr.decode().strip(), process.returncode
 @ABH.on(events.NewMessage(pattern="^اعادة تشغيل$", outgoing=True))
 async def restart_bot(event):
-    msg = await event.edit(" جاري جلب آخر التحديثات من الريبو عبر ...")
+    msg = await event.edit("⏳ جاري جلب آخر التحديثات من الريبو عبر git pull ...")
     stdout, stderr, code = await run_cmd("git pull")
     if code == 0:
-        await msg.edit(f"تحديث السورس بنجاح:\n\n{stdout}\n\n جاري إعادة تشغيل البوت...")
+        await msg.edit(f" تحديث السورس بنجاح:\n\n{stdout}\n\nجاري إعادة الاتصال بالبوت...")
         await ABH.disconnect()
-        os.execv(sys.executable, [sys.executable] + sys.argv)
+        await ABH.start()
+        await msg.edit(" تم إعادة الاتصال بالبوت بنجاح بعد التحديث.")
     else:
-        await msg.edit(f"حدث خطأ أثناء التحديث:\n\n{stderr}")
+        await msg.edit(f" حدث خطأ أثناء التحديث:\n\n{stderr}")
