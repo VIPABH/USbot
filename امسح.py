@@ -1,6 +1,6 @@
 from ABH import ABH, events, ok  # type: ignore
 from التخزين import *
-from config import vars
+# from config import vars
 from telethon.tl.types import (
     InputMessagesFilterDocument,
     InputMessagesFilterPhotos,
