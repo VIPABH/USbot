@@ -13,7 +13,7 @@ async def testup(event):
     await event.edit("**᯽︙ جـاري فـحص الـبـوت**")
     end = datetime.now()
     ms = (end - start).microseconds / 1000
-    await event.edit(
+    cap = (
         f"**᯽︙ السورس شغال**\n"
         f"᯽︙ **الـتـاريخ:** `{التاريخ}`\n"
         f"᯽︙ **الـسـاعه:** `{السااعة}`\n"
@@ -22,3 +22,6 @@ async def testup(event):
         f"᯽︙ **ساعة التشغيل:** `{ساعة}`\n"
         f"᯽︙ **الـبـوت شغال 100%**"
     )
+    await event.delete()
+    pic = 'https://files.catbox.moe/kvonq7'
+    await event.respond(file=pic, caption=cap)
