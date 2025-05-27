@@ -1,5 +1,5 @@
 from datetime import datetime
-from yelethon import events
+from telethon import events
 from ABH import *
 now = datetime.now()
 تاريخ= now.strftime("%Y-%m-%d")
