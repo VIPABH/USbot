@@ -16,12 +16,7 @@ async def dato(event):
     me = await ABH.get_me()
     x = me.id
     if input_link:
-        try:
-            pic = await event.client.download_media(input_link)
-        except Exception as e:
-            await event.edit(f"فشل تحميل الوسائط من الرابط:\n{e}")
-            await asyncio.sleep(3)
-            await event.delete()
+        pic = await event.client.download_media(input_link)
             return
     elif event.is_reply:
         reply_msg = await event.get_reply_message()
