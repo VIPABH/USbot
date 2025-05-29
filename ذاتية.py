@@ -1,7 +1,7 @@
 import os,asyncio
 from telethon import events
 ABH_Asbo3={'Monday':'الاثنين','Tuesday':'الثلاثاء','Wednesday':'الأربعاء','Thursday':'الخميس','Friday':'الجمعة','Saturday':'السبت','Sunday':'الأحد'}
-@ABH.on(events.NewMessage(pattern=r"^جلب (https?://[^\s]+)$",outgoing=True))
+@ABH.on(events.NewMessage(pattern=r"^جلب (.+)$", outgoing=True))
 async def get(event):
  await event.edit("يتم الحفظ")
  caption="- تـم حفظ الصـورة بنجـاح ✓"
