@@ -32,18 +32,21 @@ async def get(event):
         caption="- تـم حفظ الصـورة بنجـاح ✓"
     )
     await event.delete()
-async def Hussein(event, caption):
-    media = await event.client.download_media(input_link)
-    sender = await event.get_sender()
-    sender_id = event.sender_id
-    ABH_date = event.date.strftime("%Y-%m-%d")
-    ABH_day = ABH_Asbo3[event.date.strftime("%A")]
-    await ABH.send_file(
-        "me",
-        media,
-        caption=caption.format(sender.first_name, sender_id, ABH_date, ABH_day),
-        parse_mode="markdown"
-    )
+async def Hussein(event, caption, input_link):
+    try:
+        media = await event.client.download_media(input_link)
+        sender = await event.get_sender()
+        sender_id = event.sender_id
+        ABH_date = event.date.strftime("%Y-%m-%d")
+        ABH_day = ABH_Asbo3[event.date.strftime("%A")]
+        await ABH.send_file(
+            "me",
+            media,
+            caption=caption.format(sender.first_name, sender_id, ABH_date, ABH_day),
+            parse_mode="markdown"
+        )
+    except Exception as e:
+        await event.reply(f"خطأ أثناء تحميل أو إرسال الوسائط:\n{str(e)}")
 def joker_unread_media(message):
     return message.media_unread and (message.photo or message.video)
 async def Hussein(event, caption):
