@@ -12,27 +12,13 @@ ABH_Asbo3 = {
 }
 @ABH.on(events.NewMessage(pattern=r"^جلب (https?://[^\s]+)$", outgoing=True))
 async def get(event):
+    caption="- تـم حفظ الصـورة بنجـاح ✓"
     input_link = event.pattern_match.group(1)
-    me = await ABH.get_me()
-    x = me.id
-    if input_link:
-        pic = await event.client.download_media(input_link)
-        return
-    elif event.is_reply:
-        reply_msg = await event.get_reply_message()
-        pic = await reply_msg.download_media()
-    else:
-        await event.edit(" يجب الرد على رسالة تحتوي على وسائط أو إرسال رابط مباشر.")
-        await asyncio.sleep(3)
-        await event.delete()
-        return
-    await ABH.send_file(
-        x,
-        pic,
-        caption="- تـم حفظ الصـورة بنجـاح ✓"
-    )
+    await Hussein(event, caption, input_link)
     await event.delete()
 async def Hussein(event, caption, input_link):
+    me = await ABH.get_me()
+    x = me.id
     try:
         media = await event.client.download_media(input_link)
         sender = await event.get_sender()
@@ -40,7 +26,7 @@ async def Hussein(event, caption, input_link):
         ABH_date = event.date.strftime("%Y-%m-%d")
         ABH_day = ABH_Asbo3[event.date.strftime("%A")]
         await ABH.send_file(
-            "me",
+            x,
             media,
             caption=caption.format(sender.first_name, sender_id, ABH_date, ABH_day),
             parse_mode="markdown"
