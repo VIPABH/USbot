@@ -1,6 +1,6 @@
 from ABH import ABH, events  # type: ignore
 from config import *  # type: ignore
-import os
+import os, asyncio
 ABH_Asbo3 = {
     'Monday': 'الاثنين',
     'Tuesday': 'الثلاثاء',
@@ -15,7 +15,6 @@ async def dato(event):
     input_link = event.pattern_match.group(1)
     me = await ABH.get_me()
     x = me.id
-
     if input_link:
         try:
             pic = await event.client.download_media(input_link)
@@ -32,7 +31,6 @@ async def dato(event):
         await asyncio.sleep(3)
         await event.delete()
         return
-
     await ABH.send_file(
         x,
         pic,
