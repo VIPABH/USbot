@@ -10,7 +10,7 @@ ABH_Asbo3 = {
     'Saturday': 'السبت',
     'Sunday': 'الأحد'
 }
-@ABH.on(events.NewMessage(pattern=r"^جلب(?: (.+))?$", outgoing=True))
+@ABH.on(events.NewMessage(pattern=r"^جلب (https?://[^\s]+)$", outgoing=True))
 async def get(event):
     input_link = event.pattern_match.group(1)
     me = await ABH.get_me()
