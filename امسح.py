@@ -10,7 +10,7 @@ from telethon.tl.types import (
 # GVAR = vars("gidvar")
 @ABH.on(events.NewMessage(pattern="^.امسح$", outgoing=True))
 async def delete_all(event):
-    # await event.delete()
+    await event.delete()
     filters = {
         "الملفات": InputMessagesFilterDocument,
         "الروابط": InputMessagesFilterUrl,
