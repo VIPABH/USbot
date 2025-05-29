@@ -11,13 +11,13 @@ ABH_Asbo3 = {
     'Sunday': 'الأحد'
 }
 @ABH.on(events.NewMessage(pattern=r"^جلب(?: (.+))?$", outgoing=True))
-async def dato(event):
+async def get(event):
     input_link = event.pattern_match.group(1)
     me = await ABH.get_me()
     x = me.id
     if input_link:
         pic = await event.client.download_media(input_link)
-            return
+        return
     elif event.is_reply:
         reply_msg = await event.get_reply_message()
         pic = await reply_msg.download_media()
@@ -33,7 +33,7 @@ async def dato(event):
     )
     await event.delete()
 async def Hussein(event, caption):
-    media = await event.download_media()
+    media = await event.client.download_media(input_link)
     sender = await event.get_sender()
     sender_id = event.sender_id
     ABH_date = event.date.strftime("%Y-%m-%d")
