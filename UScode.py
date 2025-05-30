@@ -306,9 +306,6 @@ async def anti_spam_ban(event):
     user_id = event.sender_id
     now = time.time()
     chat = await event.get_chat()
-    target = event.pattern_match.group(2).strip()
-    if not target:
-        return
     if user_id not in user_ban_data:
         user_ban_data[user_id] = {"count": 0, "first_time": now}
     data = user_ban_data[user_id]
@@ -316,7 +313,6 @@ async def anti_spam_ban(event):
         data["count"] = 0
         data["first_time"] = now
     data["count"] += 1
-    await event.reply(f"**جاري حظر {target}**")
     if data["count"] >= 5:
             await ABH(EditBannedRequest(channel=chat.id, participant=user_id, banned_rights=rights))
             user_ban_data[user_id] = {"count": 0, "first_time": now}
