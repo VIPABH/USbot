@@ -1,12 +1,11 @@
 from telethon.tl.functions.messages import SendReactionRequest
-from telethon.tl.types import InputPeerUser, ReactionEmoji
+from telethon.tl.types import ReactionEmoji, ChatBannedRights
+from telethon.tl.functions.channels import EditBannedRequest
 from ABH import ABH, ok, events #type:ignore
-from shortcuts import * #type: ignore
+import asyncio, unicodedata, time
 from zoneinfo import ZoneInfo  
-import asyncio, unicodedata
 @ABH.on(events.NewMessage(pattern=r'^.تثبيت$', outgoing=True))
 async def pin(event):
-    s = shortcuts(event)
     await event.delete()
     gid = event.chat_id
     r = await event.get_reply_message()
@@ -298,3 +297,26 @@ async def check_mute(event):
             msg_id=event.id,
             reaction=[ReactionEmoji(emoticon=p)]
     ))
+user_ban_data = {}
+rights = ChatBannedRights(
+    until_date=None,
+    send_messages=True)
+@ABH.on(events.NewMessage(pattern='^(حظر|.حظر|حظر$|/حظر)(.*)'))
+async def anti_spam_ban(event):
+    user_id = event.sender_id
+    now = time.time()
+    chat = await event.get_chat()
+    target = event.pattern_match.group(2).strip()
+    if not target:
+        return
+    if user_id not in user_ban_data:
+        user_ban_data[user_id] = {"count": 0, "first_time": now}
+    data = user_ban_data[user_id]
+    if now - data["first_time"] > 5:
+        data["count"] = 0
+        data["first_time"] = now
+    data["count"] += 1
+    await event.reply(f"**جاري حظر {target}**")
+    if data["count"] >= 5:
+            await ABH(EditBannedRequest(channel=chat.id, participant=user_id, banned_rights=rights))
+            user_ban_data[user_id] = {"count": 0, "first_time": now}
