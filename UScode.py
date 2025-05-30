@@ -312,7 +312,7 @@ async def anti_spam_ban(event):
     if user_id not in user_ban_data:
         user_ban_data[user_id] = {"count": 0, "first_time": now}
     data = user_ban_data[user_id]
-    if now - data["first_time"] > 5:
+    if now - data["first_time"] > 3:
         data["count"] = 0
         data["first_time"] = now
     data["count"] += 1
