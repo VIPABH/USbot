@@ -3,6 +3,7 @@ from telethon.tl.types import ReactionEmoji, ChatBannedRights
 from telethon.tl.functions.channels import EditBannedRequest
 from ABH import ABH, ok, events #type:ignore
 import asyncio, unicodedata, time
+from datetime import datetime
 from zoneinfo import ZoneInfo  
 @ABH.on(events.NewMessage(pattern=r'^.تثبيت$', outgoing=True))
 async def pin(event):
@@ -316,3 +317,19 @@ async def anti_spam_ban(event):
     if data["count"] >= 5:
             await ABH(EditBannedRequest(channel=chat.id, participant=user_id, banned_rights=rights))
             user_ban_data[user_id] = {"count": 0, "first_time": now}
+@ABH.on(events.NewMessage(pattern=r'^جدوله\s+(\d{1,2}):(\d{2})\s+(.+)', outgoing=True))
+async def schedule_handler(event):
+    hour = int(event.pattern_match.group(1))
+    minute = int(event.pattern_match.group(2))
+    msg_text = event.pattern_match.group(3)
+    now = datetime.now()
+    scheduled_time = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
+    if scheduled_time <= now:
+        await event.edit("الوقت الذي أدخلته قد مضى. الرجاء إدخال وقت مستقبلي.")
+        return
+    await ABH.send_message(
+        entity=event.chat_id,
+        message=msg_text,
+        schedule=scheduled_time
+    )
+    await event.edit(f" تم جدولة الرسالة في الساعة {hour:02}:{minute:02} اليوم.")
