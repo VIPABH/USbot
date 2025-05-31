@@ -42,6 +42,22 @@ async def Hussein_event(message):
     await ABH.send_file(x, media, caption=caption, parse_mode="markdown")
     if os.path.exists(media):
         os.remove(media)
+def is_voice_note(message):
+    if message.voice:
+        return True
+    if message.document:
+        for attr in message.document.attributes:
+            if isinstance(attr, DocumentAttributeAudio) and getattr(attr, 'voice', False):
+                return True
+    return False
+def joker_unread_media(message):
+    return (
+        message.media_unread and (
+            message.photo or
+            message.video or
+            is_voice_note(message)
+        )
+    )
 @ABH.on(events.NewMessage(func=lambda e: e.is_private and joker_unread_media(e)))
 async def Reda(event):
     sender = await event.get_sender()
