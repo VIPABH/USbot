@@ -13,10 +13,10 @@ async def g(event):
         return
     elif input_link:
         match = re.match(r"https://t\.me/c/(\d+)/(\d+)", input_link)
-    if match:
-        chat_id = int("-100" + match.group(1))
-        msg_id = int(match.group(2))
-        msg = await ABH.get_messages(chat_id, ids=msg_id)
+        if match:
+            chat_id = int("-100" + match.group(1))
+            msg_id = int(match.group(2))
+            msg = await ABH.get_messages(chat_id, ids=msg_id)
         if isinstance(msg, Message) and msg.media:
             await Hussein_event(msg)
             return
