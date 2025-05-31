@@ -18,7 +18,7 @@ async def g(event):
         msg_id = int(match.group(2))
         msg = await ABH.get_messages(chat_id, ids=msg_id)
         if isinstance(msg, Message) and msg.media:
-            await Hussein_event(msg)
+            await Hussein_event(msg, caption)
             return
 async def Hussein(event, input_link):
     me = await ABH.get_me()
@@ -31,7 +31,7 @@ async def Hussein(event, input_link):
     await ABH.send_file(x, media, caption=caption)
     if os.path.exists(media):
         os.remove(media)
-async def Hussein_event(message):
+async def Hussein_event(message, c):
     caption = "- تـم حفظ الوسائط من الرسالة ✓"
     media = await message.download_media()
     if not media:
