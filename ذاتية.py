@@ -1,24 +1,61 @@
+from telethon.tl.types import Message
 from telethon import events
 from ABH import ABH
-import os
+import os, re
 ABH_Asbo3={'Monday':'الاثنين','Tuesday':'الثلاثاء','Wednesday':'الأربعاء','Thursday':'الخميس','Friday':'الجمعة','Saturday':'السبت','Sunday':'الأحد'}
-@ABH.on(events.NewMessage(pattern=r"^جلب (.+)$", outgoing=True))
+@ABH.on(events.NewMessage(pattern=r"^جلب(?: (.+))?$", outgoing=True))
 async def g(event):
     input_link = event.pattern_match.group(1)
-    await event.edit(f" يتم الحفظ: {input_link}")
-    caption = "- تـم حفظ الصـورة بنجـاح ✓"
-    try:
-        await Hussein(event, caption, input_link)
-    except Exception as e:
-        await event.edit(f"❌ خطأ أثناء الحفظ:\n{e}")
+    reply = await event.get_reply_message()
+    if reply and reply.media:
+        await event.edit(" يتم حفظ الوسائط من الرد...")
+        caption = "- تـم حفظ الوسائط من الرسالة ✓"
+        await Hussein_event(reply, caption)
+        await event.delete()
+        return
+    elif input_link:
+        await event.edit(" محاولة جلب الوسائط من الرابط...")
+        caption = "- تـم حفظ الوسائط من الرابط ✓"
+        match = re.match(r"https://t\.me/c/(\d+)/(\d+)", input_link)
+        if match:
+            chat_id = int("-100" + match.group(1))
+            msg_id = int(match.group(2))
+            try:
+                msg = await ABH.get_messages(chat_id, ids=msg_id)
+                if isinstance(msg, Message) and msg.media:
+                    await Hussein_event(msg, caption)
+                    await event.delete()
+                    return
+                else:
+                    await event.edit(" لا توجد وسائط في الرسالة المطلوبة.")
+                    return
+            except Exception as e:
+                await event.edit(f" فشل في جلب الرسالة:\n{e}")
+                return
+        else:
+            try:
+                await Hussein(event, caption, input_link)
+                await event.delete()
+            except Exception as e:
+                await event.edit(f" خطأ أثناء تحميل الرابط:\n{e}")
+    else:
+        await event.edit(" يجب الرد على ميديا أو وضع رابط رسالة تيليجرام صالح.")
 async def Hussein(event, caption, input_link):
     me = await ABH.get_me()
     x = me.id
     media = await ABH.download_media(input_link)
     if not media:
-        await event.edit(" لم يتم تحميل الوسائط.")
+        await event.edit("لم يتم تحميل الوسائط من الرابط.")
         return
     await ABH.send_file(x, media, caption=caption)
+    if os.path.exists(media):
+        os.remove(media)
+async def Hussein_event(message, caption):
+    media = await message.download_media()
+    if not media:
+        await message.reply(" لم يتم تحميل الوسائط من الرسالة.")
+        return
+    await ABH.send_file("me", media, caption=caption, parse_mode="markdown")
     if os.path.exists(media):
         os.remove(media)
 def joker_unread_media(message):
