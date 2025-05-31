@@ -12,7 +12,7 @@ async def g(event):
 async def Hussein(event,caption,input_link):
  me=await ABH.get_me()
  x=me.id
- media=await await ABH.download_media(input_link)
+ media=await ABH.download_media(input_link)
  sender=await event.get_sender()
  sender_id=event.sender_id
  ABH_date=event.date.strftime("%Y-%m-%d")
