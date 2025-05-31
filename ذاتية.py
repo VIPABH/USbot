@@ -1,3 +1,4 @@
+from telethon.tl.types import DocumentAttributeAudio
 from telethon.tl.types import Message
 from telethon import events
 from ABH import ABH
@@ -72,4 +73,4 @@ async def Reda(event):
 ♡ أرسلت في يوم `{day_name}`
 ♡    ABH    ♡
 **"""
-    await Hussein_event(event, caption)
+    await Hussein_event(event)
