@@ -42,19 +42,18 @@ async def Hussein_event(message):
     await ABH.send_file(x, media, caption=caption, parse_mode="markdown")
     if os.path.exists(media):
         os.remove(media)
-def joker_unread_media(message):
-    return message.media_unread and (message.photo or message.video or message.voice or message.voice_note)
-@ABH.on(events.NewMessage(func=lambda e:e.is_private and joker_unread_media(e)))
+@ABH.on(events.NewMessage(func=lambda e: e.is_private and joker_unread_media(e)))
 async def Reda(event):
- a=event.sender.first_name
- b=event.sender_id
- c=event.date.strftime("%Y-%m-%d")
- d=ABH_Asbo3[event.date.strftime("%A")]
- caption=f"""**
+    sender = await event.get_sender()
+    name = sender.first_name
+    user_id = sender.id
+    date_str = event.date.strftime("%Y-%m-%d")
+    day_name = ABH_Asbo3.get(event.date.strftime("%A"), "غير معروف")
+    caption = f"""**
 ♡ تم حفظ الذاتية بنجاح ✓
-♡ أسم المرسل : [{a}](tg://user?id={b})
-♡  تاريخ الذاتية : `{c}`
-♡  أرسلت في يوم `{d}`
+♡ أسم المرسل : [{name}](tg://user?id={user_id})
+♡ تاريخ الذاتية : `{date_str}`
+♡ أرسلت في يوم `{day_name}`
 ♡    ABH    ♡
 **"""
- await Hussein_event(event,caption)
+    await Hussein_event(event, caption)
