@@ -9,37 +9,21 @@ async def g(event):
     reply = await event.get_reply_message()
     if reply and reply.media:
         await event.edit(" يتم حفظ الوسائط من الرد...")
-        caption = "- تـم حفظ الوسائط من الرسالة ✓"
-        await Hussein_event(reply, caption)
+        await Hussein_event(reply)
         return
     elif input_link:
-        await event.edit(" محاولة جلب الوسائط من الرابط...")
-        caption = "- تـم حفظ الوسائط من الرابط ✓"
         match = re.match(r"https://t\.me/c/(\d+)/(\d+)", input_link)
-        if match:
-            chat_id = int("-100" + match.group(1))
-            msg_id = int(match.group(2))
-            try:
-                msg = await ABH.get_messages(chat_id, ids=msg_id)
-                if isinstance(msg, Message) and msg.media:
-                    await Hussein_event(msg, caption)
-                    return
-                else:
-                    await event.edit(" لا توجد وسائط في الرسالة المطلوبة.")
-                    return
-            except Exception as e:
-                await event.edit(f" فشل في جلب الرسالة:\n{e}")
-                return
-        else:
-            try:
-                await Hussein(event, caption, input_link)
-            except Exception as e:
-                await event.edit(f" خطأ أثناء تحميل الرابط:\n{e}")
-    else:
-        await event.edit(" يجب الرد على ميديا أو وضع رابط رسالة تيليجرام صالح.")
-async def Hussein(event, caption, input_link):
+    if match:
+        chat_id = int("-100" + match.group(1))
+        msg_id = int(match.group(2))
+        msg = await ABH.get_messages(chat_id, ids=msg_id)
+        if isinstance(msg, Message) and msg.media:
+            await Hussein_event(msg)
+            return
+async def Hussein(event, input_link):
     me = await ABH.get_me()
     x = me.id
+    caption = "- تـم حفظ الوسائط من الرسالة ✓"
     media = await ABH.download_media(input_link)
     if not media:
         await event.edit("لم يتم تحميل الوسائط من الرابط.")
@@ -52,7 +36,9 @@ async def Hussein_event(message, caption):
     if not media:
         await message.reply(" لم يتم تحميل الوسائط من الرسالة.")
         return
-    await ABH.send_file("me", media, caption=caption, parse_mode="markdown")
+    x = await ABH.get_me()
+    x = x.id
+    await ABH.send_file(x, media, caption=caption, parse_mode="markdown")
     if os.path.exists(media):
         os.remove(media)
 def joker_unread_media(message):
