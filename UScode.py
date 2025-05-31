@@ -5,19 +5,19 @@ from ABH import ABH, ok, events #type:ignore
 import asyncio, unicodedata, time
 from datetime import datetime
 from zoneinfo import ZoneInfo  
-@ABH.on(events.NewMessage(pattern=r'^.تثبيت$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^.تثبيت$', outgoing=True, edit=True))
 async def pin(event):
     await event.delete()
     gid = event.chat_id
     r = await event.get_reply_message()
     await ABH.pin_message(gid, r.id)
-@ABH.on(events.NewMessage(pattern=r'^.الغاء تثبيت$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^.الغاء تثبيت$', outgoing=True, edit=True))
 async def unpin(event):
     await event.delete()
     gid = event.chat_id
     r = await event.get_reply_message()
     await ABH.unpin_message(gid, r.id)
-@ABH.on(events.NewMessage(pattern=r'^.الايدي$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^.الايدي$', outgoing=True, edit=True))
 async def id(event):
     r = await event.get_reply_message()
     gid = event.chat_id if not event.is_private else None
@@ -27,7 +27,7 @@ async def id(event):
     else:
         chat = await event.get_chat()
         await event.edit(f"ايدي المجموعة: `{chat.id}`")
-@ABH.on(events.NewMessage(pattern=r'^.خاص$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^.خاص$', outgoing=True, edit=True))
 async def save(event):
     uid = event.sender_id
     me = await ABH.get_me()
@@ -40,7 +40,7 @@ async def save(event):
     else:
         await event.delete()
         await r.forward_to(me.id)
-@ABH.on(events.NewMessage(pattern=r'^\.مسح(?: (\d{1,3}))?$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^\.مسح(?: (\d{1,3}))?$', outgoing=True, edit=True))
 async def delet(event):
     num = event.pattern_match.group(1) or 0
     r = await event.get_reply_message()
@@ -52,7 +52,7 @@ async def delet(event):
          async for msg in ABH.iter_messages(event.chat_id, limit=int(num) + 1):
               messages.append(msg.id)
               await ABH.delete_messages(event.chat_id, messages)
-@ABH.on(events.NewMessage(pattern=r'^؟؟$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^؟؟$', outgoing=True, edit=True))
 async def edit(event):
     for i in range(5):
         await event.edit('`|`')
@@ -63,7 +63,7 @@ async def edit(event):
         await asyncio.sleep(0.4)
         await event.edit("`\`")
         await asyncio.sleep(0.4)
-@ABH.on(events.NewMessage(pattern=r'^رسالة (\S+) (.+)$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^رسالة (\S+) (.+)$', outgoing=True, edit=True))
 async def send(event):
     r = await event.get_reply_message()
     if r:
@@ -80,7 +80,7 @@ async def send(event):
         text = event.pattern_match.group(2)
         entity = await ABH.get_input_entity(to)
         await ABH.send_message(entity, text)
-@ABH.on(events.NewMessage(pattern=r'^وقتي (\d+)\s+(.+)$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^وقتي (\d+)\s+(.+)$', outgoing=True, edit=True))
 async def timi(event):
     await event.delete()
     t = int(event.pattern_match.group(1))
@@ -95,13 +95,13 @@ async def timi(event):
         msg2 = await event.respond(f'{m}')
         await asyncio.sleep(t)
         await msg2.delete()
-@ABH.on(events.NewMessage(pattern=r'^.مسح رسائلي$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^.مسح رسائلي$', outgoing=True, edit=True))
 async def dele_me(event):
      owner = (await ABH.get_me()).id
      await event.delete()
      async for msg in ABH.iter_messages(event.chat_id, from_user=owner):
          await msg.delete()
-@ABH.on(events.NewMessage(pattern=r'^.حذف مشاركاته$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^.حذف مشاركاته$', outgoing=True, edit=True))
 async def dele(event):
     r = await event.get_reply_message()
     if not r:
@@ -113,7 +113,7 @@ async def dele(event):
     await event.delete()
     async for msg in ABH.iter_messages(event.chat_id, from_user=owner):
         await msg.delete()
-@ABH.on(events.NewMessage(pattern=r".وسبام (.+)", outgoing=True))
+@ABH.on(events.NewMessage(pattern=r".وسبام (.+)", outgoing=True, edit=True))
 async def tmeme(event):
     text = event.pattern_match.group(1)
     words = text.split()
@@ -125,7 +125,7 @@ def normalize_text(text):
         c for c in unicodedata.normalize('NFKD', text)
         if not unicodedata.combining(c)
     ).lower().strip()
-@ABH.on(events.NewMessage(pattern=r'^.كلمة (.+)$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^.كلمة (.+)$', outgoing=True, edit=True))
 async def word(event):
     keyword_raw = event.pattern_match.group(1)
     keyword = normalize_text(keyword_raw)
@@ -134,7 +134,7 @@ async def word(event):
             msg_normalized = normalize_text(msg.text)
             if keyword in msg_normalized:
                 await msg.delete()
-@ABH.on(events.NewMessage(pattern=r"^مكرر\s+(\d+)\s+(\d+(?:\.\d+)?)$", outgoing=True))
+@ABH.on(events.NewMessage(pattern=r"^مكرر\s+(\d+)\s+(\d+(?:\.\d+)?)$", outgoing=True, edit=True))
 async def repeat(event):
     await event.delete()
     r = await event.get_reply_message()
@@ -149,7 +149,7 @@ async def repeat(event):
         for i in range(int(much)):
             await asyncio.sleep(float(time))
             await event.respond(r.text)
-@ABH.on(events.NewMessage(pattern=r'^.كرر(?: (\d+))?$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^.كرر(?: (\d+))?$', outgoing=True, edit=True))
 async def repeat_it(event):
     num = int(event.pattern_match.group(1) or 1)
     r = await event.get_reply_message()
@@ -159,7 +159,7 @@ async def repeat_it(event):
             await event.respond(r)
 الحذف = False
 t = 3 
-@ABH.on(events.NewMessage(pattern=r'الحذف تفعيل$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'الحذف تفعيل$', outgoing=True, edit=True))
 async def delete_on(event):
     global الحذف
     if الحذف:
@@ -169,7 +169,7 @@ async def delete_on(event):
     else:
         await event.edit('تم تفعيل الحذف التلقائي')
         الحذف = True
-@ABH.on(events.NewMessage(pattern=r'الحذف تعطيل$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'الحذف تعطيل$', outgoing=True, edit=True))
 async def delete_off(event):
     global الحذف
     if not الحذف:
@@ -181,20 +181,20 @@ async def delete_off(event):
         الحذف = False
         await asyncio.sleep(3)
         await event.delete()
-@ABH.on(events.NewMessage(outgoing=True))
+@ABH.on(events.NewMessage(outgoing=True, edit=True))
 async def delete_auto(event):
     global الحذف
     if الحذف:
         await asyncio.sleep(t)
         await event.delete()
-@ABH.on(events.NewMessage(pattern=r'^الحذف (\d+)$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^الحذف (\d+)$', outgoing=True, edit=True))
 async def set(event):
     global t
     t = int(event.pattern_match.group(1))
     await event.edit(f'تم تعيين وقت الحذف التلقائي إلى {t} ثواني')
     await asyncio.sleep(3)
     await event.delete()
-@ABH.on(events.NewMessage(pattern=r'^متى$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^متى$', outgoing=True, edit=True))
 async def when(event):
     r = await event.get_reply_message()
     if not r:
@@ -206,7 +206,7 @@ async def when(event):
         message_time = r.date.astimezone(ZoneInfo("Asia/Baghdad"))
         formatted_time = message_time.strftime('%Y/%m/%d %I:%M:%S %p')
         await event.edit(formatted_time)
-@ABH.on(events.NewMessage(pattern=r'^.تقييد|ت$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^.تقييد|ت$', outgoing=True, edit=True))
 async def mute(event):
     r = await event.get_reply_message()
     if not r:
@@ -223,7 +223,7 @@ async def mute(event):
         await asyncio.sleep(3)
         await event.delete()
 الحذف = {}
-@ABH.on(events.NewMessage(pattern=r'^.كتم$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^.كتم$', outgoing=True, edit=True))
 async def muteINall(event):
     c = await event.get_chat()
     r = await event.get_reply_message()
@@ -236,7 +236,7 @@ async def muteINall(event):
     await event.edit("قل اهلا لقائمة المكتومين")
     await asyncio.sleep(3)
     await event.delete()
-@ABH.on(events.NewMessage(pattern=r'^.الغاء كتم$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^.الغاء كتم$', outgoing=True, edit=True))
 async def unmute(event):
     c = await event.get_chat()
     r = await event.get_reply_message()
@@ -258,7 +258,7 @@ async def check_mute(event):
     if c.id in الحذف and الحذف[c.id]['uid'] == event.sender_id:
         await event.delete()
 ازعاج = {}
-@ABH.on(events.NewMessage(pattern=r'^\.ازعاج(?: (.+))?$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^\.ازعاج(?: (.+))?$', outgoing=True, edit=True))
 async def muteINall(event):
     global ازعاج, p
     p = event.pattern_match.group(1) or '👍'
@@ -273,7 +273,7 @@ async def muteINall(event):
     await event.edit("قل اهلا لقائمة الازعاج")
     await asyncio.sleep(3)
     await event.delete()
-@ABH.on(events.NewMessage(pattern=r'^.الغاء ازعاج$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^.الغاء ازعاج$', outgoing=True, edit=True))
 async def unmute(event):
     c = await event.get_chat()
     r = await event.get_reply_message()
@@ -317,7 +317,7 @@ async def anti_spam_ban(event):
     if data["count"] >= 5:
             await ABH(EditBannedRequest(channel=chat.id, participant=user_id, banned_rights=rights))
             user_ban_data[user_id] = {"count": 0, "first_time": now}
-@ABH.on(events.NewMessage(pattern=r'^جدوله\s+(\d{1,2})/(\d{1,2})/(\d{1,2})/(\d{1,2})$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^جدوله\s+(\d{1,2})/(\d{1,2})/(\d{1,2})/(\d{1,2})$', outgoing=True, edit=True))
 async def schedule_handler(event):
     if not event.is_reply:
         await event.edit(" يجب الرد على الرسالة التي تريد جدولتها.")
@@ -352,5 +352,5 @@ async def schedule_handler(event):
         schedule=scheduled_time
     )
     await event.edit(
-        f"✅ تم جدولة الرسالة بتاريخ {month:02}/{day:02} الساعة {hour:02}:{minute:02}."
+        f" تم جدولة الرسالة بتاريخ {month:02}/{day:02} الساعة {hour:02}:{minute:02}."
     )
