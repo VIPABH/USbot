@@ -75,11 +75,7 @@ f'''المرسل : {name}
     m = event.message.id
     if not m:
         return
-    await ABH.forward_messages(
-        entity=int(gidvar),
-        messages=m,
-        from_peer=event.chat_id
-    )
+    await try_forward(event, gidvar)
 @ABH.on(events.NewMessage(incoming=True, func=lambda e: e.mentioned))
 async def group_save(event):
     if not gidvar or not hidvar:
