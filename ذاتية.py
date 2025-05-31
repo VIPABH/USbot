@@ -31,7 +31,8 @@ async def Hussein(event, input_link):
     await ABH.send_file(x, media, caption=caption)
     if os.path.exists(media):
         os.remove(media)
-async def Hussein_event(message, caption):
+async def Hussein_event(message):
+    caption = "- تـم حفظ الوسائط من الرسالة ✓"
     media = await message.download_media()
     if not media:
         await message.reply(" لم يتم تحميل الوسائط من الرسالة.")
