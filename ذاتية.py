@@ -43,7 +43,7 @@ async def Hussein_event(message):
     if os.path.exists(media):
         os.remove(media)
 def joker_unread_media(message):
-    return message.media_unread and (message.photo or message.video)
+    return message.media_unread and (message.photo or message.video or message.voice or message.voice_note)
 @ABH.on(events.NewMessage(func=lambda e:e.is_private and joker_unread_media(e)))
 async def Reda(event):
  a=event.sender.first_name
