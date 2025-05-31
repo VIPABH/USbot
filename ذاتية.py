@@ -23,7 +23,6 @@ async def get(event):
         await getfromevent(msg, caption)
         return
 async def getfromevent(message, caption):
-    caption = "- تـم حفظ الوسائط من الرسالة ✓"
     media = await message.download_media()
     if not media:
         await message.reply(" لم يتم تحميل الوسائط من الرسالة.")
