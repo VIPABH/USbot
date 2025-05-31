@@ -4,7 +4,7 @@ from telethon import events
 ABH_Asbo3={'Monday':'الاثنين','Tuesday':'الثلاثاء','Wednesday':'الأربعاء','Thursday':'الخميس','Friday':'الجمعة','Saturday':'السبت','Sunday':'الأحد'}
 @ABH.on(events.NewMessage(pattern=r"^جلب (.+)$", outgoing=True))
 async def g(event):
- await event.edit("يتم الحفظ")
+ await event.edit(f"يتم الحفظ {input_link}")
  caption="- تـم حفظ الصـورة بنجـاح ✓"
  input_link=event.pattern_match.group(1)
  await Hussein(event,caption,input_link)
