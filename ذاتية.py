@@ -11,7 +11,6 @@ async def g(event):
         await event.edit(" يتم حفظ الوسائط من الرد...")
         caption = "- تـم حفظ الوسائط من الرسالة ✓"
         await Hussein_event(reply, caption)
-        await event.delete()
         return
     elif input_link:
         await event.edit(" محاولة جلب الوسائط من الرابط...")
