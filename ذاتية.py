@@ -9,7 +9,6 @@ async def g(event):
     caption = "- تـم حفظ الصـورة بنجـاح ✓"
     try:
         await Hussein(event, caption, input_link)
-        await event.delete()
     except Exception as e:
         await event.edit(f"❌ خطأ أثناء الحفظ:\n{e}")
 async def Hussein(event, caption, input_link):
