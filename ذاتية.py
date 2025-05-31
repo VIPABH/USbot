@@ -23,7 +23,6 @@ async def g(event):
                 msg = await ABH.get_messages(chat_id, ids=msg_id)
                 if isinstance(msg, Message) and msg.media:
                     await Hussein_event(msg, caption)
-                    await event.delete()
                     return
                 else:
                     await event.edit(" لا توجد وسائط في الرسالة المطلوبة.")
@@ -34,7 +33,6 @@ async def g(event):
         else:
             try:
                 await Hussein(event, caption, input_link)
-                await event.delete()
             except Exception as e:
                 await event.edit(f" خطأ أثناء تحميل الرابط:\n{e}")
     else:
