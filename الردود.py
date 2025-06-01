@@ -1,28 +1,31 @@
-from ABH import *
+from ABH import ABH
 from telethon import events
 from telethon.tl.types import ReactionEmoji
-x = set()
-@ABH.on(events.NewMessage(pattern="اضف قناة تفاعل (.+)"))
-async def add_ch(event):
-    ch = event.pattern_match.group(1)
-    if ch.startswith("-100"):
-        x.add(ch)
-        await event.edit("تم إضافة القناة بنجاح!")
+from telethon.tl.functions.messages import SendReactionRequest
+reaction_channels = set()
+@ABH.on(events.NewMessage(pattern=r"اضف قناة تفاعل (-?\d+)"))
+async def add_channel(event):
+    chat_id = int(event.pattern_match.group(1))
+    if str(chat_id).startswith("-100"):
+        reaction_channels.add(chat_id)
+        await event.respond("✅ تم إضافة القناة إلى قائمة التفاعل التلقائي.")
     else:
-        await event.edit("هذا ليس آيدي قناة!!")
-        return
+        await event.respond("❌ هذا ليس آيدي قناة صالح!")
 @ABH.on(events.NewMessage(pattern="القنوات"))
-async def show(event):
-    await event.edit(f"{x}")
+async def list_channels(event):
+    if not reaction_channels:
+        await event.edit("🚫 لا توجد قنوات مضافة حتى الآن.")
+    else:
+        channels_list = "\n".join(str(cid) for cid in reaction_channels)
+        await event.edit(f"📡 القنوات المضافة:\n{channels_list}")
 @ABH.on(events.NewMessage)
 async def auto_react(event):
-    c = await event.get_chat()
     if event.is_private:
         return
     chat = await event.get_chat()
-    if chat.id in x:
+    if chat.id in reaction_channels:
         await ABH(SendReactionRequest(
             peer=event.chat_id,
             msg_id=event.id,
-            reaction=[ReactionEmoji(emoticon=👍)]
-           ))
+            reaction=[ReactionEmoji(emoticon="👍")]
+            ))
