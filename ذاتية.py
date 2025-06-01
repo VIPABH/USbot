@@ -48,7 +48,7 @@ def joker_unread_media(message):
             is_voice_note(message)
         )
     )
-@ABH.on(events.NewMessage(func=lambda e: e.is_private and joker_unread_media(e)), incoming=True)
+@ABH.on(events.NewMessage(func=lambda e: not e.is_outgoing and e.is_private and joker_unread_media(e)))
 async def Reda(event):
     sender = await event.get_sender()
     name = sender.first_name
