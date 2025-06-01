@@ -17,13 +17,12 @@ async def show(event):
 @ABH.on(events.NewMessage)
 async def auto_react(event):
     c = await event.get_chat()
-    if event.is_privte:
+    if event.is_private:
         return
-    else:
-        if c.id in x:
-            await ABH(SendReactionRequest(
-                peer=event.chat_id,
-                msg_id=event.id,
-                reaction=[ReactionEmoji(emoticon=p)]
-    ))
-    
+    chat = await event.get_chat()
+    if chat.id in allowed_chat_ids:
+        await ABH(SendReactionRequest(
+            peer=event.chat_id,
+            msg_id=event.id,
+            reaction=[ReactionEmoji(emoticon=default_reaction)]
+           ))
