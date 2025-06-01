@@ -20,8 +20,6 @@ async def list_channels(event):
         await event.edit(f"📡 القنوات المضافة:\n{channels_list}")
 @ABH.on(events.NewMessage)
 async def auto_react(event):
-    if event.is_private:
-        return
     chat = await event.get_chat()
     if chat.id in reaction_channels:
         await ABH(SendReactionRequest(
