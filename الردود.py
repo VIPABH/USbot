@@ -3,7 +3,7 @@ from telethon import events
 from telethon.tl.types import ReactionEmoji
 from telethon.tl.functions.messages import SendReactionRequest
 reaction_channels = set()
-@ABH.on(events.NewMessage(pattern=r"اضف قناة تفاعل (-?\d+)"))
+@ABH.on(events.NewMessage(pattern=r"اضف (-?\d+)"))
 async def add_channel(event):
     chat_id = int(event.pattern_match.group(1))
     if str(chat_id).startswith("-100"):
@@ -21,7 +21,7 @@ async def list_channels(event):
 @ABH.on(events.NewMessage)
 async def auto_react(event):
     chat = await event.get_chat()
-    if chat.id in reaction_channels:
+    if str(chat.id) in reaction_channels:
         await ABH(SendReactionRequest(
             peer=event.chat_id,
             msg_id=event.id,
