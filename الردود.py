@@ -24,5 +24,5 @@ async def auto_react(event):
         await ABH(SendReactionRequest(
             peer=event.chat_id,
             msg_id=event.id,
-            reaction=[ReactionEmoji(emoticon=default_reaction)]
+            reaction=[ReactionEmoji(emoticon=👍)]
            ))
