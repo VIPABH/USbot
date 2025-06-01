@@ -1,5 +1,6 @@
 from ABH import *
 from telethon import events
+from telethon.tl.types import ReactionEmoji
 x = set()
 @ABH.on(events.NewMessage(pattern="اضف قناة تفاعل (.+)"))
 async def add_ch(event):
@@ -13,3 +14,16 @@ async def add_ch(event):
 @ABH.on(events.NewMessage(pattern="القنوات"))
 async def show(event):
     await event.edit(f"{x}")
+@ABH.on(events.NewMessage)
+async def auto_react(event):
+    c = await event.get_chat()
+    if c.is_privte:
+        return
+    else:
+        if c.id in x:
+            await ABH(SendReactionRequest(
+                peer=event.chat_id,
+                msg_id=event.id,
+                reaction=[ReactionEmoji(emoticon=p)]
+    ))
+    
