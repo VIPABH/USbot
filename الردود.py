@@ -6,10 +6,10 @@ async def add_ch(event):
     ch = event.pattern_match.group(1)
     if ch.startswith("-100"):
         x.add(ch)
-        await event.reply("تم إضافة القناة بنجاح!")
+        await event.edit("تم إضافة القناة بنجاح!")
     else:
-        await event.reply("هذا ليس آيدي قناة!!")
+        await event.edit("هذا ليس آيدي قناة!!")
         return
 @ABH.on(events.NewMessage(pattern="القنوات"))
 async def show(event):
-    await event.reply(x)
+    await event.edit(f"{x}")
