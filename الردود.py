@@ -17,7 +17,7 @@ async def show(event):
 @ABH.on(events.NewMessage)
 async def auto_react(event):
     c = await event.get_chat()
-    if c.is_privte:
+    if is_privte:
         return
     else:
         if c.id in x:
