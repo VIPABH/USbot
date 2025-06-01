@@ -1,6 +1,6 @@
 from ABH import *
 from telethon import events
-x = ()
+x = set()
 @ABH.on(events.NewMessage(pattern="اضف قناة تفاعل (.+)"))
 async def add_ch(event):
     ch = event.pattern_match.group(1)
