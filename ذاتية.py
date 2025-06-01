@@ -23,12 +23,15 @@ async def get(event):
         await getfromevent(msg, caption)
         return
 async def getfromevent(message, caption):
-    media = await message.download_media()
-    if not media:
-        await message.reply(" لم يتم تحميل الوسائط من الرسالة.")
-        return
     x = await ABH.get_me()
     x = x.id
+    uid = message.sender_id
+    if uid == x:
+        return
+    media = await message.download_media()
+    if not media:
+        await message.edit(" لم يتم تحميل الوسائط من الرسالة.")
+        return
     await ABH.send_file(x, media, caption=caption, parse_mode="markdown")
     if os.path.exists(media):
         os.remove(media)
