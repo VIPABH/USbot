@@ -20,7 +20,7 @@ async def auto_react(event):
     if event.is_private:
         return
     chat = await event.get_chat()
-    if chat.id in allowed_chat_ids:
+    if chat.id in x:
         await ABH(SendReactionRequest(
             peer=event.chat_id,
             msg_id=event.id,
