@@ -10,6 +10,6 @@ async def add_ch(event):
     else:
         await event.reply("هذا ليس آيدي قناة!!")
         return
-@ABH.on(events.Newmessage(pattern="القنوات"))
+@ABH.on(events.NewMessage(pattern="القنوات"))
 async def show(event):
     await event.reply(x)
