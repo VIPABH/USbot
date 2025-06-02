@@ -43,10 +43,10 @@ async def list_channels(event):
 @ABH.on(events.NewMessage)
 async def auto_react(event):
     chat_id = str(event.chat_id)
-    if chat_id in reaction_data and event.is_channel:
-        reactions = [ReactionEmoji(emoticon=r) for r in reaction_data[chat_id]]
-        await ABH(SendReactionRequest(
-            peer=event.chat_id,
-            msg_id=event.id,
-            reaction=reactions
-            ))
+    if event.is_channel and chat_id in reaction_data:
+        for emoji in reaction_data[chat_id]:
+            await ABH(SendReactionRequest(
+                peer=event.chat_id,
+                msg_id=event.id,
+                reaction=[ReactionEmoji(emoticon=emoji)]
+                ))
