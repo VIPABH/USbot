@@ -35,7 +35,7 @@ async def remove_channel(event):
 @ABH.on(events.NewMessage(pattern="^القنوات$", func=lambda e: e.out))
 async def list_channels(event):
     if not reaction_data:
-        return await event.reply("📭 لا توجد قنوات مضافة.")
+        return await event.edit("📭 لا توجد قنوات مضافة.")
     text = "📡 القنوات والتفاعلات:\n\n"
     for cid, data in reaction_data.items():
         text += f"• `{cid}` → {data.get('reaction')}\n"
