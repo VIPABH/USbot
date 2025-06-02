@@ -32,7 +32,7 @@ async def remove_channel(event):
         await event.reply(f"تم حذف القناة `{chat_id}` من التفاعلات.")
     else:
         await event.reply("هذه القناة غير موجودة في القائمة.")
-@ABH.on(events.NewMessage(pattern="^القنوات$"), outgoing=True)
+@ABH.on(events.NewMessage(pattern="^القنوات$", outgoing=True))
 async def list_channels(event):
     if not reaction_data:
         return await event.reply("📭 لا توجد قنوات مضافة.")
