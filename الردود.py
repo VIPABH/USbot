@@ -61,23 +61,25 @@ async def list_channels(event):
 
 @ABH.on(events.NewMessage)
 async def auto_react(event):
-    chat_id = str(event.chat_id)
-    if event.is_channel and chat_id in reaction_data:
-        r1 = reaction_data[chat_id].get("r1")
-        r2 = reaction_data[chat_id].get("r2")
-        r3 = reaction_data[chat_id].get("r3")
+ chat_id = str(event.chat_id)
+ if event.is_channel and chat_id in reaction_data:
+  r1 = reaction_data[chat_id].get("r1")
+  r2 = reaction_data[chat_id].get("r2")
+  r3 = reaction_data[chat_id].get("r3")
 
-        if not r1: return
-        try:
-            await ABH(SendReactionRequest(peer=event.chat_id, msg_id=event.id, reaction=[ReactionEmoji(emoticon=r1)]))
-        except: return
+  if not r1: return
+  try:
+   await ABH(SendReactionRequest(peer=event.chat_id, msg_id=event.id, reaction=[ReactionEmoji(emoticon=r1)]))
+   await asyncio.sleep(1)
+  except: return
 
-        if not r2: return
-        try:
-            await ABH(SendReactionRequest(peer=event.chat_id, msg_id=event.id, reaction=[ReactionEmoji(emoticon=r2)]))
-        except: return
+  if not r2: return
+  try:
+   await ABH(SendReactionRequest(peer=event.chat_id, msg_id=event.id, reaction=[ReactionEmoji(emoticon=r2)]))
+   await asyncio.sleep(1)
+  except: return
 
-        if not r3: return
-        try:
-            await ABH(SendReactionRequest(peer=event.chat_id, msg_id=event.id, reaction=[ReactionEmoji(emoticon=r3)]))
-        except: return
+  if not r3: return
+  try:
+   await ABH(SendReactionRequest(peer=event.chat_id, msg_id=event.id, reaction=[ReactionEmoji(emoticon=r3)]))
+  except: return
