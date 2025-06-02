@@ -23,7 +23,7 @@ async def add_channel(event):
     reaction_data[chat_id] = reactions
     save_data(reaction_data)
     await event.reply(f"تم إضافة القناة `{chat_id}` مع التفاعلات: {' '.join(reactions)}")
-@ABH.on(events.NewMessage(pattern=r"^احذف (-?\d+)$"), outgoing=True)
+@ABH.on(events.NewMessage(pattern=r"^احذف (-?\d+)$", func=lambda e: e.out))
 async def remove_channel(event):
     chat_id = event.pattern_match.group(1)
     if chat_id in reaction_data:
