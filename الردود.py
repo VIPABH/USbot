@@ -14,7 +14,7 @@ def save_data(data):
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 reaction_data = load_data()
-@ABH.on(events.NewMessage(pattern=r"^اضف (-?\d+)\s+(.+)$"), outgoing=True)
+@ABH.on(events.NewMessage(pattern=r"^اضف (-?\d+)\s+(.+)$", outgoing=True))
 async def add_channel(event):
     chat_id = event.pattern_match.group(1)
     reactions = event.pattern_match.group(2).split()
