@@ -1,4 +1,4 @@
-import json, os، asyncio
+import json, os, asyncio
 from telethon import events
 from telethon.tl.types import ReactionEmoji
 from telethon.tl.functions.messages import SendReactionRequest
