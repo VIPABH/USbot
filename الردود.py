@@ -3,45 +3,35 @@ from telethon import events
 from telethon.tl.types import ReactionEmoji
 from telethon.tl.functions.messages import SendReactionRequest
 from ABH import ABH
-
 DATA_FILE = "reaction_data.json"
-
 def load_data():
     if not os.path.exists(DATA_FILE):
         return {}
     with open(DATA_FILE, "r", encoding="utf-8") as f:
         return json.load(f)
-
 def save_data(data):
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-
 reaction_data = load_data()
-
 @ABH.on(events.NewMessage(pattern=r"^اضف (-?\d+)\s+(\S+)$", func=lambda e: e.out))
 async def add_channel(event):
     chat_id = event.pattern_match.group(1)
     reaction = event.pattern_match.group(2)
-
     if not chat_id.startswith("-100"):
-        return await event.reply("❌ هذا ليس آيدي قناة صالح!")
-
-    # حفظ تفاعل واحد فقط
+        return await event.edit("❌ هذا ليس آيدي قناة صالح!")
     reaction_data[chat_id] = {"reaction": reaction}
     save_data(reaction_data)
 
-    await event.reply(f"✅ تمت إضافة `{chat_id}` مع التفاعل: {reaction}")
-
+    await event.edit(f"✅ تمت إضافة `{chat_id}` مع التفاعل: {reaction}")
 @ABH.on(events.NewMessage(pattern=r"^احذف (-?\d+)$", func=lambda e: e.out))
 async def remove_channel(event):
     chat_id = event.pattern_match.group(1)
     if chat_id in reaction_data:
         del reaction_data[chat_id]
         save_data(reaction_data)
-        await event.reply(f"🗑️ تم حذف القناة `{chat_id}` من التفاعلات.")
+        await event.edit(f"🗑️ تم حذف القناة `{chat_id}` من التفاعلات.")
     else:
-        await event.reply("⚠️ هذه القناة غير موجودة في القائمة.")
-
+        await event.edit("⚠️ هذه القناة غير موجودة في القائمة.")
 @ABH.on(events.NewMessage(pattern="^القنوات$", func=lambda e: e.out))
 async def list_channels(event):
     if not reaction_data:
@@ -49,8 +39,7 @@ async def list_channels(event):
     text = "📡 القنوات والتفاعلات:\n\n"
     for cid, data in reaction_data.items():
         text += f"• `{cid}` → {data.get('reaction')}\n"
-    await event.reply(text)
-
+    await event.edit(text)
 @ABH.on(events.NewMessage)
 async def auto_react(event):
     chat_id = str(event.chat_id)
