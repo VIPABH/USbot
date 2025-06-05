@@ -18,7 +18,7 @@ async def get(event):
         chat_id = int("-100" + match.group(1))
         msg_id = int(match.group(2))
         msg = await ABH.get_messages(chat_id, ids=msg_id)
-    caption = "- تـم حفظ الوسائط من الرسالة ✓"
+        caption = "- تـم حفظ الوسائط من الرسالة ✓"
     if isinstance(msg, Message) and msg.media:
         await getfromevent(msg, caption)
         return
