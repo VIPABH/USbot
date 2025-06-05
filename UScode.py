@@ -222,7 +222,7 @@ async def mute(event):
         await r.delete()
         await asyncio.sleep(3)
         await event.delete()
-الحذف = {}
+المكتومين = {}
 @ABH.on(events.NewMessage(pattern=r'^.كتم$', outgoing=True))
 async def muteINall(event):
     c = await event.get_chat()
@@ -232,7 +232,7 @@ async def muteINall(event):
         await asyncio.sleep(3)
         await event.delete()
         return
-    الحذف[c.id] = {'uid': r.sender_id}
+    المكتومين[c.id] = {'uid': r.sender_id}
     await event.edit("قل اهلا لقائمة المكتومين")
     await asyncio.sleep(3)
     await event.delete()
@@ -245,7 +245,7 @@ async def unmute(event):
         await asyncio.sleep(3)
         await event.delete()
         return
-    if c.id in الحذف and الحذف[c.id]['uid'] == r.sender_id:
+    if c.id in المكتومين and المكتومين[c.id]['uid'] == r.sender_id:
         del الحذف[c.id]
         await event.edit('تم الغاء كتم المستخدم')
     else:
@@ -255,7 +255,7 @@ async def unmute(event):
 @ABH.on(events.NewMessage)
 async def check_mute(event):
     c = await event.get_chat()
-    if c.id in الحذف and الحذف[c.id]['uid'] == event.sender_id:
+    if c.id in المكتومين and المكتومين[c.id]['uid'] == event.sender_id:
         await event.delete()
 ازعاج = {}
 @ABH.on(events.NewMessage(pattern=r'^\.ازعاج(?: (.+))?$', outgoing=True))
