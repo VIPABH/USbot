@@ -246,7 +246,7 @@ async def unmute(event):
         await event.delete()
         return
     if c.id in المكتومين and المكتومين[c.id]['uid'] == r.sender_id:
-        del الحذف[c.id]
+        del المكتومين[c.id]
         await event.edit('تم الغاء كتم المستخدم')
     else:
         await event.edit('هذا المستخدم ليس مكتومًا')
