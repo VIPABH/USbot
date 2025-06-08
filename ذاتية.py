@@ -1,5 +1,6 @@
 from telethon.tl.types import DocumentAttributeAudio
 from telethon.tl.types import Message
+from shortcuts import try_forward
 from telethon import events
 from ABH import *
 import os, re
