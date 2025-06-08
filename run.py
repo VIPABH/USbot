@@ -5,7 +5,7 @@ from UScode import *
 from config import *
 from shortcuts import *
 from التخزين import *
-from الردود import *
+from التفاعلات import *
 from امسح import *
 from ذاتية import *
 from ميمز import *
