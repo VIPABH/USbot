@@ -5,7 +5,7 @@ now = datetime.now()
 تاريخ = now.strftime("%Y-%m-%d")
 ساعة = now.strftime("%I:%M:%S %p")
 وقت_بدء_التشغيل = datetime.now()
-@ABH.on(events.NewMessage(pattern="^.فحص|فحص|ف", outgoing=True))
+@ABH.on(events.NewMessage(pattern="^.فحص|فحص", outgoing=True))
 async def testup(event):
     الآن = datetime.now()
     مدة = الآن - وقت_بدء_التشغيل
