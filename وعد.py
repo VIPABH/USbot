@@ -2,7 +2,7 @@ from telethon import events
 from ABH import ABH
 import asyncio, re
 target_user_id = 1421907917
-@bot.on(events.NewMessage(pattern=r"^.كلمات (\d+)\s+(\d+)$", outgoing=True))
+@ABH.on(events.NewMessage(pattern=r"^.كلمات (\d+)\s+(\d+)$", outgoing=True))
 async def words(event):
     await event.delete()
     num = int(event.pattern_match.group(1)) or 1
