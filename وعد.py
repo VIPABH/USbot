@@ -20,7 +20,7 @@ async def words(event):
                     if match:
                         text = match.group(1)
                         await conv.send_message(text)
-                         await asyncio.sleep(time)
+                        await asyncio.sleep(time)
                     break
             except asyncio.TimeoutError:
                 return
