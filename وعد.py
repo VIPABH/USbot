@@ -125,5 +125,6 @@ async def sends(event):
     if not r:
         await event.edit('🤔 يجب أن ترد على رسالة.')
         return
-    for i in range(time)
+    for i in range(much)
         await words(event)
+        await asyncio.sleep(time)
