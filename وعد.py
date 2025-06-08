@@ -19,8 +19,8 @@ async def words(event):
                     match = re.search(r"\(\s*(.+?)\s*\)", text)
                     if match:
                         text = match.group(1)
+                         await asyncio.sleep(time)
                         await conv.send_message(text)
-                        await asyncio.sleep(time)
                     break
             except asyncio.TimeoutError:
                 return
