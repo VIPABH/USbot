@@ -24,7 +24,7 @@ async def words(event):
                 return
 target_user_id = 1421907917
 @ABH.on(events.NewMessage(pattern=r"^.تركيب (\d+)$", outgoing=True))
-async def words(event):
+async def unspilt(event):
     await event.delete()
     num = int(event.pattern_match.group(1)) or 1
     for i in range(num):
@@ -45,7 +45,7 @@ async def words(event):
             except asyncio.TimeoutError:
                 return
 @ABH.on(events.NewMessage(pattern=r"^.تفكيك (\d+)$", outgoing=True))
-async def words(event):
+async def spilt(event):
     await event.delete()
     num = int(event.pattern_match.group(1)) or 1
     for i in range(num):
@@ -67,7 +67,7 @@ async def words(event):
             except asyncio.TimeoutError:
                 return
 @ABH.on(events.NewMessage(pattern=r"^.احسب (\d+)$", outgoing=True))
-async def words(event):
+async def calc(event):
     await event.delete()
     num = int(event.pattern_match.group(1)) or 1
     for _ in range(num):
@@ -94,7 +94,7 @@ async def words(event):
             except asyncio.TimeoutError:
                 return
 @ABH.on(events.NewMessage(pattern=r"^.جمل (\d+)$", outgoing=True))
-async def words(event):
+async def j(event):
     await event.delete()
     num = int(event.pattern_match.group(1)) or 1
     for _ in range(num):
@@ -117,3 +117,13 @@ async def words(event):
                     break
             except asyncio.TimeoutError:
                 return
+@ABH.on(events.NewMessage(pattern=r"^.تفاعل|تفاعل\s+(\d+)\s+(\d+(?:\.\d+)?)$", outgoing=True))
+async def sends(event):
+    much = int(event.pattern_match.group(1))
+    time = float(event.pattern_match.group(2))
+    r = await event.get_reply_message()
+    if not r:
+        await event.edit('🤔 يجب أن ترد على رسالة.')
+        return
+    for i in range(time)
+        await words(event)
