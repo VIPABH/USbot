@@ -279,7 +279,7 @@ async def meme(event):
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
         await ABH.send_file(event.chat_id, url)
-@ABH.on(events.NewMessage(pattern='^تف$', outgoing=True))
+@ABH.on(events.NewMessage(pattern='^تفف$', outgoing=True))
 async def meme(event):
     await event.delete()
     url = f"https://t.me/VIPABH/1161"
