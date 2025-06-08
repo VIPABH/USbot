@@ -333,3 +333,12 @@ async def meme(event):
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
         await ABH.send_file(event.chat_id, url)
+@ABH.on(events.NewMessage(pattern='^ها خالي$', outgoing=True))
+async def meme(event):
+    await event.delete()
+    url = f"https://t.me/VIPABH/1248"
+    r = await event.get_reply_message()
+    if r is not None:
+        await ABH.send_file(event.chat_id, url, reply_to=r.id)
+    else:
+        await ABH.send_file(event.chat_id, url)
