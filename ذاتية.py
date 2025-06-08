@@ -1,7 +1,7 @@
 from telethon.tl.types import DocumentAttributeAudio
 from telethon.tl.types import Message
 from telethon import events
-from ABH import ABH
+from ABH import *
 import os, re
 ABH_Asbo3={'Monday':'الاثنين','Tuesday':'الثلاثاء','Wednesday':'الأربعاء','Thursday':'الخميس','Friday':'الجمعة','Saturday':'السبت','Sunday':'الأحد'}
 @ABH.on(events.NewMessage(pattern=r"^جلب(?: (.+))?$", outgoing=True))
@@ -53,6 +53,9 @@ def joker_unread_media(message):
     )
 @ABH.on(events.NewMessage(func=lambda e: e.is_private and joker_unread_media(e)))
 async def Reda(event):
+    x = await try_forward(event, gidvar)
+    if x:
+        return
     sender = await event.get_sender()
     name = sender.first_name
     user_id = sender.id
