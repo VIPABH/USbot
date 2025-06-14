@@ -1,7 +1,7 @@
 from telethon.tl.functions.messages import SendReactionRequest
 from telethon.tl.types import ReactionEmoji, ChatBannedRights
 from telethon.tl.functions.channels import EditBannedRequest
-import asyncio, unicodedata, time, json, os
+import asyncio, unicodedata, re, time, json, os
 from ABH import ABH #type:ignore
 from datetime import datetime
 from zoneinfo import ZoneInfo  
@@ -12,7 +12,7 @@ async def pin(event):
     gid = event.chat_id
     r = await event.get_reply_message()
     await ABH.pin_message(gid, r.id)
-@ABH.on(events.NewMessage(pattern=r'^.الغاء تثبيت$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^.?الغاء تثبيت$', outgoing=True))
 async def unpin(event):
     await event.delete()
     gid = event.chat_id
@@ -21,12 +21,11 @@ async def unpin(event):
 @ABH.on(events.NewMessage(pattern=r'^.الايدي$', outgoing=True))
 async def id(event):
     r = await event.get_reply_message()
-    gid = event.chat_id if not event.is_private else None
+    chat = await event.get_chat()
     if r:
         uid = r.sender_id
-        await event.edit(f"ايدي المستخدم: `{uid}`\nايدي المجموعة: `{gid}`")
+        await event.edit(f'ايدي المجموعة ↢ `{chat.id}` \n ايدي المستخدم ↢ `{uid}`')
     else:
-        chat = await event.get_chat()
         await event.edit(f"ايدي المجموعة: `{chat.id}`")
 @ABH.on(events.NewMessage(pattern=r'^.?خاص$', outgoing=True))
 async def save(event):
@@ -64,23 +63,22 @@ async def edit(event):
         await asyncio.sleep(0.4)
         await event.edit("`\`")
         await asyncio.sleep(0.4)
-@ABH.on(events.NewMessage(pattern=r'^.?رسالة (\S+) (.+)$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^\.?رسالة(?: (\S+))? (.+)$', outgoing=True))
 async def send(event):
-    r = await event.get_reply_message()
-    if r:
-         await event.delete()
-         to = r.sender_id
-         t1 = event.pattern_match.group(1)
-         txt = event.pattern_match.group(2)
-         text = f"{t1} {txt}"
-         entity = await ABH.get_input_entity(to)
-         await ABH.send_message(entity, text)
+    await event.delete()
+    reply = await event.get_reply_message()
+    arg1 = event.pattern_match.group(1)
+    message_text = event.pattern_match.group(2)
+
+    if reply:
+        to_id = reply.sender_id
+        entity = await ABH.get_input_entity(to_id)
+        await ABH.send_message(entity, message_text)
+    elif arg1 and (arg1.startswith("@") or arg1.isdigit()):
+        entity = await ABH.get_input_entity(arg1)
+        await ABH.send_message(entity, message_text)
     else:
-        await event.delete()
-        to = event.pattern_match.group(1)
-        text = event.pattern_match.group(2)
-        entity = await ABH.get_input_entity(to)
-        await ABH.send_message(entity, text)
+        await event.edit(f"📩 نص الرسالة:\n`{arg1} {message_text}`\n لم يتم تحديد جهة لإرسال الرسالة.")
 @ABH.on(events.NewMessage(pattern=r'^.?وقتي (\d+)\s+(.+)$', outgoing=True))
 async def timi(event):
     await event.delete()
@@ -93,7 +91,7 @@ async def timi(event):
         await asyncio.sleep(t)
         await msg.delete()
     else:
-        msg2 = await event.edit(f'{m}')
+        msg2 = await event.respond(f'{m}')
         await asyncio.sleep(t)
         await msg2.delete()
 @ABH.on(events.NewMessage(pattern=r'^.مسح رسائلي$', outgoing=True))
@@ -114,13 +112,6 @@ async def dele(event):
     await event.delete()
     async for msg in ABH.iter_messages(event.chat_id, from_user=owner):
         await msg.delete()
-@ABH.on(events.NewMessage(pattern=r".وسبام (.+)", outgoing=True))
-async def tmeme(event):
-    text = event.pattern_match.group(1)
-    words = text.split()
-    await event.delete()
-    for word in words:
-        await event.edit(f'{word}')
 def normalize_text(text):
     return ''.join(
         c for c in unicodedata.normalize('NFKD', text)
@@ -130,10 +121,11 @@ def normalize_text(text):
 async def word(event):
     keyword_raw = event.pattern_match.group(1)
     keyword = normalize_text(keyword_raw)
+    pattern = re.compile(rf'\b{re.escape(keyword)}\b')
     async for msg in ABH.iter_messages(event.chat_id):
         if msg.text:
             msg_normalized = normalize_text(msg.text)
-            if keyword in msg_normalized:
+            if pattern.search(msg_normalized):
                 await msg.delete()
 @ABH.on(events.NewMessage(pattern=r'^\.?مكرر\s+(\d+)\s+(\d+(?:\.\d+)?)$', outgoing=True))
 async def repeat(event):
@@ -329,42 +321,71 @@ async def anti_spam_ban(event):
     if data["count"] >= 5:
             await ABH(EditBannedRequest(channel=chat.id, participant=user_id, banned_rights=rights))
             user_ban_data[user_id] = {"count": 0, "first_time": now}
-@ABH.on(events.NewMessage(pattern=r'^جدوله\s+(\d{1,2})/(\d{1,2})/(\d{1,2})/(\d{1,2})$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^جدوله\s+(\d{1,2})/(\d{1,2})/(\d{1,2})$', outgoing=True))
 async def schedule_handler(event):
     if not event.is_reply:
-        await event.edit(" يجب الرد على الرسالة التي تريد جدولتها.")
+        await event.edit("❌ يجب الرد على الرسالة التي تريد جدولتها.")
         return
-    month = int(event.pattern_match.group(1))
-    day = int(event.pattern_match.group(2))
-    hour = int(event.pattern_match.group(3))
-    minute = int(event.pattern_match.group(4))
+    try:
+        day = int(event.pattern_match.group(1))
+        hour = int(event.pattern_match.group(2))
+        minute = int(event.pattern_match.group(3))
+    except ValueError:
+        await event.edit("❌ صيغة غير صحيحة للأرقام المدخلة.")
+        return
     now = datetime.now()
-    scheduled_time = datetime(
-        year=now.year,
-        month=month,
-        day=day,
-        hour=hour,
-        minute=minute,
-        second=0,
-        microsecond=0
-    )
-    if scheduled_time <= now:
-        await event.edit("الوقت الذي أدخلته قد مضى. الرجاء إدخال وقت مستقبلي.")
+    month = now.month
+    year = now.year
+    try:
+        scheduled_time = datetime(
+            year=year,
+            month=month,
+            day=day,
+            hour=hour,
+            minute=minute,
+            second=0,
+            microsecond=0
+        )
+    except ValueError:
+        await event.edit("❌ التاريخ أو الوقت المدخل غير صحيح.")
         return
+    if scheduled_time <= now:
+        if month == 12:
+            month = 1
+            year += 1
+        else:
+            month += 1
+
+        try:
+            scheduled_time = datetime(
+                year=year,
+                month=month,
+                day=day,
+                hour=hour,
+                minute=minute,
+                second=0,
+                microsecond=0
+            )
+        except ValueError:
+            await event.edit("❌ التاريخ أو الوقت المدخل غير صحيح بعد تعديل الشهر.")
+            return
     reply = await event.get_reply_message()
+    if not reply:
+        await event.edit("❌ يرجى الرد على الرسالة التي تريد جدولتها.")
+        return
     file = reply.media if reply.media else None
-    msg = reply.message if reply.message else None
+    msg = reply.message if reply.message else ""
     if not msg and not file:
-        await event.edit("لا يمكن جدولة هذه الرسالة (قد تكون نوع غير مدعوم).")
+        await event.edit("❌ لا يمكن جدولة هذه الرسالة (نوع غير مدعوم).")
         return
     await ABH.send_message(
         entity=event.chat_id,
-        message=msg or "",
+        message=msg,
         file=file,
         schedule=scheduled_time
     )
     await event.edit(
-        f" تم جدولة الرسالة بتاريخ {month:02}/{day:02} الساعة {hour:02}:{minute:02}."
+        f"✅ تم جدولة الرسالة بتاريخ {scheduled_time.strftime('%d/%m/%Y %H:%M')}."
     )
 USAGE_FILE = "usage.json"
 def load_usage():
