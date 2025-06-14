@@ -359,11 +359,11 @@ usage = 0
 @ABH.on(events.NewMessage(pattern='.استخدامي'))
 async def usge(event):
     global usage
-    await event.edit(int(usage))
+    await event.edit(f"{usage}")
 @ABH.on(events.NewMessage(outgoing=True))
 async def plususe(event):
     global usage
     usage += 1
-    await event.edit(int(usage))
+    await event.edit(f"{usage}")
     if usage == 5:
         await event.edit('وصلت للحد اليومي')
