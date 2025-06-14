@@ -135,7 +135,7 @@ async def word(event):
             msg_normalized = normalize_text(msg.text)
             if keyword in msg_normalized:
                 await msg.delete()
-@ABH.on(events.NewMessage(pattern=r'^.مكرر|مكرر\s+(\d+)\s+(\d+(?:\.\d+)?)$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^\.?مكرر\s+(\d+)\s+(\d+(?:\.\d+)?)$', outgoing=True))
 async def repeat(event):
     await event.delete()
     r = await event.get_reply_message()
