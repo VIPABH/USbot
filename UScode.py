@@ -355,6 +355,7 @@ async def schedule_handler(event):
     await event.edit(
         f" تم جدولة الرسالة بتاريخ {month:02}/{day:02} الساعة {hour:02}:{minute:02}."
     )
+on = False
 @ABH.on(events.NewMessage(pattern='الحد اليومي (.+) '))
 async def onOFF(event):
     global on
