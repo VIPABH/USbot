@@ -364,7 +364,7 @@ def load_usage():
 def save_usage(data):
     with open(USAGE_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-@ABH.on(events.NewMessage(pattern=r'الحد اليومي (.+) ', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^الحد اليومي (.+)$', outgoing=True))
 async def on_off(event):
     data = load_usage()
     command = event.pattern_match.group(1)
