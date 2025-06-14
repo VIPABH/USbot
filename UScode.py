@@ -1,10 +1,11 @@
 from telethon.tl.functions.messages import SendReactionRequest
 from telethon.tl.types import ReactionEmoji, ChatBannedRights
 from telethon.tl.functions.channels import EditBannedRequest
-from ABH import ABH, ok, events #type:ignore
+from ABH import ABH #type:ignore
 import asyncio, unicodedata, time
 from datetime import datetime
 from zoneinfo import ZoneInfo  
+from telethon import events
 @ABH.on(events.NewMessage(pattern=r'^.تثبيت$', outgoing=True))
 async def pin(event):
     await event.delete()
@@ -27,7 +28,7 @@ async def id(event):
     else:
         chat = await event.get_chat()
         await event.edit(f"ايدي المجموعة: `{chat.id}`")
-@ABH.on(events.NewMessage(pattern=r'^.خاص$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^خاص|.خاص$', outgoing=True))
 async def save(event):
     uid = event.sender_id
     me = await ABH.get_me()
@@ -354,3 +355,14 @@ async def schedule_handler(event):
     await event.edit(
         f" تم جدولة الرسالة بتاريخ {month:02}/{day:02} الساعة {hour:02}:{minute:02}."
     )
+usage = 0
+@ABH.on(events.NewMessage(pattern='.استخدامي'))
+async def usge(event):
+    global usage
+    await event.edit(usage)
+@ABH.on(events.NewMessage(outgoing=True))
+async def plususe(event):
+    usage += 1
+    await event.edit(usage)
+    if usage == 5:
+        await event.edit('وصلت للحد اليومي')
