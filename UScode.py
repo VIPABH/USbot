@@ -355,15 +355,27 @@ async def schedule_handler(event):
     await event.edit(
         f" تم جدولة الرسالة بتاريخ {month:02}/{day:02} الساعة {hour:02}:{minute:02}."
     )
+@ABH.on(events.NewMessage(pattern='الحد اليومي (.+) '))
+async def onOFF(event):
+    global on
+    text = event.pattern_match.group(1)
+    if text == 'تفعيل':
+        on = True
+    elif text == 'تعطيل':
+        on = False
 usage = 0
 @ABH.on(events.NewMessage(pattern='.استخدامي'))
 async def usge(event):
     global usage
     await event.edit(f"{usage}")
+@ABH.on(events.NewMessage(pattern='^ضع حد يومي (\d+) $'))
+async def sedusge(event):
+    global s
+    s = int(event.pattern_match.group(1)) or 2
 @ABH.on(events.NewMessage(outgoing=True))
 async def plususe(event):
     global usage
-    usage += 1
-    await event.edit(f"{usage}")
-    if usage == 5:
-        await event.edit('وصلت للحد اليومي')
+    if on:
+        usage += 1
+        if usage == s:
+            await event.delete()
