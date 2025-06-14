@@ -153,7 +153,7 @@ async def repeat(event):
                 message=r.message if r.message else None,
                 file=r.media if r.media else None
             )
-@ABH.on(events.NewMessage(pattern=r'^\.?كرر (\d+)$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^\.?كرر(?: (\d+))?$', outgoing=True))
 async def repeat_it(event):
     await event.delete()
     num = int(event.pattern_match.group(1) or 1)
