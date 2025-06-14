@@ -378,7 +378,7 @@ async def on_off(event):
 @ABH.on(events.NewMessage(pattern=r'\.استخدامي'))
 async def show_usage(event):
     data = load_usage()
-    await event.edit(f"عدد استخداماتك: {data['usage']}")
+    await event.edit(f"عدد رسائلك {data['usage']}")
 @ABH.on(events.NewMessage(pattern=r'^ضع حد يومي (\d+)$', outgoing=True))
 async def set_daily_limit(event):
     data = load_usage()
