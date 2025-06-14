@@ -120,7 +120,7 @@ async def tmeme(event):
     words = text.split()
     await event.delete()
     for word in words:
-        await event.edit(word)
+        await event.edit(f'{word}')
 def normalize_text(text):
     return ''.join(
         c for c in unicodedata.normalize('NFKD', text)
@@ -381,7 +381,7 @@ async def on_off(event):
         data['on'] = False
         await event.edit(" تم تعطيل النظام اليومي.")
     save_usage(data)
-@ABH.on(events.NewMessage(pattern=r'\.استخدامي'))
+@ABH.on(events.NewMessage(pattern=r'\.?استخدامي', outgoing=True))
 async def show_usage(event):
     data = load_usage()
     await event.edit(f"عدد رسائلك {data['usage']}")
