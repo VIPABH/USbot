@@ -1,8 +1,8 @@
 from telethon.tl.functions.messages import SendReactionRequest
 from telethon.tl.types import ReactionEmoji, ChatBannedRights
 from telethon.tl.functions.channels import EditBannedRequest
+import asyncio, unicodedata, time, json
 from ABH import ABH #type:ignore
-import asyncio, unicodedata, time
 from datetime import datetime
 from zoneinfo import ZoneInfo  
 from telethon import events
@@ -93,7 +93,7 @@ async def timi(event):
         await asyncio.sleep(t)
         await msg.delete()
     else:
-        msg2 = await event.respond(f'{m}')
+        msg2 = await event.edit(f'{m}')
         await asyncio.sleep(t)
         await msg2.delete()
 @ABH.on(events.NewMessage(pattern=r'^.مسح رسائلي$', outgoing=True))
@@ -120,7 +120,7 @@ async def tmeme(event):
     words = text.split()
     await event.delete()
     for word in words:
-        await event.respond(word)
+        await event.edit(word)
 def normalize_text(text):
     return ''.join(
         c for c in unicodedata.normalize('NFKD', text)
@@ -149,7 +149,7 @@ async def repeat(event):
         time = float(event.pattern_match.group(2))
         for i in range(int(much)):
             await asyncio.sleep(float(time))
-            await event.respond(r.text)
+            await event.edit(r.text)
 @ABH.on(events.NewMessage(pattern=r'^.كرر(?: (\d+))?$', outgoing=True))
 async def repeat_it(event):
     num = int(event.pattern_match.group(1) or 1)
@@ -157,7 +157,7 @@ async def repeat_it(event):
     if r:
         for i in range(num):
             await event.delete()
-            await event.respond(r)
+            await event.edit(r)
 الحذف = False
 t = 3 
 @ABH.on(events.NewMessage(pattern=r'الحذف تفعيل$', outgoing=True))
@@ -355,28 +355,41 @@ async def schedule_handler(event):
     await event.edit(
         f" تم جدولة الرسالة بتاريخ {month:02}/{day:02} الساعة {hour:02}:{minute:02}."
     )
-on = False
-@ABH.on(events.NewMessage(pattern='الحد اليومي (.+) '))
-async def onOFF(event):
-    global on
-    text = event.pattern_match.group(1)
-    if text == 'تفعيل':
-        on = True
-    elif text == 'تعطيل':
-        on = False
-usage = 0
-@ABH.on(events.NewMessage(pattern='.استخدامي'))
-async def usge(event):
-    global usage
-    await event.edit(f"{usage}")
-@ABH.on(events.NewMessage(pattern='^ضع حد يومي (\d+) $'))
-async def sedusge(event):
-    global s
-    s = int(event.pattern_match.group(1)) or 2
+USAGE_FILE = "usage.json"
+def load_usage():
+    if not os.path.exists(USAGE_FILE):
+        return {"on": False, "usage": 0, "limit": 2}
+    with open(USAGE_FILE, "r", encoding="utf-8") as f:
+        return json.load(f)
+def save_usage(data):
+    with open(USAGE_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+@ABH.on(events.NewMessage(pattern=r'الحد اليومي (.+) ', outgoing=True))
+async def on_off(event):
+    data = load_usage()
+    command = event.pattern_match.group(1)
+    if command == 'تفعيل':
+        data['on'] = True
+        await event.edit("✅ تم تفعيل النظام اليومي.")
+    elif command == 'تعطيل':
+        data['on'] = False
+        await event.edit("❌ تم تعطيل النظام اليومي.")
+    save_usage(data)
+@ABH.on(events.NewMessage(pattern=r'\.استخدامي'))
+async def show_usage(event):
+    data = load_usage()
+    await event.edit(f"عدد استخداماتك: {data['usage']}")
+@ABH.on(events.NewMessage(pattern=r'^ضع حد يومي (\d+)$', outgoing=True))
+async def set_daily_limit(event):
+    data = load_usage()
+    data['limit'] = int(event.pattern_match.group(1))
+    save_usage(data)
+    await event.edit(f"تم تعيين الحد اليومي إلى {data['limit']} استخدام.")
 @ABH.on(events.NewMessage(outgoing=True))
-async def plususe(event):
-    global usage
-    if on:
-        usage += 1
-        if usage == s:
+async def count_usage(event):
+    data = load_usage()
+    if data['on']:
+        data['usage'] += 1
+        if data['usage'] >= data['limit']:
             await event.delete()
+        save_usage(data)
