@@ -358,7 +358,7 @@ async def schedule_handler(event):
 USAGE_FILE = "usage.json"
 def load_usage():
     if not os.path.exists(USAGE_FILE):
-        return {"on": False, "usage": 0, "limit": 2}
+        return {"on": False, "usage": 0, "limit": 2, "last_reset": datetime.now().strftime("%Y-%m-%d")}
     with open(USAGE_FILE, "r", encoding="utf-8") as f:
         return json.load(f)
 def save_usage(data):
@@ -370,10 +370,10 @@ async def on_off(event):
     command = event.pattern_match.group(1)
     if command == 'تفعيل':
         data['on'] = True
-        await event.edit("✅ تم تفعيل النظام اليومي.")
+        await event.edit(" تم تفعيل النظام اليومي.")
     elif command == 'تعطيل':
         data['on'] = False
-        await event.edit("❌ تم تعطيل النظام اليومي.")
+        await event.edit(" تم تعطيل النظام اليومي.")
     save_usage(data)
 @ABH.on(events.NewMessage(pattern=r'\.استخدامي'))
 async def show_usage(event):
@@ -387,9 +387,15 @@ async def set_daily_limit(event):
     await event.edit(f"تم تعيين الحد اليومي إلى {data['limit']} استخدام.")
 @ABH.on(events.NewMessage(outgoing=True))
 async def count_usage(event):
+    if event.raw_text.startswith(('.', 'الحد اليومي', 'ضع حد يومي')):
+        return
     data = load_usage()
+    today = datetime.now().strftime("%Y-%m-%d")
+    if data.get("last_reset") != today:
+        data["usage"] = 0
+        data["last_reset"] = today
     if data['on']:
         data['usage'] += 1
         if data['usage'] >= data['limit']:
             await event.delete()
-        save_usage(data)
+    save_usage(data)
