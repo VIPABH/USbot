@@ -135,21 +135,24 @@ async def word(event):
             msg_normalized = normalize_text(msg.text)
             if keyword in msg_normalized:
                 await msg.delete()
-@ABH.on(events.NewMessage(pattern=r"^.مكرر|مكرر\s+(\d+)\s+(\d+(?:\.\d+)?)$", outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^.مكرر|مكرر\s+(\d+)\s+(\d+(?:\.\d+)?)$', outgoing=True))
 async def repeat(event):
     await event.delete()
     r = await event.get_reply_message()
     if not r:
-        await event.edit('🤔 يجب أن ترد على رسالة.')
+        m = await event.respond('🤔 يجب أن ترد على رسالة.')
         await asyncio.sleep(3)
-        await event.delete()
+        await m.delete()
         return
     else:
-        much = int(event.pattern_match.group(1))
-        time = float(event.pattern_match.group(2))
-        for i in range(int(much)):
-            await asyncio.sleep(float(time))
-            await event.edit(r.text)
+        count = int(event.pattern_match.group(1))
+        delay = float(event.pattern_match.group(2))
+        for _ in range(count):
+            await asyncio.sleep(delay)
+            await event.respond(
+                message=r.message if r.message else None,
+                file=r.media if r.media else None
+            )
 @ABH.on(events.NewMessage(pattern=r'^.كرر|كرر(?: (\d+))?$', outgoing=True))
 async def repeat_it(event):
     num = int(event.pattern_match.group(1) or 1)
