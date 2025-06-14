@@ -362,6 +362,7 @@ async def usge(event):
     await event.edit(usage)
 @ABH.on(events.NewMessage(outgoing=True))
 async def plususe(event):
+    global usage
     usage += 1
     await event.edit(usage)
     if usage == 5:
