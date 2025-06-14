@@ -395,6 +395,7 @@ async def set_daily_limit(event):
 async def count_usage(event):
     if event.raw_text.startswith(('.', 'الحد اليومي', 'ضع حد يومي')):
         return
+    data = load_usage()
     if data['usage'] >= data['limit']:
         await event.delete()
     data = load_usage()
