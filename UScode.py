@@ -1,7 +1,7 @@
 from telethon.tl.functions.messages import SendReactionRequest
 from telethon.tl.types import ReactionEmoji, ChatBannedRights
 from telethon.tl.functions.channels import EditBannedRequest
-import asyncio, unicodedata, time, json
+import asyncio, unicodedata, time, json, os
 from ABH import ABH #type:ignore
 from datetime import datetime
 from zoneinfo import ZoneInfo  
