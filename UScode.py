@@ -155,9 +155,12 @@ async def repeat_it(event):
     num = int(event.pattern_match.group(1) or 1)
     r = await event.get_reply_message()
     if r:
-        for i in range(num):
-            await event.delete()
-            await event.respond(f"{r.message}")
+        await event.delete()
+        for _ in range(num):
+            await event.respond(
+                message=r.message if r.message else None,
+                file=r.media if r.media else None
+            )
 الحذف = False
 t = 3 
 @ABH.on(events.NewMessage(pattern=r'الحذف تفعيل$', outgoing=True))
