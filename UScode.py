@@ -152,7 +152,7 @@ async def repeat(event):
             await event.edit(r.text)
 @ABH.on(events.NewMessage(pattern=r'^.كرر(?: (\d+))?$', outgoing=True))
 async def repeat_it(event):
-    num = event.pattern_match.group(1) or 1
+    num = int(event.pattern_match.group(1) or 1)
     r = await event.get_reply_message()
     if r:
         for i in range(num):
