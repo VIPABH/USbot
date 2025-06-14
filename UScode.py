@@ -150,14 +150,14 @@ async def repeat(event):
         for i in range(int(much)):
             await asyncio.sleep(float(time))
             await event.edit(r.text)
-@ABH.on(events.NewMessage(pattern=r'^.كرر(?: (\d+))?$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^.كرر|كرر(?: (\d+))?$', outgoing=True))
 async def repeat_it(event):
     num = int(event.pattern_match.group(1) or 1)
     r = await event.get_reply_message()
     if r:
         for i in range(num):
             await event.delete()
-            await event.edit(r)
+            await event.respond(f"{r}")
 الحذف = False
 t = 3 
 @ABH.on(events.NewMessage(pattern=r'الحذف تفعيل$', outgoing=True))
