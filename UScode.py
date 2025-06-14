@@ -28,7 +28,7 @@ async def id(event):
     else:
         chat = await event.get_chat()
         await event.edit(f"ايدي المجموعة: `{chat.id}`")
-@ABH.on(events.NewMessage(pattern=r'^خاص|.خاص$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^.?خاص$', outgoing=True))
 async def save(event):
     uid = event.sender_id
     me = await ABH.get_me()
@@ -64,7 +64,7 @@ async def edit(event):
         await asyncio.sleep(0.4)
         await event.edit("`\`")
         await asyncio.sleep(0.4)
-@ABH.on(events.NewMessage(pattern=r'^رسالة (\S+) (.+)$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^.?رسالة (\S+) (.+)$', outgoing=True))
 async def send(event):
     r = await event.get_reply_message()
     if r:
@@ -81,7 +81,7 @@ async def send(event):
         text = event.pattern_match.group(2)
         entity = await ABH.get_input_entity(to)
         await ABH.send_message(entity, text)
-@ABH.on(events.NewMessage(pattern=r'^وقتي (\d+)\s+(.+)$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^.?وقتي (\d+)\s+(.+)$', outgoing=True))
 async def timi(event):
     await event.delete()
     t = int(event.pattern_match.group(1))
@@ -153,12 +153,17 @@ async def repeat(event):
                 message=r.message if r.message else None,
                 file=r.media if r.media else None
             )
-@ABH.on(events.NewMessage(pattern=r'^.كرر|كرر(?: (\d+))?$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^.?كرر (\d+))?$', outgoing=True))
 async def repeat_it(event):
+    await event.delete()
     num = int(event.pattern_match.group(1) or 1)
     r = await event.get_reply_message()
-    if r:
-        await event.delete()
+    if not r:
+        m = await event.respond('🤔 يجب أن ترد على رسالة.')
+        await asyncio.sleep(3)
+        await m.delete()
+        return
+    else:
         for _ in range(num):
             await event.respond(
                 message=r.message if r.message else None,
