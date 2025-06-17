@@ -426,6 +426,7 @@ async def count_usage(event):
     if data.get("last_reset") != today:
         data["usage"] = 0
         data["last_reset"] = today
+        save_usage(data)
     if data['usage'] >= data['limit']:
         await event.delete()
         return
