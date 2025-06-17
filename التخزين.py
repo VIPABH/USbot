@@ -1,7 +1,6 @@
 from telethon.tl.functions.channels import CreateChannelRequest
 from shortcuts import *  # type: ignore
 from config import *  # type: ignore
-from telethon.tl.types import User
 from ABH import *  # type: ignore
 import re, os, json
 async def create_group(name, about):
@@ -53,6 +52,8 @@ async def config_vars(event):
     config_data["hidvar"] = hidvar
     with open(config_file, "w", encoding="utf-8") as f:
         json.dump(config_data, f, ensure_ascii=False, indent=4)
+print(gidvar)
+print(hidvar)
 @ABH.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
 async def privte_save(event):
     if not gidvar and hidvar:
