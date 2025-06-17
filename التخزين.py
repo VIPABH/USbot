@@ -10,7 +10,7 @@ async def create_group(name, about):
 @ABH.on(events.NewMessage(pattern='/config'))
 async def config_vars(event):
     global gidvar, hidvar
-    config_file = "var.json"
+    config_file = "'var.json'"
     me = await ABH.get_me()
     async for msg in ABH.iter_messages(me.id):
         if not msg.text:
@@ -52,8 +52,6 @@ async def config_vars(event):
     config_data["hidvar"] = hidvar
     with open(config_file, "w", encoding="utf-8") as f:
         json.dump(config_data, f, ensure_ascii=False, indent=4)
-print(gidvar)
-print(hidvar)
 @ABH.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
 async def privte_save(event):
     if not gidvar and hidvar:
@@ -102,3 +100,33 @@ f'''#التــاكــات
 ⌔┊رابـط الرسـاله :  [link](https://t.me/c/{gid}/{event.message.id})
 ''')
     await try_forward(event, gidvar)
+@ABH.on(events.NewMessage(pattern='^اضف كروب التخزين$'))
+async def addgidvar(event):
+    r = await event.get_reply_message()
+    if r and r.text and r.text.startswith("-100"):
+        await event.edit("تم تعيين آيدي كروب التخزين")
+        gidvar = r.text
+    if os.path.exists('var.json'):
+        try:
+            with open('var.json', "r", encoding="utf-8") as f:
+                config_data = json.load(f)
+        except json.JSONDecodeError:
+            config_data = {}
+    config_data["gidvar"] = gidvar
+    with open('var.json', "w", encoding="utf-8") as f:
+        json.dump(config_data, f, ensure_ascii=False, indent=4)
+@ABH.on(events.NewMessage(pattern='^اضف كروب الاشعارات$'))
+async def addhidvar(event):
+    r = await event.get_reply_message()
+    if r and r.text and r.text.startswith("-100"):
+        await event.edit("تم تعيين آيدي كروب الاشعارات")
+        hidvar = r.text
+    if os.path.exists('var.json'):
+        try:
+            with open('var.json', "r", encoding="utf-8") as f:
+                config_data = json.load(f)
+        except json.JSONDecodeError:
+            config_data = {}
+    config_data["hidvar"] = hidvar
+    with open('var.json', "w", encoding="utf-8") as f:
+        json.dump(config_data, f, ensure_ascii=False, indent=4)
