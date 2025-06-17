@@ -436,4 +436,4 @@ async def count_usage(event):
 async def howmuch(event):
     data = load_usage()
     x = int(data['usage']) - int(data['limit'])
-    await event.edit(x)
+    await event.edit(str(x))
