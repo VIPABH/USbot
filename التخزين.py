@@ -124,7 +124,7 @@ async def add_hidvar(event):
     if not r or not r.text or not r.text.startswith("-100"):
         await event.reply("❌ يجب الرد على رسالة تحتوي على آيدي يبدأ بـ -100")
         return
-    hidvar = r.text.strip()
+    hidvar = r.text.strip().replace("-100", "")
     config_data = {}
     if os.path.exists('var.json'):
         try:
@@ -136,3 +136,7 @@ async def add_hidvar(event):
     with open('var.json',"w",encoding="utf-8") as f:
         json.dump(config_data,f,ensure_ascii=False,indent=4)
     await event.edit("✅ تم تعيين آيدي كروب الاشعارات بنجاح")
+@ABH.on(events.NewMessage(pattern='تجربة'))
+async def test(event):
+    await ABH.send_message(int(hidvar), 'الامر يعمل بنجاح')
+    await event.edit('تم الارسال...')
