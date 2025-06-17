@@ -138,9 +138,7 @@ async def add_hidvar(event):
     await event.edit("✅ تم تعيين آيدي كروب الاشعارات بنجاح")
 @ABH.on(events.NewMessage(pattern='تجربة'))
 async def test(event):
-    print(hidvar)
     if not gidvar or not hidvar:
         await config_vars(event)
-    print(int(hidvar))
     await ABH.send_message(int(hidvar), 'الامر يعمل بنجاح')
     await event.edit('تم الارسال...')
