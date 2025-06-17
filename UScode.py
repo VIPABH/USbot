@@ -422,14 +422,14 @@ async def count_usage(event):
     if event.raw_text.startswith(('.', 'الحد اليومي', 'ضع حد يومي')):
         return
     data = load_usage()
-    if data['usage'] >= data['limit']:
-        await event.delete()
-    data = load_usage()
     today = datetime.now().strftime("%Y-%m-%d")
     if data.get("last_reset") != today:
         data["usage"] = 0
         data["last_reset"] = today
-    if data['on']:
+    if data['usage'] >= data['limit']:
+        await event.delete()
+        return
+    if data.get('on', True):
         data['usage'] += 1
     save_usage(data)
 @ABH.on(events.NewMessage(pattern='كم بعد', outgoing=True))
