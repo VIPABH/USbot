@@ -61,7 +61,7 @@ async def edit(event):
         await asyncio.sleep(0.4)
         await event.edit('`-`')
         await asyncio.sleep(0.4)
-        await event.edit("`\`")
+        await event.edit("`\\`")
         await asyncio.sleep(0.4)
 @ABH.on(events.NewMessage(pattern=r'^\.?رسالة(?: (\S+))? (.+)$', outgoing=True))
 async def send(event):
