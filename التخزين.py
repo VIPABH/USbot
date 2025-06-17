@@ -1,9 +1,10 @@
-from telethon.tl.functions.channels import CreateChannelRequest
-from shortcuts import *  # type: ignore
-from config import *  # type: ignore
 from telethon.tl.types import User
-from ABH import *  # type: ignore
-import re, os, json
+from ABH import ABH, events  # type: ignore
+from config import *  # type: ignore
+from telethon.tl.functions.channels import CreateChannelRequest
+import asyncio, re
+gidvar = None
+hidvar = None
 async def create_group(name, about):
     result = await ABH(CreateChannelRequest(title=name, about=about, megagroup=True))
     group = result.chats[0]
@@ -11,13 +12,12 @@ async def create_group(name, about):
 @ABH.on(events.NewMessage(pattern='/config'))
 async def config_vars(event):
     global gidvar, hidvar
-    config_file = "var.json"
     me = await ABH.get_me()
     async for msg in ABH.iter_messages(me.id):
         if not msg.text:
             continue
-        gid_match = re.search(r'gidvar:\s*(.+)', msg.text, re.IGNORECASE)
-        hid_match = re.search(r'hidvar:\s*(.+)', msg.text, re.IGNORECASE)
+        gid_match = re.search(r'(?:gidvar:|مجموعة التخزين\s*ID:)\s*(\d+)', msg.text, re.IGNORECASE)
+        hid_match = re.search(r'(?:hidvar:|مجموعة الإشعارات\s*ID:)\s*(\d+)', msg.text, re.IGNORECASE)
         if gid_match and not gidvar:
             gidvar = gid_match.group(1).strip()
         if hid_match and not hidvar:
@@ -31,73 +31,48 @@ async def config_vars(event):
     if not hidvar:
         hidvar, hid_name = await create_group("مجموعة الإشعارات", "هذه المجموعة مخصصة للتنبيهات.")
         newly_created.append(("مجموعة الإشعارات", hidvar))
+
     if newly_created:
         config_text = f'''فارات السورس
 لا تحذف الرسالة للحفاظ على كروبات السورس
-مجموعة التخزين gidvar: {gidvar}
-مجموعة الإشعارات hidvar: {hidvar}
+gidvar: {gidvar}
+hidvar: {hidvar}
 '''
         await ABH.send_message(me.id, config_text)
         ids_text = "تم إنشاء الكروبات التالية:\n\n"
         for title, gid in newly_created:
             ids_text += f"**{title}**\nID: `{gid}`\n\n"
         await ABH.send_message(me.id, ids_text)
-    config_data = {}
-    if os.path.exists(config_file):
-        try:
-            with open(config_file, "r", encoding="utf-8") as f:
-                config_data = json.load(f)
-        except json.JSONDecodeError:
-            config_data = {}
-    config_data["gidvar"] = gidvar
-    config_data["hidvar"] = hidvar
-    with open(config_file, "w", encoding="utf-8") as f:
-        json.dump(config_data, f, ensure_ascii=False, indent=4)
-@ABH.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
-async def privte_save(event):
-    if not gidvar and hidvar:
-        print("gidvar not found")
-        await config_vars(event)
-    uid = event.sender_id
-    s = await event.get_sender()
-    if s.bot:
-        return
-    text = event.raw_text
-    name = s.first_name or s.username or "Unknown"
-    await ABH.send_message(
-        int(gidvar), 
-f'''المرسل : {name}
+    response = f'''فارات السورس
+لا تحذف الرسالة للحفاظ على كروبات السورس
+gidvar: {gidvar or "لم يتم العثور على الفار"}
+hidvar: {hidvar or "لم يتم العثور على الفار"}
+'''
+    await event.reply(response)
+@ABH.on(events.NewMessage())
+async def gidvar_save(event):
+    try:
+        me = await ABH.get_me()
+        text = event.text
 
-ايديه : `{uid}`
+        if str(me.id) in text or (me.username and me.username in text):
+            chat = await event.get_chat()
+            sender = await event.get_sender()
+            gid = str(chat.id).replace("-100", "")
+            msg_id = event.id
 
-ارسل : {text}
-''')
-    m = event.message.id
-    if not m:
-        return
-    await try_forward(event, gidvar)
-@ABH.on(events.NewMessage(incoming=True, func=lambda e: e.mentioned))
-async def group_save(event):
-    if not gidvar or not hidvar:
-        await config_vars(event)
-    sender = await event.get_sender()
-    uid = event.sender_id
-    if uid == 777000 or sender.bot:
-        return
-    s = await event.get_sender()
-    gid = event.chat_id
-    gid = str(gid).replace("-100", "").replace(" ", "")
-    name = s.first_name or s.username or "Unknown"
-    await ABH.send_message(
-        int(gidvar),
-f'''#التــاكــات
+            if gidvar:
+                await ABH.send_message(
+                    int(gidvar),
+                    f"""#التــاكــات
 
-⌔┊الكــروب : {event.chat.title}
+⌔┊الكــروب : {chat.title}
+⌔┊المـرسـل : {sender.first_name}
+⌔┊الرســالـه : {text}
+⌔┊رابـط الرسـاله : [link](https://t.me/c/{gid}/{msg_id})""",
+                    link_preview=False
+                )
+                print("التخزين شغال")
 
-⌔┊المـرسـل :  {name}
-
-⌔┊الرســالـه : {event.message.text}
-
-⌔┊رابـط الرسـاله :  [link](https://t.me/c/{gid}/{event.message.id})
-''')
-    await try_forward(event, gidvar)
+    except Exception as e:
+        print(f"حدث خطأ أثناء محاولة تخزين الرسالة: {e}")
