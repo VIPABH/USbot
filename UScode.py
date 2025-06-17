@@ -435,5 +435,5 @@ async def count_usage(event):
 @ABH.on(events.NewMessage(pattern='كم بعد', outgoing=True))
 async def howmuch(event):
     data = load_usage()
-    x = int(data['usage']) - int(data['limit'])
+    x = int(data['limit']) - int(data['usage'])
     await event.edit(str(x))
