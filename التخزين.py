@@ -105,13 +105,13 @@ async def addgidvar(event):
     r = await event.get_reply_message()
     if r and r.text and r.text.startswith("-100"):
         await event.edit("تم تعيين آيدي كروب التخزين")
-        gidvar = r.text
     if os.path.exists('var.json'):
         try:
             with open('var.json', "r", encoding="utf-8") as f:
                 config_data = json.load(f)
         except json.JSONDecodeError:
             config_data = {}
+            gidvar = r.text
     config_data["gidvar"] = gidvar
     with open('var.json', "w", encoding="utf-8") as f:
         json.dump(config_data, f, ensure_ascii=False, indent=4)
@@ -120,13 +120,13 @@ async def addhidvar(event):
     r = await event.get_reply_message()
     if r and r.text and r.text.startswith("-100"):
         await event.edit("تم تعيين آيدي كروب الاشعارات")
-        hidvar = r.text
     if os.path.exists('var.json'):
         try:
             with open('var.json', "r", encoding="utf-8") as f:
                 config_data = json.load(f)
         except json.JSONDecodeError:
             config_data = {}
+            hidvar = r.text
     config_data["hidvar"] = hidvar
     with open('var.json', "w", encoding="utf-8") as f:
         json.dump(config_data, f, ensure_ascii=False, indent=4)
