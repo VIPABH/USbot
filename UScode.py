@@ -390,7 +390,7 @@ async def schedule_handler(event):
 USAGE_FILE = "usage.json"
 def load_usage():
     if not os.path.exists(USAGE_FILE):
-        return {"on": False, "usage": 0, "limit": 2, "last_reset": datetime.now().strftime("%Y-%m-%d")}
+        return {"on": False, "usage": 0, "limit": 500, "last_reset": datetime.now().strftime("%Y-%m-%d")}
     with open(USAGE_FILE, "r", encoding="utf-8") as f:
         return json.load(f)
 def save_usage(data):
@@ -432,3 +432,8 @@ async def count_usage(event):
     if data['on']:
         data['usage'] += 1
     save_usage(data)
+@ABH.on(events.NewMessage(pattern='كم بعد', outgoing=True))
+async def howmuch(event):
+    data = load_usage()
+    x = data['usage'] - data['limit']
+    await event.edit(x)
