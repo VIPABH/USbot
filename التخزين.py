@@ -31,7 +31,6 @@ async def config_vars(event):
     if not hidvar:
         hidvar, hid_name = await create_group("مجموعة الإشعارات", "هذه المجموعة مخصصة للتنبيهات.")
         newly_created.append(("مجموعة الإشعارات", hidvar))
-
     if newly_created:
         config_text = f'''فارات السورس
 لا تحذف الرسالة للحفاظ على كروبات السورس
@@ -49,6 +48,8 @@ gidvar: {gidvar or "لم يتم العثور على الفار"}
 hidvar: {hidvar or "لم يتم العثور على الفار"}
 '''
     await event.reply(response)
+    print(hidvar)
+    print(gidvar)
 @ABH.on(events.NewMessage())
 async def gidvar_save(event):
     try:
