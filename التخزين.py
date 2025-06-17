@@ -101,34 +101,38 @@ f'''#التــاكــات
 ''')
     await try_forward(event, gidvar)
 @ABH.on(events.NewMessage(pattern='^اضف كروب التخزين$'))
-async def addgidvar(event):
-    global gidvar
+async def add_gidvar(event):
     r = await event.get_reply_message()
-    if r and r.text and r.text.startswith("-100"):
-        await event.edit("تم تعيين آيدي كروب التخزين")
+    if not r or not r.text or not r.text.startswith("-100"):
+        await event.reply("❌ يجب الرد على رسالة تحتوي على آيدي يبدأ بـ -100")
+        return
+    gidvar = r.text.strip()
+    config_data = {}
     if os.path.exists('var.json'):
         try:
-            with open('var.json', "r", encoding="utf-8") as f:
+            with open('var.json',"r",encoding="utf-8") as f:
                 config_data = json.load(f)
         except json.JSONDecodeError:
-            config_data = {}
-            gidvar = r.text
+            pass
     config_data["gidvar"] = gidvar
-    with open('var.json', "w", encoding="utf-8") as f:
-        json.dump(config_data, f, ensure_ascii=False, indent=4)
+    with open('var.json',"w",encoding="utf-8") as f:
+        json.dump(config_data,f,ensure_ascii=False,indent=4)
+    await event.edit("✅ تم تعيين آيدي كروب التخزين بنجاح")
 @ABH.on(events.NewMessage(pattern='^اضف كروب الاشعارات$'))
-async def addhidvar(event):
-    global hidvar
+async def add_hidvar(event):
     r = await event.get_reply_message()
-    if r and r.text and r.text.startswith("-100"):
-        await event.edit("تم تعيين آيدي كروب الاشعارات")
+    if not r or not r.text or not r.text.startswith("-100"):
+        await event.reply("❌ يجب الرد على رسالة تحتوي على آيدي يبدأ بـ -100")
+        return
+    hidvar = r.text.strip()
+    config_data = {}
     if os.path.exists('var.json'):
         try:
-            with open('var.json', "r", encoding="utf-8") as f:
+            with open('var.json',"r",encoding="utf-8") as f:
                 config_data = json.load(f)
         except json.JSONDecodeError:
-            config_data = {}
-            hidvar = r.text
+            pass
     config_data["hidvar"] = hidvar
-    with open('var.json', "w", encoding="utf-8") as f:
-        json.dump(config_data, f, ensure_ascii=False, indent=4)
+    with open('var.json',"w",encoding="utf-8") as f:
+        json.dump(config_data,f,ensure_ascii=False,indent=4)
+    await event.edit("✅ تم تعيين آيدي كروب الاشعارات بنجاح")
