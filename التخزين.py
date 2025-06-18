@@ -7,7 +7,7 @@ async def create_group(name, about):
     result = await ABH(CreateChannelRequest(title=name, about=about, megagroup=True))
     group = result.chats[0]
     return group.id, group.title
-@ABH.on(events.NewMessage(pattern='/config'))
+@ABH.on(events.NewMessage(pattern='/config', outgoing=True))
 async def config_vars(event):
     global gidvar, hidvar
     config_file = "'var.json'"
@@ -100,7 +100,7 @@ f'''#التــاكــات
 ⌔┊رابـط الرسـاله :  [link](https://t.me/c/{gid}/{event.message.id})
 ''')
     await try_forward(event, gidvar)
-@ABH.on(events.NewMessage(pattern='^اضف كروب التخزين$'))
+@ABH.on(events.NewMessage(pattern='^اضف كروب التخزين$', outgoing=True))
 async def add_gidvar(event):
     r = await event.get_reply_message()
     if not r or not r.text or not r.text.startswith("-100"):
@@ -118,7 +118,7 @@ async def add_gidvar(event):
     with open('var.json',"w",encoding="utf-8") as f:
         json.dump(config_data,f,ensure_ascii=False,indent=4)
     await event.edit("✅ تم تعيين آيدي كروب التخزين بنجاح")
-@ABH.on(events.NewMessage(pattern='^اضف كروب الاشعارات$'))
+@ABH.on(events.NewMessage(pattern='^اضف كروب الاشعارات$', outgoing=True))
 async def add_hidvar(event):
     r = await event.get_reply_message()
     if not r or not r.text or not r.text.startswith("-100"):
@@ -136,9 +136,3 @@ async def add_hidvar(event):
     with open('var.json',"w",encoding="utf-8") as f:
         json.dump(config_data,f,ensure_ascii=False,indent=4)
     await event.edit("✅ تم تعيين آيدي كروب الاشعارات بنجاح")
-@ABH.on(events.NewMessage(pattern='تجربة'))
-async def test(event):
-    if not gidvar or not hidvar:
-        await config_vars(event)
-    await ABH.send_message(int(hidvar), 'الامر يعمل بنجاح')
-    await event.edit('تم الارسال...')
