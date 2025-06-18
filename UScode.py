@@ -402,10 +402,10 @@ async def on_off(event):
     command = event.pattern_match.group(1)
     if command == 'تفعيل':
         data['on'] = True
-        await event.edit(" تم تفعيل النظام اليومي.")
+        await event.edit("تم تفعيل النظام اليومي.")
     elif command == 'تعطيل':
         data['on'] = False
-        await event.edit(" تم تعطيل النظام اليومي.")
+        await event.edit("تم تعطيل النظام اليومي.")
     save_usage(data)
 @ABH.on(events.NewMessage(pattern=r'\.?استخدامي', outgoing=True))
 async def show_usage(event):
@@ -432,11 +432,19 @@ async def count_usage(event):
     if data['usage'] >= data['limit']:
         await event.delete()
         return
-    if data.get('on', True):
-        data['usage'] += 1
+    data['usage'] += 1
     save_usage(data)
 @ABH.on(events.NewMessage(pattern='كم بعد', outgoing=True))
 async def howmuch(event):
     data = load_usage()
     x = int(data['limit']) - int(data['usage'])
     await event.edit(str(x))
+@ABH.on(events.NewMessage(outgoing=True))
+async def reset_usage(event):
+    now = datetime.now()
+    if now.hour == 0 and now.minute == 0:
+        data = load_usage()
+        if data.get("last_reset") != now.strftime("%Y-%m-%d"):
+            data["usage"] = 0
+            data["last_reset"] = now.strftime("%Y-%m-%d")
+            save_usage(data)
