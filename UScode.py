@@ -422,6 +422,8 @@ async def count_usage(event):
     if event.raw_text.startswith(('.', 'الحد اليومي', 'ضع حد يومي')):
         return
     data = load_usage()
+    if not data.get('on', True):
+        return
     today = datetime.now().strftime("%Y-%m-%d")
     if data.get("last_reset") != today:
         data["usage"] = 0
