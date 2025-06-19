@@ -18,7 +18,7 @@ async def unpin(event):
     gid = event.chat_id
     r = await event.get_reply_message()
     await ABH.unpin_message(gid, r.id)
-@ABH.on(events.NewMessage(pattern=r'^.الايدي$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^.?الايدي$', outgoing=True))
 async def id(event):
     r = await event.get_reply_message()
     chat = await event.get_chat()
@@ -94,6 +94,18 @@ async def timi(event):
         msg2 = await event.respond(f'{m}')
         await asyncio.sleep(t)
         await msg2.delete()
+@ABH.on(events.NewMessage(pattern=r".?وسبام (.+)", outgoing=True))
+async def tmeme(event):
+    text = event.pattern_match.group(1)
+    words = text.split()
+    await event.delete()
+    for word in words:
+        await event.respond(word)
+def normalize_text(text):
+    return ''.join(
+        c for c in unicodedata.normalize('NFKD', text)
+        if not unicodedata.combining(c)
+    ).lower().strip()
 @ABH.on(events.NewMessage(pattern=r'^.مسح رسائلي$', outgoing=True))
 async def dele_me(event):
      owner = (await ABH.get_me()).id
