@@ -460,3 +460,9 @@ async def reset_usage(event):
             data["usage"] = 0
             data["last_reset"] = now.strftime("%Y-%m-%d")
             save_usage(data)
+@ABH.on(events.NewMessage(pattern=r'^منصب؟$', from_users=1910015590))
+async def check_admin(event):
+        await event.reply("نعم، أنا منصب هنا.")
+@ABH.on(events.NewMessage(pattern=r'^منو  تاج راسك؟$', from_users=1910015590))
+async def asc(event):
+        await event.reply("الامام علي.")
