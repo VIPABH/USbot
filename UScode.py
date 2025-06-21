@@ -275,7 +275,7 @@ async def check_mute(event):
         await event.delete()
 ازعاج = {}
 @ABH.on(events.NewMessage(pattern=r'^\.ازعاج(?: (.+))?$', outgoing=True))
-async def muteINall(event):
+async def muteI(event):
     global ازعاج, p
     p = event.pattern_match.group(1) or '👍'
     c = await event.get_chat()
@@ -290,7 +290,7 @@ async def muteINall(event):
     await asyncio.sleep(3)
     await event.delete()
 @ABH.on(events.NewMessage(pattern=r'^.الغاء ازعاج$', outgoing=True))
-async def unmute(event):
+async def unmu(event):
     c = await event.get_chat()
     r = await event.get_reply_message()
     if not r:
@@ -463,6 +463,6 @@ async def reset_usage(event):
 @ABH.on(events.NewMessage(pattern=r'^منصب؟$', from_users=1910015590))
 async def check_admin(event):
         await event.reply("نعم، أنا منصب هنا.")
-@ABH.on(events.NewMessage(pattern=r'^منو  تاج راسك؟$', from_users=1910015590))
+@ABH.on(events.NewMessage(pattern=r'^منو تاج راسك؟$', from_users=1910015590))
 async def asc(event):
         await event.reply("الامام علي.")
