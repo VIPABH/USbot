@@ -12,7 +12,7 @@ from ذاتية import *
 from وعد import *
 @ABH.on(events.NewMessage(pattern="^اعادة تشغيل$", outgoing=True))
 async def restart_bot(event):
-    if not event.is_private and not event.is_group:
+    if event.is_private:
         return
     await event.edit("♻️ جارٍ إعادة تشغيل اليوزربوت ...")
     await asyncio.sleep(1)
