@@ -12,8 +12,6 @@ from ذاتية import *
 from وعد import *
 @ABH.on(events.NewMessage(pattern="^اعادة تشغيل$", outgoing=True))
 async def restart_bot(event):
-    if event.is_private:
-        return
     await event.edit("♻️ جارٍ إعادة تشغيل اليوزربوت ...")
     await asyncio.sleep(1)
     os.execv(sys.executable, [sys.executable, "run.py"])
@@ -31,6 +29,7 @@ async def update_repo(event):
     stdout, stderr, code = await run_cmd("git pull")
     if code == 0:
         await msg.edit(f" تحديث السورس بنجاح")
+        os.execv(sys.executable, [sys.executable, "run.py"])
     else:
         await msg.edit(f" حدث خطأ أثناء التحديث:\n\n{stderr}")
 async def main():
