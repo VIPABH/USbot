@@ -1,15 +1,22 @@
 from telethon import events
 import asyncio, sys, os
-from ABH import *
+from shortcuts import *
 from UScode import *
 from config import *
-from shortcuts import *
-from التخزين import *
 from التفاعلات import *
+from التخزين import *
 from امسح import *
-from ذاتية import *
 from ميمز import *
+from ABH import *
+from ذاتية import *
 from وعد import *
+@ABH.on(events.NewMessage(pattern="^اعادة تشغيل$", outgoing=True))
+async def restart_bot(event):
+    if not event.is_private and not event.is_group:
+        return
+    await event.edit("♻️ جارٍ إعادة تشغيل اليوزربوت ...")
+    await asyncio.sleep(1)
+    os.execv(sys.executable, [sys.executable, "run.py"])
 async def run_cmd(command: str):
     process = await asyncio.create_subprocess_shell(
         command,
