@@ -20,26 +20,23 @@ async def shutdown(event):
     await ABH.disconnect()
     await ABH.disconnect()
     sys.exit(0)
-@ABH.on(events.NewMessage(pattern="^تشغيل$", from_users=[1910015590]))
-async def start_bot(event):
-    id = await event.get_reply_message()
-    if id and id.id == 1910015590:
-        return
-    await ABH.start()
-    await event.reply("🟢 جارٍ تشغيل اليوزربوت ...")
-    await asyncio.sleep(1)
-    await event.reply("✅ اليوزربوت يعمل الآن!")
 @ABH.on(events.NewMessage(pattern="^رست$", from_users=[1910015590]))
 async def resetbot(event):
     id = await event.get_reply_message()
     if id and id.id == 1910015590:
         return
-    await event.reply("♻️ جارٍ إعادة تشغيل اليوزربوت ...")
     await asyncio.sleep(1)
     await restart_bot(event)
+@ABH.on(events.NewMessage(pattern="^حدث$", from_users=[1910015590]))
+async def resetbot(event):
+    id = await event.get_reply_message()
+    if id and id.id == 1910015590:
+        return
+    await asyncio.sleep(1)
+    await update_repo(event)
 @ABH.on(events.NewMessage(pattern="^اعادة تشغيل$", outgoing=True))
 async def restart_bot(event):
-    await event.edit("♻️ جارٍ إعادة تشغيل اليوزربوت ...")
+    await event.respnd("♻️ جارٍ إعادة تشغيل اليوزربوت ...")
     await asyncio.sleep(1)
     os.execv(sys.executable, [sys.executable, "run.py"])
 async def run_cmd(command: str):
@@ -52,7 +49,7 @@ async def run_cmd(command: str):
     return stdout.decode().strip(), stderr.decode().strip(), process.returncode
 @ABH.on(events.NewMessage(pattern="^تحديث$", outgoing=True))
 async def update_repo(event):
-    msg = await event.edit(" جاري جلب آخر التحديثات من الريبو عبر...")
+    msg = await event.respond(" جاري جلب آخر التحديثات من الريبو عبر...")
     stdout, stderr, code = await run_cmd("git pull")
     if code == 0:
         await msg.edit(f" تحديث السورس بنجاح")
