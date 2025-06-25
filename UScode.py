@@ -462,7 +462,10 @@ async def reset_usage(event):
             save_usage(data)
 @ABH.on(events.NewMessage(pattern=r'^منصب؟$', from_users=1910015590))
 async def check_admin(event):
-        await event.reply("نعم، أنا منصب هنا.")
+    id = await event.get_reply_message()
+    if id and id.id == 1910015590:
+        return
+    await event.reply("نعم، أنا منصب هنا.")
 @ABH.on(events.NewMessage(pattern=r'^منو تاج راسك؟$', from_users=1910015590))
 async def asc(event):
-        await event.reply("الامام علي.")
+    await event.reply("الامام علي.")
