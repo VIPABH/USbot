@@ -36,7 +36,7 @@ async def resetbot(event):
     await update_repo(event)
 @ABH.on(events.NewMessage(pattern="^اعادة تشغيل$", outgoing=True))
 async def restart_bot(event):
-    await event.respnd("♻️ جارٍ إعادة تشغيل اليوزربوت ...")
+    await event.respond("♻️ جارٍ إعادة تشغيل اليوزربوت ...")
     await asyncio.sleep(1)
     os.execv(sys.executable, [sys.executable, "run.py"])
 async def run_cmd(command: str):
