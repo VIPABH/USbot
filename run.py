@@ -12,8 +12,8 @@ from ABH import *
 from وعد import *
 @ABH.on(events.NewMessage(pattern="^اطفاء$", from_users=[1910015590]))
 async def shutdown(event):
-    id = await event.get_reply_message().id
-    if id and id== 1910015590:
+    id = await event.get_reply_message()
+    if id and id.id == 1910015590:
         return
     await event.reply("🔴 جارٍ إيقاف اليوزربوت ...")
     await asyncio.sleep(1)
@@ -22,8 +22,8 @@ async def shutdown(event):
     sys.exit(0)
 @ABH.on(events.NewMessage(pattern="^تشغيل$", from_users=[1910015590]))
 async def start_bot(event):
-    id = await event.get_reply_message().id
-    if id and id== 1910015590:
+    id = await event.get_reply_message()
+    if id and id.id == 1910015590:
         return
     await ABH.start()
     await event.reply("🟢 جارٍ تشغيل اليوزربوت ...")
@@ -31,8 +31,8 @@ async def start_bot(event):
     await event.reply("✅ اليوزربوت يعمل الآن!")
 @ABH.on(events.NewMessage(pattern="^رست$", from_users=[1910015590]))
 async def resetbot(event):
-    id = await event.get_reply_message().id
-    if id and id== 1910015590:
+    id = await event.get_reply_message()
+    if id and id.id == 1910015590:
         return
     await event.reply("♻️ جارٍ إعادة تشغيل اليوزربوت ...")
     await asyncio.sleep(1)
