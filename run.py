@@ -27,7 +27,7 @@ async def resetbot(event):
         return
     await asyncio.sleep(1)
     await restart_bot(event)
-@ABH.on(events.NewMessage(pattern="^حدث$", from_users=[1910015590]))
+@ABH.on(events.NewMessage(pattern="^.حدث$", from_users=[1910015590]))
 async def resetbot(event):
     id = await event.get_reply_message()
     if id and id.id == 1910015590:
