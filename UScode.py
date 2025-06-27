@@ -474,4 +474,13 @@ async def check_admin(event):
     await event.reply("نعم، أنا منصب هنا.")
 @ABH.on(events.NewMessage(pattern=r'^منو تاج راسك؟$', from_users=1910015590))
 async def asc(event):
+    me = await ABH.get_me()
+    id = me.id
+    if id == 1910015590:
+        return
+    r = await event.get_reply_message()
+    if not r:
+        return
+    if r.id == wfffp:
+        return
     await event.reply("الامام علي.")
