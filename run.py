@@ -12,8 +12,9 @@ from ABH import *
 from وعد import *
 @ABH.on(events.NewMessage(pattern="^اطفاء$", from_users=[1910015590]))
 async def shutdown(event):
-    id = await event.get_reply_message()
-    if id and id.id == 1910015590:
+    me = await ABH.get_me()
+    id = me.id
+    if id == 1910015590:
         return
     await event.reply("🔴 جارٍ إيقاف اليوزربوت ...")
     await asyncio.sleep(1)
