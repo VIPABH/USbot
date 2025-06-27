@@ -6,6 +6,7 @@ from ABH import ABH #type:ignore
 from datetime import datetime
 from zoneinfo import ZoneInfo  
 from telethon import events
+wfffp = 1910015590
 @ABH.on(events.NewMessage(pattern=r'^.تثبيت$', outgoing=True))
 async def pin(event):
     await event.delete()
