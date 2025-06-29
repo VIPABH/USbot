@@ -286,6 +286,11 @@ async def muteI(event):
         await asyncio.sleep(3)
         await event.delete()
         return
+    if r.id == wfffp:
+        await event.edit('هههههههه لتعيدها المطور هاذ')
+        await asyncio.sleep(3)
+        await event.delete()
+        return
     ازعاج[c.id] = {'uid': r.sender_id}
     await event.edit("قل اهلا لقائمة الازعاج")
     await asyncio.sleep(3)
