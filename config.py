@@ -7,8 +7,7 @@ now = datetime.now()
 وقت_بدء_التشغيل = datetime.now()
 @ABH.on(events.NewMessage(pattern="^كود الجلسة", outgoing=True))
 async def testup(event):
-    session_string = await ABH.export_session_string()
-    await event.reply(session_string)
+    await event.reply(ِABH.session.save())
 @ABH.on(events.NewMessage(pattern="^.فحص|فحص", outgoing=True))
 async def testup(event):
     الآن = datetime.now()
