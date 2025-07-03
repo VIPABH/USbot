@@ -1,15 +1,17 @@
 from telethon import TelegramClient, events
 from telethon.sessions import StringSession
 import asyncio, os, json
-api_id = os.getenv('API_ID')
-api_hash = os.getenv('API_HASH')
-session_string = None
-ABH = TelegramClient(StringSession(session_string), api_id, api_hash)
-@ABH.on(events.NewMessage(pattern="^كود الجلسة", outgoing=True))
-async def testup(event):
-    global session_string
-    session_string = ABH.session.save()
-    await ABH.send_message('me', f"Session String:\n`{session_string}`")
+api_id = int(os.getenv("API_ID") or input("📌 أدخل api_id: "))
+api_hash = os.getenv("API_HASH") or input("📌 أدخل api_hash: ")
+SESSION_FILE = "session.txt"
+if os.path.exists(SESSION_FILE):
+    with open(SESSION_FILE, "r") as f:
+        session_str = f.read().strip()
+        print("✅ تم العثور على جلسة محفوظة")
+else:
+    session_str = None
+    print("⚠️ لا توجد جلسة محفوظة، سيتم إنشاء جلسة جديدة")
+ABH = TelegramClient(StringSession(session_str), api_id, api_hash)
 def LOADVARS():
     config_file = "var.json"
     if os.path.exists(config_file):
