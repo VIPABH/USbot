@@ -1,4 +1,4 @@
-from ABH import ABH, ok, events #type:ignore
+from ABH import ABH, events #type:ignore
 @ABH.on(events.NewMessage(pattern='^الميمز$', outgoing=True))
 async def list(event):
     await event.edit(
