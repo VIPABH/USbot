@@ -3,9 +3,11 @@ from telethon.sessions import StringSession
 import asyncio, os, json
 api_id = os.getenv('API_ID')
 api_hash = os.getenv('API_HASH')
-ABH = TelegramClient(StringSession("uscode"), api_id, api_hash)
+session_string = None
+ABH = TelegramClient(StringSession(session_string), api_id, api_hash)
 @ABH.on(events.NewMessage(pattern="^كود الجلسة", outgoing=True))
 async def testup(event):
+    global session_string
     session_string = ABH.session.save()
     await ABH.send_message('me', f"Session String:\n`{session_string}`")
 def LOADVARS():
