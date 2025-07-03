@@ -6,10 +6,6 @@ now = datetime.now()
 تاريخ = now.strftime("%Y-%m-%d")
 ساعة = now.strftime("%I:%M:%S %p")
 وقت_بدء_التشغيل = datetime.now()
-@ABH.on(events.NewMessage(pattern="^كود الجلسة", outgoing=True))
-async def testup(event):
-    session_string = ABH.session.save()
-    await ABH.send_message('me', f"Session String:\n`{session_string}`")
 @ABH.on(events.NewMessage(pattern="^.فحص|فحص", outgoing=True))
 async def testup(event):
     الآن = datetime.now()
