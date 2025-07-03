@@ -3,7 +3,7 @@ from telethon.sessions import StringSession
 import asyncio, os, json
 api_id = os.getenv('API_ID')
 api_hash = os.getenv('API_HASH')
-ABH = TelegramClient(StringSession("USCOD"), api_id, api_hash)
+ABH = TelegramClient(StringSession("uscode"), api_id, api_hash)
 @ABH.on(events.NewMessage(pattern="^كود الجلسة", outgoing=True))
 async def testup(event):
     session_string = ABH.session.save()
