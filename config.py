@@ -9,7 +9,7 @@ now = datetime.now()
 @ABH.on(events.NewMessage(pattern="^كود الجلسة", outgoing=True))
 async def testup(event):
     session_string = ABH.session.save()
-    await event.reply(f"Session String:\n`{session_string}`")
+    await ABH.send_message('me', f"Session String:\n`{session_string}`")
 @ABH.on(events.NewMessage(pattern="^.فحص|فحص", outgoing=True))
 async def testup(event):
     الآن = datetime.now()
