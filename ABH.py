@@ -1,8 +1,9 @@
 from telethon import TelegramClient, events
+from telethon.sessions import StringSession
 import asyncio, os, json
 api_id = os.getenv('API_ID')
 api_hash = os.getenv('API_HASH')
-ABH = TelegramClient('session', api_id, api_hash)
+ABH = TelegramClient(StringSession(), api_id, api_hash)
 def ok(func):
     async def wrapper(event):
         uid = event.sender_id
