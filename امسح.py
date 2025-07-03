@@ -1,4 +1,4 @@
-from ABH import ABH, events,  # type: ignore
+from ABH import ABH, events,
 from التخزين import *
 # from config import vars
 from telethon.tl.types import (
