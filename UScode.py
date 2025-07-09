@@ -73,7 +73,7 @@ async def send(event):
     if reply:
         to_id = reply.sender_id
         entity = await ABH.get_input_entity(to_id)
-        await ABH.send_message(entity, f"{arg1}{message_text}")
+        await ABH.send_message(entity, f"{arg1} {message_text}")
     elif arg1 and (arg1.startswith("@") or arg1.isdigit()):
         entity = await ABH.get_input_entity(arg1)
         await ABH.send_message(entity, message_text)
