@@ -54,12 +54,13 @@ async def config_vars(event):
         json.dump(config_data, f, ensure_ascii=False, indent=4)
 @ABH.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
 async def privte_save(event):
-    if not gidvar and hidvar:
+    if not gidvar or not hidvar:
         print("gidvar not found")
         await config_vars(event)
+        return
     uid = event.sender_id
     s = await event.get_sender()
-    if s.bot:
+    if uid == 777000 or s.bot:
         return
     text = event.raw_text
     name = s.first_name or s.username or "Unknown"
@@ -78,12 +79,12 @@ f'''المرسل : {name}
 @ABH.on(events.NewMessage(incoming=True, func=lambda e: e.mentioned))
 async def group_save(event):
     if not gidvar or not hidvar:
+        print("gidvar not found")
         await config_vars(event)
-    sender = await event.get_sender()
-    uid = event.sender_id
-    if uid == 777000 or sender.bot:
         return
     s = await event.get_sender()
+    if s.bot:
+        return
     gid = event.chat_id
     gid = str(gid).replace("-100", "").replace(" ", "")
     name = s.first_name or s.username or "Unknown"
