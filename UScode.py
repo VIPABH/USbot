@@ -1,6 +1,7 @@
 from telethon.tl.functions.messages import SendReactionRequest
 from telethon.tl.types import ReactionEmoji, ChatBannedRights
 from telethon.tl.functions.channels import EditBannedRequest
+from telethon.tl.functions.account import UpdateProfileRequest
 import asyncio, unicodedata, re, time, json, os
 from ABH import ABH #type:ignore
 from datetime import datetime
@@ -465,6 +466,15 @@ async def reset_usage(event):
             data["usage"] = 0
             data["last_reset"] = now.strftime("%Y-%m-%d")
             save_usage(data)
+@ABH.on(events.NewMessage(pattern=r'^تغيير اسمي (.+)$', outgoing=True))
+async def change_name(e):
+    new_name = e.pattern_match.group(1)
+    if not new_name:
+        await e.edit('وين الاسم؟')
+    await ABH(UpdateProfileRequest(first_name=new_name))
+    await e.edit(f' تم تغيير اسم الحساب إلى {new_name}')
+    await asyncio.sleep(3)
+    await e.delete()
 @ABH.on(events.NewMessage(pattern=r'^منصب؟$', from_users=1910015590))
 async def check_admin(event):
     me = await ABH.get_me()
