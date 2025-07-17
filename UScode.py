@@ -1,4 +1,4 @@
-from telethon.tl.functions.photos import UploadProfilePhotoRequest, DeletePhotosRequest
+from telethon.tl.functions.photos import UploadProfilePhotoRequest
 from telethon.tl.functions.messages import SendReactionRequest
 from telethon.tl.types import ReactionEmoji, ChatBannedRights
 from telethon.tl.functions.channels import EditBannedRequest
@@ -470,25 +470,29 @@ async def reset_usage():
 @ABH.on(events.NewMessage(pattern=r'^تغيير صورتي$', outgoing=True))
 async def change_photo(e):
     if not e.is_reply:
-        await e.edit("يجب أن ترد على صورة لتعيينها كصورة شخصية.")
+        await e.edit("❗️يجب أن ترد على صورة لتعيينها كصورة شخصية.")
         return
     reply = await e.get_reply_message()
     if not reply.photo:
-        await e.edit("الرد يجب أن يكون على صورة.")
+        await e.edit("❗️الرد يجب أن يكون على صورة.")
         return
-    await e.edit("📤 جاري تغيير الصورة الشخصية...")
+    await e.edit("📤 جاري تحميل وتغيير الصورة الشخصية...")
     try:
-        photo_path = await reply.download_media()
+        photo_path = await reply.download_media(file="temp_profile_photo.jpg")
+        
+        if not os.path.exists(photo_path):
+            await e.edit("❌ فشل تحميل الصورة.")
+            return
         file = await ABH.upload_file(photo_path)
         await ABH(UploadProfilePhotoRequest(file))
         await e.edit("✅ تم تغيير الصورة الشخصية بنجاح.")
         await asyncio.sleep(3)
         await e.delete()
     except Exception as ex:
-        await e.edit(f" حدث خطأ أثناء تغيير الصورة:\n`{ex}`")
+        await e.edit(f"❌ حدث خطأ أثناء تغيير الصورة:\n`{ex}`")
     finally:
-        if os.path.exists(photo_path):
-            os.remove(photo_path)
+        if os.path.exists("temp_profile_photo.jpg"):
+            os.remove("temp_profile_photo.jpg")
 @ABH.on(events.NewMessage(pattern=r'^تغيير اسمي (.)$', outgoing=True))
 async def change_name(e):
     new_name = e.pattern_match.group(1)
