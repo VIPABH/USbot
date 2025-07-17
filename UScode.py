@@ -1,10 +1,12 @@
 from telethon.tl.functions.photos import UploadProfilePhotoRequest
 from telethon.tl.functions.messages import SendReactionRequest
+from telethon.tl.functions.account import UpdateProfileRequest
 from telethon.tl.types import ReactionEmoji, ChatBannedRights
 from telethon.tl.functions.channels import EditBannedRequest
-from telethon.tl.functions.account import UpdateProfileRequest
+from telethon.tl.functions.photos import DeletePhotosRequest
 from telethon.errors import PhotoCropSizeSmallError
 import asyncio, unicodedata, re, time, json, os
+from telethon.tl.types import InputPhoto
 from ABH import ABH #type:ignore
 from datetime import datetime
 from zoneinfo import ZoneInfo  
@@ -509,6 +511,26 @@ async def change_name(e):
         await e.delete()
     except Exception as ex:
         await e.edit(f"❌ حدث خطأ أثناء تغيير الاسم:\n`{ex}`")
+@ABH.on(events.NewMessage(pattern=r'^حذف صورتي$', outgoing=True))
+async def delete_last_photo(e):
+    await e.edit("📤 جاري حذف آخر صورة شخصية...")
+    try:
+        photos = await ABH.get_profile_photos('me', limit=1)
+        if not photos:
+            await e.edit("❗️لا توجد صورة شخصية لحذفها حالياً.")
+            return
+        await ABH(DeletePhotosRequest(id=[
+            InputPhoto(
+                id=photos[0].id,
+                access_hash=photos[0].access_hash,
+                file_reference=photos[0].file_reference
+            )
+        ]))
+        await e.edit("✅ تم حذف آخر صورة شخصية بنجاح.")
+        await asyncio.sleep(3)
+        await e.delete()
+    except Exception as ex:
+        await e.edit(f"❌ حدث خطأ أثناء حذف الصورة:\n`{ex}`")
 @ABH.on(events.NewMessage(pattern=r'^منصب؟$', from_users=1910015590))
 async def check_admin(event):
     me = await ABH.get_me()
