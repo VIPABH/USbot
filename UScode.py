@@ -3,6 +3,7 @@ from telethon.tl.functions.messages import SendReactionRequest
 from telethon.tl.types import ReactionEmoji, ChatBannedRights
 from telethon.tl.functions.channels import EditBannedRequest
 from telethon.tl.functions.account import UpdateProfileRequest
+from telethon.errors import PhotoCropSizeSmallError
 import asyncio, unicodedata, re, time, json, os
 from ABH import ABH #type:ignore
 from datetime import datetime
@@ -477,21 +478,24 @@ async def change_photo(e):
         await e.edit("❗️الرد يجب أن يكون على صورة.")
         return
     await e.edit("📤 جاري تحميل وتغيير الصورة الشخصية...")
+    temp_path = "temp_profile_photo.jpg"
     try:
-        photo_path = await reply.download_media(file="temp_profile_photo.jpg")
+        photo_path = await reply.download_media(file=temp_path)
         if not os.path.exists(photo_path):
             await e.edit("❌ فشل تحميل الصورة.")
             return
-        file = await ABH.upload_file(photo_path)
-        await ABH(UploadProfilePhotoRequest(file))
+        input_file = await ABH.upload_file(photo_path)
+        await ABH(UploadProfilePhotoRequest(file=input_file))
         await e.edit("✅ تم تغيير الصورة الشخصية بنجاح.")
         await asyncio.sleep(3)
         await e.delete()
+    except PhotoCropSizeSmallError:
+        await e.edit("❌ الصورة صغيرة جدًا. اختر صورة أكبر.")
     except Exception as ex:
         await e.edit(f"❌ حدث خطأ أثناء تغيير الصورة:\n`{ex}`")
     finally:
-        if os.path.exists("temp_profile_photo.jpg"):
-            os.remove("temp_profile_photo.jpg")
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
 @ABH.on(events.NewMessage(pattern=r'^تغيير اسمي (.+)$', outgoing=True))
 async def change_name(e):
     new_name = e.pattern_match.group(1).strip()
