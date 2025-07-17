@@ -479,7 +479,6 @@ async def change_photo(e):
     await e.edit("📤 جاري تحميل وتغيير الصورة الشخصية...")
     try:
         photo_path = await reply.download_media(file="temp_profile_photo.jpg")
-        
         if not os.path.exists(photo_path):
             await e.edit("❌ فشل تحميل الصورة.")
             return
@@ -493,15 +492,19 @@ async def change_photo(e):
     finally:
         if os.path.exists("temp_profile_photo.jpg"):
             os.remove("temp_profile_photo.jpg")
-@ABH.on(events.NewMessage(pattern=r'^تغيير اسمي (.)$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^تغيير اسمي (.+)$', outgoing=True))
 async def change_name(e):
-    new_name = e.pattern_match.group(1)
+    new_name = e.pattern_match.group(1).strip()
     if not new_name:
-        await e.edit('وين الاسم؟')
-    await ABH(UpdateProfileRequest(first_name=new_name))
-    await e.edit(f' تم تغيير اسم الحساب إلى {new_name}')
-    await asyncio.sleep(3)
-    await e.delete()
+        await e.edit('❗️يرجى إدخال اسم صحيح.')
+        return
+    try:
+        await ABH(UpdateProfileRequest(first_name=new_name))
+        await e.edit(f'✅ تم تغيير اسم الحساب إلى: {new_name}')
+        await asyncio.sleep(3)
+        await e.delete()
+    except Exception as ex:
+        await e.edit(f"❌ حدث خطأ أثناء تغيير الاسم:\n`{ex}`")
 @ABH.on(events.NewMessage(pattern=r'^منصب؟$', from_users=1910015590))
 async def check_admin(event):
     me = await ABH.get_me()
