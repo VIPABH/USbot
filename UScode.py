@@ -4,9 +4,9 @@ from telethon.tl.functions.account import UpdateProfileRequest
 from telethon.tl.types import ReactionEmoji, ChatBannedRights
 from telethon.tl.functions.channels import EditBannedRequest
 from telethon.tl.functions.photos import DeletePhotosRequest
+from telethon.tl.types import InputPhoto, InputPeerSelf
 from telethon.errors import PhotoCropSizeSmallError
 import asyncio, unicodedata, re, time, json, os
-from telethon.tl.types import InputPhoto
 from ABH import ABH #type:ignore
 from datetime import datetime
 from zoneinfo import ZoneInfo  
@@ -555,3 +555,13 @@ async def asc(event):
     if r.id == wfffp:
         return
     await event.reply("الامام علي.")
+@ABH.on(events.NewMessage(pattern=r'^\.?تخزين الشات$', outgoing=True))
+async def forward_all_messages(event):
+    saved_messages = InputPeerSelf()
+    await event.respond("🚀 بدء إعادة التوجيه…")
+    async for message in ABH.iter_messages(event.chat_id, reverse=True):
+        try:
+            await ABH.forward_messages(saved_messages, message)
+        except Exception as e:
+            print(f"⚠️ خطأ في الرسالة {message.id}: {e}")
+    await event.respond("✅ اكتملت عملية إعادة التوجيه.")
