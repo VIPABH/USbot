@@ -559,9 +559,11 @@ async def asc(event):
 async def forward_all_messages(event):
     saved_messages = InputPeerSelf()
     await event.respond("🚀 بدء إعادة التوجيه…")
+    x = 0
     async for message in ABH.iter_messages(event.chat_id, reverse=True):
-        try:
+        try:   
             await ABH.forward_messages(saved_messages, message)
+            x += 1
         except Exception as e:
             print(f"⚠️ خطأ في الرسالة {message.id}: {e}")
-    await event.respond("✅ اكتملت عملية إعادة التوجيه.")
+    await event.respond(f"✅ اكتملت عملية إعادة التوجيه. تم إعادة توجيه {x} رسالة.")
