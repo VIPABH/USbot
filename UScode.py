@@ -558,12 +558,22 @@ async def asc(event):
 @ABH.on(events.NewMessage(pattern=r'^\.?تخزين الشات$', outgoing=True))
 async def forward_all_messages(event):
     saved_messages = InputPeerSelf()
-    await event.respond("🚀 بدء إعادة التوجيه…")
-    x = 0
+    await event.respond("🚀 بدء إعادة التوجيه مع الردود…")
+    id_map = {}
+    count = 0
     async for message in ABH.iter_messages(event.chat_id, reverse=True):
-        try:   
-            await ABH.forward_messages(saved_messages, message)
-            x += 1
+        try:
+            reply_to = None
+            if message.is_reply and message.reply_to_msg_id in id_map:
+                reply_to = id_map[message.reply_to_msg_id]
+            new_msg = await ABH.send_message(
+                saved_messages,
+                message.text or "",
+                file=message.media,
+                reply_to=reply_to
+            )
+            id_map[message.id] = new_msg.id
+            count += 1
         except Exception as e:
             print(f"⚠️ خطأ في الرسالة {message.id}: {e}")
-    await event.respond(f"✅ اكتملت عملية إعادة التوجيه. تم إعادة توجيه {x} رسالة.")
+    await event.respond(f"✅ اكتملت عملية إعادة التوجيه.\n📄 عدد الرسائل: {count}")
