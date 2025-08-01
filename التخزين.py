@@ -10,7 +10,7 @@ async def create_group(name, about):
 @ABH.on(events.NewMessage(pattern='/config', outgoing=True))
 async def config_vars(event):
     global gidvar, hidvar
-    config_file = "'var.json'"
+    config_file = "var.json"
     me = await ABH.get_me()
     async for msg in ABH.iter_messages(me.id):
         if not msg.text:
