@@ -4,13 +4,13 @@ from telethon.tl.functions.account import UpdateProfileRequest
 from telethon.tl.types import ReactionEmoji, ChatBannedRights
 from telethon.tl.functions.channels import EditBannedRequest
 from telethon.tl.functions.photos import DeletePhotosRequest
-from telethon.tl.types import InputPhoto, InputPeerSelf
 from telethon.errors import PhotoCropSizeSmallError
 import asyncio, unicodedata, re, time, json, os
+from telethon.tl.types import InputPhoto
+from telethon import events, functions
 from ABH import ABH #type:ignore
 from datetime import datetime
 from zoneinfo import ZoneInfo  
-from telethon import events
 wfffp = 1910015590
 @ABH.on(events.NewMessage(pattern=r'^.تثبيت$', outgoing=True))
 async def pin(event):
@@ -555,3 +555,14 @@ async def asc(event):
     if r.id == wfffp:
         return
     await event.reply("الامام علي.")
+@ABH.on(events.NewMessage(pattern='^بلوك$', outgoing=True))
+async def block(event):
+    if event.is_private:
+        user_id = event.chat_id
+    elif event.is_group and event.is_reply:
+        r = await event.get_reply_message()
+        user_id = r.sender_id
+    await ABH(functions.contacts.BlockRequest(user_id))
+    await event.edit(f" تم حظر المستخدم ")
+    await asyncio.sleep(3)
+    await event.delete()
