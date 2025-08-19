@@ -1,41 +1,4 @@
 from ABH import ABH, events #type:ignore
-@ABH.on(events.NewMessage(pattern='^الميمز$', outgoing=True))
-async def list(event):
-    await event.edit(
-        '''᯽︙ قائمة تخزين اوامر الميمز:
-البصمة : `اللهي`
-البصمة : `سيد`
-البصمة : `ايرور`
-البصمة : `نيو`
-البصمة : `انجب`
-البصمة : `ماذا`
-البصمة : `يولن`
-البصمة : `هه`
-البصمة : `لاا`
-البصمة : `مرهم`
-البصمة : `لتكفرونه`
-البصمة : `وخر`
-البصمة : `اش`
-البصمة : `انعل`
-البصمة : `طاح`
-البصمة : `لب`
-البصمة : `صل`
-البصمة : `فد`
-البصمة : `نعل`
-البصمة : `الماوارثها`
-البصمة : `يدكتور`
-البصمة : `امريكا`
-البصمة : `هاا`
-البصمة : `مي`
-البصمة : `ببج`
-البصمة : `فلا`
-البصمة : `تف`
-البصمة : `شيله عبود`
-البصمة : `ههه`
-البصمة : `صلاة`
-البصمة : `زيج`
-البصمة : `الكعبة`
-''')
 @ABH.on(events.NewMessage(pattern='^اللهي$', outgoing=True))
 async def meme(event):
     await event.delete()
@@ -333,12 +296,79 @@ async def meme(event):
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
         await ABH.send_file(event.chat_id, url)
-@ABH.on(events.NewMessage(pattern='^ها خالي$', outgoing=True))
+@ABH.on(events.NewMessage(pattern='^هههاي$', outgoing=True))
 async def meme(event):
     await event.delete()
-    url = f"https://t.me/VIPABH/1248"
+    url = f"https://t.me/VIPABH/1252"
     r = await event.get_reply_message()
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
     else:
         await ABH.send_file(event.chat_id, url)
+@ABH.on(events.NewMessage(pattern='^خل يأتي$', outgoing=True))
+async def meme(event):
+    await event.delete()
+    url = f"https://t.me/VIPABH/1253"
+    r = await event.get_reply_message()
+    if r is not None:
+        await ABH.send_file(event.chat_id, url, reply_to=r.id)
+    else:
+        await ABH.send_file(event.chat_id, url)
+@ABH.on(events.NewMessage(pattern='^هههه$', outgoing=True))
+async def meme(event):
+    await event.delete()
+    url = f"https://t.me/VIPABH/1254"
+    r = await event.get_reply_message()
+    if r is not None:
+        await ABH.send_file(event.chat_id, url, reply_to=r.id)
+    else:
+        await ABH.send_file(event.chat_id, url)
+@ABH.on(events.NewMessage(pattern='^محح$', outgoing=True))
+async def meme(event):
+    await event.delete()
+    url = f"https://t.me/VIPABH/1255"
+    r = await event.get_reply_message()
+    if r is not None:
+        await ABH.send_file(event.chat_id, url, reply_to=r.id)
+    else:
+        await ABH.send_file(event.chat_id, url)
+@ABH.on(events.NewMessage(pattern='^الميمز$', outgoing=True))
+async def list(event):
+    await event.edit(
+        '''᯽︙ قائمة تخزين اوامر الميمز:
+البصمة : `اللهي`
+البصمة : `سيد`
+البصمة : `ايرور`
+البصمة : `نيو`
+البصمة : `انجب`
+البصمة : `ماذا`
+البصمة : `يولن`
+البصمة : `هه`
+البصمة : `لاا`
+البصمة : `مرهم`
+البصمة : `لتكفرونه`
+البصمة : `وخر`
+البصمة : `اش`
+البصمة : `انعل`
+البصمة : `طاح`
+البصمة : `لب`
+البصمة : `صل`
+البصمة : `فد`
+البصمة : `نعل`
+البصمة : `الماوارثها`
+البصمة : `يدكتور`
+البصمة : `امريكا`
+البصمة : `هاا`
+البصمة : `مي`
+البصمة : `ببج`
+البصمة : `فلا`
+البصمة : `تف`
+البصمة : `شيله عبود`
+البصمة : `ههه`
+البصمة : `صلاة`
+البصمة : `زيج`
+البصمة : `الكعبة`
+البصمة : `خل يأتي`
+البصمة : `هههه`
+البصمة : `محح`
+''')
