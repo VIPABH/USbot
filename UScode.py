@@ -372,67 +372,6 @@ async def schedule_handler(event):
     await event.edit(
         f"✅ تم جدولة الرسالة بتاريخ {scheduled_time.strftime('%d/%m/%Y %H:%M')}."
     )
-USAGE_FILE = "usage.json"
-def load_usage():
-    if not os.path.exists(USAGE_FILE):
-        return {"on": False, "usage": 0, "limit": 500, "last_reset": datetime.now().strftime("%Y-%m-%d")}
-    with open(USAGE_FILE, "r", encoding="utf-8") as f:
-        return json.load(f)
-def save_usage(data):
-    with open(USAGE_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-@ABH.on(events.NewMessage(pattern=r'^الحد اليومي (.+)$', outgoing=True))
-async def on_off(event):
-    data = load_usage()
-    command = event.pattern_match.group(1)
-    if command == 'تفعيل':
-        data['on'] = True
-        await event.edit("تم تفعيل النظام اليومي.")
-    elif command == 'تعطيل':
-        data['on'] = False
-        await event.edit("تم تعطيل النظام اليومي.")
-    save_usage(data)
-@ABH.on(events.NewMessage(pattern=r'\.?استخدامي', outgoing=True))
-async def show_usage(event):
-    data = load_usage()
-    await event.edit(f"عدد رسائلك {data['usage']}")
-@ABH.on(events.NewMessage(pattern=r'^ضع حد يومي (\d+)$', outgoing=True))
-async def set_daily_limit(event):
-    data = load_usage()
-    data['limit'] = int(event.pattern_match.group(1))
-    save_usage(data)
-    await event.edit(f"تم تعيين الحد اليومي إلى {data['limit']} استخدام.")
-@ABH.on(events.NewMessage(outgoing=True))
-async def count_usage(event):
-    if event.raw_text.startswith(('.', 'الحد اليومي', 'ضع حد يومي')):
-        return
-    data = load_usage()
-    if not data.get('on', True):
-        return
-    today = datetime.now().strftime("%Y-%m-%d")
-    if data.get("last_reset") != today:
-        data["usage"] = 0
-        data["last_reset"] = today
-        save_usage(data)
-    if data['usage'] >= data['limit']:
-        await event.delete()
-        return
-    data['usage'] += 1
-    save_usage(data)
-@ABH.on(events.NewMessage(pattern='كم بعد', outgoing=True))
-async def howmuch(event):
-    data = load_usage()
-    x = int(data['limit']) - int(data['usage'])
-    await event.edit(str(x))
-@ABH.on(events.NewMessage(outgoing=True))
-async def reset_usage():
-    now = datetime.now()
-    if now.hour == 0 and now.minute == 0:
-        data = load_usage()
-        if data.get("last_reset") != now.strftime("%Y-%m-%d"):
-            data["usage"] = 0
-            data["last_reset"] = now.strftime("%Y-%m-%d")
-            save_usage(data)
 @ABH.on(events.NewMessage(pattern=r'^تغيير صورتي$', outgoing=True))
 async def change_photo(e):
     if not e.is_reply:
