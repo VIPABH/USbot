@@ -566,3 +566,14 @@ async def block(event):
     await event.edit(f" تم حظر المستخدم ")
     await asyncio.sleep(3)
     await event.delete()
+@ABH.on(events.NewMessage(pattern='^الغاء بلوك$', outgoing=True))
+async def unblock(event):
+    if event.is_private:
+        user_id = event.chat_id
+    elif event.is_group and event.is_reply:
+        r = await event.get_reply_message()
+        user_id = r.sender_id
+    await ABH(functions.contacts.UnblockRequest(user_id))
+    await event.edit(" تم إلغاء الحظر عن المستخدم")
+    await asyncio.sleep(3)
+    await event.delete()
