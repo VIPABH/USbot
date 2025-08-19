@@ -178,43 +178,6 @@ async def repeat_it(event):
                 message=r.message if r.message else None,
                 file=r.media if r.media else None
             )
-الحذف = False
-t = 3 
-@ABH.on(events.NewMessage(pattern=r'الحذف تفعيل$', outgoing=True))
-async def delete_on(event):
-    global الحذف
-    if الحذف:
-        await event.edit('الحذف التلقائي مفعل بالفعل')
-        await asyncio.sleep(3)
-        await event.delete()
-    else:
-        await event.edit('تم تفعيل الحذف التلقائي')
-        الحذف = True
-@ABH.on(events.NewMessage(pattern=r'الحذف تعطيل$', outgoing=True))
-async def delete_off(event):
-    global الحذف
-    if not الحذف:
-        await event.edit('الحذف التلقائي معطل بالفعل')
-        await asyncio.sleep(3)
-        await event.delete()
-    else:
-        await event.edit('تم تعطيل الحذف التلقائي')
-        الحذف = False
-        await asyncio.sleep(3)
-        await event.delete()
-@ABH.on(events.NewMessage(outgoing=True))
-async def delete_auto(event):
-    global الحذف
-    if الحذف:
-        await asyncio.sleep(t)
-        await event.delete()
-@ABH.on(events.NewMessage(pattern=r'^الحذف (\d+)$', outgoing=True))
-async def set(event):
-    global t
-    t = int(event.pattern_match.group(1))
-    await event.edit(f'تم تعيين وقت الحذف التلقائي إلى {t} ثواني')
-    await asyncio.sleep(3)
-    await event.delete()
 @ABH.on(events.NewMessage(pattern=r'^متى$', outgoing=True))
 async def when(event):
     r = await event.get_reply_message()
