@@ -5,6 +5,7 @@ from التفاعلات import *
 from التخزين import *
 from config import *
 from UScode import *
+from البلاغات import *
 from ذاتية import *
 from امسح import *
 from ميمز import *
