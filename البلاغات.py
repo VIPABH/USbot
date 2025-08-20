@@ -26,7 +26,7 @@ async def report_handler(event):
         result = await ABH(ReportRequest(
             peer=event.chat_id,
             id=[msg.id],
-            reason=reason,
+            reason=InputReportReasonPornography(),
             message="رسالة مزعجة"
         ))
         if result:
