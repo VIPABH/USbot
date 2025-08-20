@@ -24,7 +24,7 @@ async def report_handler(event):
             await event.reply("⚠️ الرجاء الرد على الرسالة التي تريد الإبلاغ عنها.")
             return
         result = await ABH(ReportRequest(
-            peer=msg.chat_id,
+            peer=event.chat_id,
             id=[msg.id],
             reason=reason,
             message="رسالة مزعجة"
