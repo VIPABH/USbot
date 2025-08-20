@@ -9,16 +9,16 @@ from ABH import ABH
 @ABH.on(events.NewMessage(pattern='بلاغ (.+)', outgoing=True))
 async def report_handler(event):
     try:
-        reason_text = event.pattern_match.group(1).strip()
-        if reason_text == "مزعج":
-            reason = InputReportReasonSpam()
-        elif reason_text == "عنف":
-            reason = InputReportReasonViolence()
-        elif reason_text == "إباحية":
-            reason = InputReportReasonPornography()
-        else:
-            await event.reply("⚠️ السبب غير معروف. استخدم: 'مزعج' أو 'عنف' أو 'إباحية'.")
-            return
+        # reason_text = event.pattern_match.group(1).strip()
+        # if reason_text == "مزعج":
+        #     reason = InputReportReasonSpam()
+        # elif reason_text == "عنف":
+        #     reason = InputReportReasonViolence()
+        # elif reason_text == "إباحية":
+        #     reason = InputReportReasonPornography()
+        # else:
+        #     await event.reply("⚠️ السبب غير معروف. استخدم: 'مزعج' أو 'عنف' أو 'إباحية'.")
+        #     return
         msg = await event.get_reply_message()
         if not msg:
             await event.reply("⚠️ الرجاء الرد على الرسالة التي تريد الإبلاغ عنها.")
