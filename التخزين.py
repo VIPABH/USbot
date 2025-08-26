@@ -88,11 +88,13 @@ async def group_save(event):
     gid = event.chat_id
     gid = str(gid).replace("-100", "").replace(" ", "")
     name = s.first_name or s.username or "Unknown"
+    chat = await event.get_chat()
+    chat_title = getattr(chat, "title", "محادثة خاصة")
     await ABH.send_message(
         int(gidvar),
 f'''#التــاكــات
 
-⌔┊الكــروب : {event.chat.title}
+⌔┊الكــروب : {chat_title}
 
 ⌔┊المـرسـل :  {name}
 
