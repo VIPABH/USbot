@@ -1,11 +1,13 @@
 from telethon import events
 from ABH import *
-@ABH.on(events.NewMessage(pattern="ىشيهاهعسشاهعسشهعبي"))
+@ABH.on(events.NewMessage(pattern="^mx$", outgoing=True))
 async def mx(event):
+    await event.edit("جاري الفحص...")
     for i in range(385, 432):
-        x = await ABH.get_messages("x04ou", i)
+        msg = ""
+        x = await ABH.get_message("x04ou", i)
         if x:
-            msg = f'{i} موجود'
+            msg += f'{i} موجود\n'
         else:
-            msg = f'{i} غير موجود'
-    await event.reply(msg)
+            msg += f'{i} غير موجود\n'
+    await event.edit(msg)
