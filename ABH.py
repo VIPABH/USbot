@@ -6,7 +6,7 @@ api_hash = os.getenv("API_HASH")
 SESSION_FILE = "session.txt"
 if os.path.exists(SESSION_FILE):
     with open(SESSION_FILE, "r") as f:
-        session_str = f.read().strip()
+        session_str = f.read()
 else:
     session_str = None
 ABH = TelegramClient(StringSession(session_str), api_id, api_hash)
