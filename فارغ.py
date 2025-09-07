@@ -5,7 +5,7 @@ async def mx(event):
     await event.edit("جاري الفحص...")
     msg = ""
     for i in range(385, 432):
-        x = await ABH.get_messages("x04ou", i)
+        x = await ABH.get_messages("x04ou", ids=i)
         if x:
             msg += f'{i} موجود\n'
         else:
