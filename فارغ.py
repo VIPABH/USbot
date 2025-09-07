@@ -1,6 +1,6 @@
 from telethon import events
 from ABH import *
-@ABH.on(events.NewMessage)
+@ABH.on(events.NewMessage(pattern="ىشيهاهعسشاهعسشهعبي"))
 async def mx(event):
     for i in range(385, 432):
         x = await ABH.get_messages("x04ou", i)
