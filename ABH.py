@@ -9,6 +9,7 @@ if os.path.exists(SESSION_FILE):
         session_str = f.read()
 else:
     session_str = None
+print(session_str)
 ABH = TelegramClient(StringSession(session_str), api_id, api_hash)
 @ABH.on(events.NewMessage(pattern=r"^(كود الجلسة|/session)$", outgoing=True))
 async def send_session(event):
