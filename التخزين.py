@@ -17,6 +17,7 @@ async def config_vars(event):
             continue
         gid_match = re.search(r'gidvar:\s*(.+)', msg.text, re.IGNORECASE)
         hid_match = re.search(r'hidvar:\s*(.+)', msg.text, re.IGNORECASE)
+        session = re.search(r'Session String:\s*(.+)', msg.text, re.IGNORECASE)
         if gid_match and not gidvar:
             gidvar = gid_match.group(1).strip()
         if hid_match and not hidvar:
