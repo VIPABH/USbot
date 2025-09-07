@@ -3,8 +3,8 @@ from ABH import *
 @ABH.on(events.NewMessage(pattern="^mx$", outgoing=True))
 async def mx(event):
     await event.edit("جاري الفحص...")
+    msg = ""
     for i in range(385, 432):
-        msg = ""
         x = await ABH.get_messages("x04ou", i)
         if x:
             msg += f'{i} موجود\n'
