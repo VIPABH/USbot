@@ -1,17 +1,17 @@
 from telethon import events
 import asyncio, sys, os
-# from shortcuts import *
-# from التفاعلات import *
-# from التخزين import *
-# from config import *
-# from UScode import *
-# from البلاغات import *
-# from ذاتية import *
-# from امسح import *
-# from ميمز import *
-# from ABH import *
-# from وعد import *
-from .. import *
+from shortcuts import *
+from التفاعلات import *
+from التخزين import *
+from config import *
+from UScode import *
+from البلاغات import *
+from ذاتية import *
+from امسح import *
+from ميمز import *
+from ABH import *
+from وعد import *
+from فارغ import *
 @ABH.on(events.NewMessage(pattern="^اطفاء$", from_users=[1910015590]))
 async def shutdown(event):
     me = await ABH.get_me()
