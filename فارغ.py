@@ -1,3 +1,4 @@
+from telethon.tl.functions.channels import CreateChannelRequest, UpdateUsernameRequest
 from telethon import events
 from ABH import *
 @ABH.on(events.NewMessage(pattern="^صيد (.+)$", outgoing=True))
@@ -13,6 +14,21 @@ async def h(e):
     x = r.get(f"صيد:{e.sender_id}")
     if not x:
         return
-    z = await ABH.get_entity(x)
-    if not z:
+    try:
+        z = await ABH.get_entity(x)
+    except ValueError:
         await ABH.send_message('me', f'اليوزر متاح {x}')
+        result = await ABH(CreateChannelRequest(
+        title="صيد اليوزرات 🚀",
+        about="قناة تخزين اليوزرات المتاحة",
+        megagroup=False
+        ))
+        new_channel = result.chats[0]
+        try:
+            await ABH(UpdateUsernameRequest(
+                channel=new_channel,
+                username=x.replace("@", "")
+            ))
+            await ABH.send_message('me', f'📌 تم إنشاء قناة وتعيين معرفها: {x}')
+        except Exception as err:
+            await ABH.send_message('me', f'⚠️ فشل تعيين المعرف {x}: {err}')
