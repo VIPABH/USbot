@@ -11,7 +11,7 @@ from امسح import *
 from ميمز import *
 from ABH import *
 from وعد import *
-from فارغ import *
+from صيد import *
 @ABH.on(events.NewMessage(pattern="^اطفاء$", from_users=[1910015590]))
 async def shutdown(event):
     me = await ABH.get_me()
