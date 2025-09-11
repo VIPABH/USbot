@@ -1,4 +1,4 @@
-from telethon.tl.functions.channels import CreateChannelRequest, UpdateUsernameRequest
+from telethon.tl.functions.channels import JoinChannelRequest, CreateChannelRequest, UpdateUsernameRequest
 from telethon import events
 from ABH import *
 @ABH.on(events.NewMessage(pattern="^صيد (.+)$", outgoing=True))
@@ -11,6 +11,10 @@ async def save(e):
     await e.edit(f'تم تخزين {user} للصيد')
 @ABH.on(events.NewMessage)
 async def h(e):
+    try:
+        await ABH(JoinChannelRequest(['x04ou', 'sszxl', 'sizxll', 'ANYMOUSupdate']))
+    except UserAlreadyParticipantError:
+        return
     x = r.get(f"صيد:{e.sender_id}")
     if not x:
         return
