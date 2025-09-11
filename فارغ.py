@@ -8,7 +8,7 @@ async def save(e):
         await e.edit('عذرا بس الامر يعمل ك صيد @wfffp')
         return
     r.set(f"صيد:{e.sender_id}", user)
-    await e.reply(f'تم تخزين {user} للصيد')
+    await e.edit(f'تم تخزين {user} للصيد')
 @ABH.on(events.NewMessage)
 async def h(e):
     x = r.get(f"صيد:{e.sender_id}")
@@ -35,3 +35,7 @@ async def h(e):
             await ABH.send_message(
                 'me',
                 f'⚠️ فشل تعيين المعرف \n من الممكن الخطأ بسبب عدد القنوات لديك 20 احذف واحده {x}: {err}')
+@ABH.on(events.NewMessage(pattern="^(ايقاف صيد|ايقاف الصيد)$", outgoing=True))
+async def stop(e):
+    await e.edit('تم ايقاف الصيد بنجاح')
+    r.delete(f"صيد:{e.sender_id}")
