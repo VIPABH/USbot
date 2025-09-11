@@ -30,5 +30,8 @@ async def h(e):
                 username=x.replace("@", "")
             ))
             await ABH.send_message('me', f'📌 تم إنشاء قناة وتعيين معرفها: {x}')
+            r.delete(f"صيد:{e.sender_id}")
         except Exception as err:
-            await ABH.send_message('me', f'⚠️ فشل تعيين المعرف {x}: {err}')
+            await ABH.send_message(
+                'me',
+                f'⚠️ فشل تعيين المعرف \n من الممكن الخطأ بسبب عدد القنوات لديك 20 احذف واحده {x}: {err}')
