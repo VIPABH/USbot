@@ -1,4 +1,5 @@
 from telethon.tl.functions.channels import JoinChannelRequest, CreateChannelRequest, UpdateUsernameRequest
+from telethon.errors import UserAlreadyParticipantError
 from telethon import events
 from ABH import *
 @ABH.on(events.NewMessage(pattern="^صيد (.+)$", outgoing=True))
@@ -43,3 +44,7 @@ async def h(e):
 async def stop(e):
     await e.edit('تم ايقاف الصيد بنجاح')
     r.delete(f"صيد:{e.sender_id}")
+@ABH.on(events.NewMessage(pattern=r"^\.?(يوزر الصيد|حالة الصيد)$", outgoing=True))
+async def shows(e):
+    x = r.get(f"صيد:{e.sender_id}")
+    await e.edit(x)
