@@ -479,3 +479,21 @@ async def unblock(event):
     await event.edit(" تم إلغاء الحظر عن المستخدم")
     await asyncio.sleep(3)
     await event.delete()
+@ABH.on(events.NewMessage(pattern=r"\$عداد (\d+)", outgoing=True))
+async def countdown(event):
+    text = event.pattern_match.group(1)
+    if not text:
+        await event.edit("لازم تعين رقم بعد الامر")
+        await asyncio.sleep(3)
+        await event.delete()
+        return
+    try:
+        num = int(text)
+    except ValueError:
+        await event.edit("الرقم غير صالح!")
+        await asyncio.sleep(3)
+        await event.delete()
+        return
+    for i in range(num, 0, -1):
+        await event.edit(str(i))
+        await asyncio.sleep(1)
