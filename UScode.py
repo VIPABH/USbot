@@ -479,7 +479,7 @@ async def unblock(event):
     await event.edit(" تم إلغاء الحظر عن المستخدم")
     await asyncio.sleep(3)
     await event.delete()
-@ABH.on(events.NewMessage(pattern=r"\$عداد (\d+)", outgoing=True))
+@ABH.on(events.NewMessage(pattern=r"عداد (\d+)", outgoing=True))
 async def countdown(event):
     text = event.pattern_match.group(1)
     if not text:
@@ -497,3 +497,4 @@ async def countdown(event):
     for i in range(num, 0, -1):
         await event.edit(str(i))
         await asyncio.sleep(1)
+    await e.edit(f"انتهى العد التنازلي من {i}")
