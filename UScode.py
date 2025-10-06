@@ -497,4 +497,4 @@ async def countdown(event):
     for i in range(num, 0, -1):
         await event.edit(str(i))
         await asyncio.sleep(1)
-    await e.edit(f"انتهى العد التنازلي من {i}")
+    await e.edit(f"انتهى العد التنازلي من {num}")
