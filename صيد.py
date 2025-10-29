@@ -72,4 +72,4 @@ async def stop(e):
 @ABH.on(events.NewMessage(pattern=r"^(يوزر الصيد|حالة الصيد)$", outgoing=True))
 async def shows(e):
     x = r.get(f"صيد:{e.sender_id}")
-    await e.edit(f"🎯 اليوزر الحالي: {x.decode() if x else 'لا يوجد صيد.'}")
+    await e.edit(f"🎯 اليوزر الحالي: {x}")
