@@ -62,7 +62,7 @@ async def save(e):
     if not user.startswith('@'):
         return await e.edit("❌ استخدم الأمر مثل: صيد @user")
     r.set(f"صيد:{e.sender_id}", user)
-    await e.edit(f"✅ تم تخزين {user}، )
+    await e.edit(f"✅ تم تخزين {user} )
     if not hunt_task_handle:
         hunt_task_handle = ABH.loop.create_task(periodic_hunt())
 @ABH.on(events.NewMessage(pattern="^(ايقاف صيد|ايقاف الصيد)$", outgoing=True))
