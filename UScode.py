@@ -372,7 +372,7 @@ async def schedule_handler(event):
     await event.edit(
         f"✅ تم جدولة الرسالة بتاريخ {scheduled_time.strftime('%d/%m/%Y %H:%M')}."
     )
-@ABH.on(events.NewMessage(pattern=r'^(تغيير افتاري|تغيير صورتي|اضف صورة|اضف افتار))$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^(تغيير افتاري|تغيير صورتي|اضف صورة|اضف افتار)$', outgoing=True))
 async def change_photo(e):
     if not e.is_reply:
         await e.edit("❗️يجب أن ترد على صورة لتعيينها كصورة شخصية.")
