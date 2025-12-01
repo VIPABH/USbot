@@ -8,7 +8,7 @@ from telethon.errors import PhotoCropSizeSmallError
 import asyncio, unicodedata, re, time, json, os
 from telethon.tl.types import InputPhoto
 from telethon import events, functions
-from ABH import ABH #type:ignore
+from ABH import * #type:ignore
 from datetime import datetime
 from zoneinfo import ZoneInfo  
 wfffp = 1910015590
