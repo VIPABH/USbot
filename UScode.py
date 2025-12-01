@@ -317,7 +317,7 @@ async def set_channel(event):
             await event.edit("❌ يرجى كتابة معرف القناة (ID) أو الرد على رسالة من القناة.")
             return
     else:
-        channel_id = int(input_value)
+        channel_id = input_value
     r.set("global_schedule_channel", channel_id)
     await event.edit(f"✅ تم تعيين قناة الجدولة العامة:\n**{channel_id}**")
 @ABH.on(events.NewMessage(pattern=r'^جدوله\s+(\d{4})/(\d{1,2})/(\d{1,2})\s+(\d{1,2}):(\d{1,2})$', outgoing=True))
