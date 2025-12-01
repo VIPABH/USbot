@@ -325,7 +325,7 @@ async def schedule_handler(event):
     if not event.is_reply:
         await event.edit("❌ يجب الرد على الرسالة التي تريد جدولتها.")
         return
-    channel = r.get("global_schedule_channel")
+    channel = int(r.get("global_schedule_channel"))
     if not channel:
         await event.edit("❌ لم يتم تعيين قناة الجدولة العامة.")
         return
