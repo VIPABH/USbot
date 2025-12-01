@@ -308,26 +308,27 @@ async def anti_spam_ban(event):
             user_ban_data[user_id] = {"count": 0, "first_time": now}
 @ABH.on(events.NewMessage(pattern=r'^\.تعيين قناة(?:\s+(.*))?$', outgoing=True))
 async def set_channel(event):
-    channel = event.pattern_match.group(1)
-    if not channel:
+    input_value = event.pattern_match.group(1)
+    if not input_value:
         reply = await event.get_reply_message()
-        if reply and reply.chat and reply.chat.username:
-            channel = f"@{reply.chat.username}"
+        if reply and reply.chat:
+            channel_id = reply.chat.id
         else:
-            await event.edit("❌ يرجى كتابة اسم القناة أو الرد على رسالة من القناة.")
+            await event.edit("❌ يرجى كتابة معرف القناة (ID) أو الرد على رسالة من القناة.")
             return
-
-    if not channel.startswith("@"):
-        channel = f"@{channel}"
-
-    redis.set("global_schedule_channel", channel)
-    await event.edit(f"✅ تم تعيين قناة الجدولة العامة:\n{channel}")
+    else:
+        if not input_value.isdigit():
+            await event.edit("❌ يجب إدخال ID رقمي فقط. اليوزرات غير مدعومة.")
+            return
+        channel_id = int(input_value)
+    r.set("global_schedule_channel", channel_id)
+    await event.edit(f"✅ تم تعيين قناة الجدولة العامة:\n**{channel_id}**")
 @ABH.on(events.NewMessage(pattern=r'^جدوله\s+(\d{4})/(\d{1,2})/(\d{1,2})\s+(\d{1,2}):(\d{1,2})$', outgoing=True))
 async def schedule_handler(event):
     if not event.is_reply:
         await event.edit("❌ يجب الرد على الرسالة التي تريد جدولتها.")
         return
-    channel = redis.get("global_schedule_channel")
+    channel = r.get("global_schedule_channel")
     if not channel:
         await event.edit("❌ لم يتم تعيين قناة الجدولة العامة.")
         return
