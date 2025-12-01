@@ -329,7 +329,6 @@ async def schedule_handler(event):
     if not channel:
         await event.edit("❌ لم يتم تعيين قناة الجدولة العامة.")
         return
-    channel = channel.decode("utf-8")
     try:
         year = int(event.pattern_match.group(1))
         month = int(event.pattern_match.group(2))
