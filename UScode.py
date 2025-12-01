@@ -317,9 +317,6 @@ async def set_channel(event):
             await event.edit("❌ يرجى كتابة معرف القناة (ID) أو الرد على رسالة من القناة.")
             return
     else:
-        if not input_value.isdigit():
-            await event.edit("❌ يجب إدخال ID رقمي فقط. اليوزرات غير مدعومة.")
-            return
         channel_id = int(input_value)
     r.set("global_schedule_channel", channel_id)
     await event.edit(f"✅ تم تعيين قناة الجدولة العامة:\n**{channel_id}**")
