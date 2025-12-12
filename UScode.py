@@ -320,6 +320,7 @@ async def set_channel(event):
         channel_id = input_value
     r.set("global_schedule_channel", channel_id)
     await event.edit(f"✅ تم تعيين قناة الجدولة العامة:\n**{channel_id}**")
+baghdad_tz = pytz.timezone("Asia/Baghdad")
 @ABH.on(events.NewMessage(pattern=r'^جدوله\s+(\d{4})/(\d{1,2})/(\d{1,2})\s+(\d{1,2}):(\d{1,2})$', outgoing=True))
 async def schedule_handler(event):
     if not event.is_reply:
@@ -339,11 +340,12 @@ async def schedule_handler(event):
         await event.edit("❌ صيغة التاريخ أو الوقت غير صحيحة.")
         return
     try:
-        scheduled_time = datetime(year, month, day, hour, minute)
+        scheduled_time = baghdad_tz.localize(datetime(year, month, day, hour, minute))
     except:
         await event.edit("❌ التاريخ غير صالح.")
         return
-    if scheduled_time <= datetime.now():
+    now_baghdad = datetime.now(baghdad_tz)
+    if scheduled_time <= now_baghdad:
         await event.edit("❌ لا يمكن جدولة وقت قد مضى.")
         return
     reply = await event.get_reply_message()
