@@ -2,7 +2,7 @@ from ABH import ABH, events #type:ignore
 @ABH.on(events.NewMessage(pattern='^اللهي$', outgoing=True))
 async def meme(event):
     await event.delete()
-    url = f"https://t.me/vipabh/23"
+    url = f"https://t.me/abhmeme/23"
     r = await event.get_reply_message()
     if r is not None:
         await ABH.send_file(event.chat_id, url, reply_to=r.id)
