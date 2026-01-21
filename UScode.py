@@ -361,7 +361,6 @@ async def schedule_handler(event):
         await ABH.send_message(
             entity=channel,
             file=file,
-            caption=msg,
             schedule=scheduled_time
         )
     else:
