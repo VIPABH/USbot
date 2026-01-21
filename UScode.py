@@ -363,6 +363,7 @@ async def schedule_handler(event):
             file=file,
             schedule=scheduled_time
         )
+        await event.edit(f"✅ تم جدولة الرسالة:\n{channel}\n{scheduled_time.strftime('%Y/%m/%d %H:%M')}")
     else:
         await ABH.send_message(
             entity=channel,
