@@ -354,7 +354,7 @@ async def schedule_handler(event):
     if not msg and not file:
         await event.edit("❌ لا يمكن جدولة هذه الرسالة.")
         return
-    await ABH.send_message(entity=channel, message=msg, file=file, schedule=scheduled_time)
+    await ABH.send_message(entity=channel, file=msg.media, file=file, schedule=scheduled_time)
     await event.edit(f"✅ تم جدولة الرسالة:\n{channel}\n{scheduled_time.strftime('%Y/%m/%d %H:%M')}")
 @ABH.on(events.NewMessage(pattern=r'^(تغيير افتاري|تغيير صورتي|اضف صورة|اضف افتار)$', outgoing=True))
 async def change_photo(e):
