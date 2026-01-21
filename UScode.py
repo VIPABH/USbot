@@ -349,13 +349,28 @@ async def schedule_handler(event):
         await event.edit("❌ لا يمكن جدولة وقت قد مضى.")
         return
     reply = await event.get_reply_message()
-    msg = reply.message or ""
-    file = reply.media or None
+    if not reply:
+        await event.edit("❌ يجب الرد على رسالة لجدولتها.")
+        return
+    msg = reply.text
+    file = reply.media
     if not msg and not file:
         await event.edit("❌ لا يمكن جدولة هذه الرسالة.")
         return
-    await ABH.send_message(entity=channel, file=msg.media, file=file, schedule=scheduled_time)
-    await event.edit(f"✅ تم جدولة الرسالة:\n{channel}\n{scheduled_time.strftime('%Y/%m/%d %H:%M')}")
+    if file:
+        await ABH.send_message(
+            entity=channel,
+            file=file,
+            caption=msg,
+            schedule=scheduled_time
+        )
+    else:
+        await ABH.send_message(
+            entity=channel,
+            message=msg,
+            schedule=scheduled_time
+        )
+        await event.edit(f"✅ تم جدولة الرسالة:\n{channel}\n{scheduled_time.strftime('%Y/%m/%d %H:%M')}")
 @ABH.on(events.NewMessage(pattern=r'^(تغيير افتاري|تغيير صورتي|اضف صورة|اضف افتار)$', outgoing=True))
 async def change_photo(e):
     if not e.is_reply:
