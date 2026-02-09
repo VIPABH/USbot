@@ -118,32 +118,26 @@ async def j(event):
                     break
             except asyncio.TimeoutError:
                 return
-@ABH.on(events.NewMessage(pattern=r"^.اسرع (\d+)$", outgoing=True))
+@ABH.on(events.NewMessage(pattern=r"^.اسرع$", outgoing=True))
 async def fast(event):
     await event.delete()
-    num = int(event.pattern_match.group(1)) or 1
     TARGET_ID = 7908156943
-    sent = False
-    for _ in range(num):
-        async with ABH.conversation(event.chat_id, timeout=10) as conv:
-            if not sent:
-                await conv.send_message("اسرع")
-                sent = True
-            try:
-                while True:
-                    msg = await conv.get_response()
-                    if msg.sender_id != TARGET_ID:
-                        continue
-                    text = (msg.raw_text or "")
-                    if text.startswith("احصائيات اللعب"):
-                        return
-                    match = re.search(r"~\s*\(\s*(.*?)\s*\)", text)
-                    if match:
-                        inside = match.group(1)
-                        await conv.send_message(inside)
-                        break
-            except asyncio.TimeoutError:
-                return
+    async with ABH.conversation(event.chat_id, timeout=300) as conv:
+        await conv.send_message("اسرع")
+        try:
+            while True:
+                msg = await conv.get_response()
+                if msg.sender_id != TARGET_ID:
+                    continue
+                text = (msg.raw_text or "").strip()
+                if text.startswith("احصائيات اللعب🧮"):
+                    return
+                match = re.search(r"~\s*\(\s*(.*?)\s*\)", text)
+                if match:
+                    inside = match.group(1)
+                    await conv.send_message(inside)
+        except asyncio.TimeoutError:
+            return
 @ABH.on(events.NewMessage(pattern=r"^.تفاعل|تفاعل\s+(\d+)\s+(\d+(?:\.\d+)?)$", outgoing=True))
 async def sends(event):
     much = int(event.pattern_match.group(1))
