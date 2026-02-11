@@ -79,7 +79,6 @@ async def calc(event):
                     msg = await conv.get_response()
                     if msg.sender_id != target_user_id:
                         continue
-
                     text = msg.raw_text.strip()
                     match = re.search(r"([\d\s\+\-\*÷\/\.]+)\s*=", text)
                     if match:
@@ -127,7 +126,7 @@ async def fast(event):
         try:
             while True:
                 msg = await conv.get_response()
-                if msg.sender_id != 8405882983:
+                if msg.sender_id != 8405882983 or msg.sender_id != 7908156943:
                     continue
                 text = (msg.raw_text or "").strip()
                 if text.startswith("احصائيات اللعب🧮"):
