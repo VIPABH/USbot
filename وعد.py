@@ -126,7 +126,7 @@ async def fast(event):
         try:
             while True:
                 msg = await conv.get_response()
-                if msg.sender_id != 8405882983 or msg.sender_id != 7908156943:
+                if msg.sender_id not in (8405882983, 7908156943):
                     continue
                 text = (msg.raw_text or "").strip()
                 if text.startswith("احصائيات اللعب🧮"):
