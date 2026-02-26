@@ -503,4 +503,4 @@ async def sleep_command(event):
     num2 = int(event.pattern_match.group(2))
     for _ in range(num1):
         await event.respond(".")
-        await asyncio.sleep(int(num2)
+        await asyncio.sleep(int(num2))
