@@ -499,9 +499,9 @@ async def countdown(event):
     await event.edit(f"انتهى العد التنازلي من {num}")
 @ABH.on(events.NewMessage(pattern=r'^سليب (\d+) (\d+)$'))
 async def sleep_command(event):
-    await event.edit(f"تم تعيين سليب مدة {num2} وعدد تكرار {num1}")
     num1 = int(event.pattern_match.group(1))
     num2 = int(event.pattern_match.group(2))
+    await event.edit(f"تم تعيين سليب مدة {num2} وعدد تكرار {num1}")
     for _ in range(num1):
         await event.respond("😴")
         await asyncio.sleep(int(num2))
