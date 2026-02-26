@@ -497,3 +497,10 @@ async def countdown(event):
         await event.edit(str(i))
         await asyncio.sleep(1)
     await event.edit(f"انتهى العد التنازلي من {num}")
+@ABH.on(events.NewMessage(pattern=r'^سليب (\d+) (\d+)$'))
+async def sleep_command(event):
+    num1 = int(event.pattern_match.group(1))
+    num2 = int(event.pattern_match.group(2))
+    for _ in range(num1):
+        await event.respond(".")
+        await asyncio.sleep(int(num2)
