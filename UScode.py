@@ -505,9 +505,9 @@ async def sleep_command(event):
     for _ in range(num1):
         await event.respond("😴")
         await asyncio.sleep(int(num2))
-@client.on(events.NewMessage(pattern=".معلوماتي", outgoing=True))
+@ABH.on(events.NewMessage(pattern=".معلوماتي", outgoing=True))
 async def my_info(event):
-    dialogs = [d async for d in client.iter_dialogs()]
+    dialogs = [d async for d in ABH.iter_dialogs()]
     async def analyze(dialog):
         entity = dialog.entity
         data = {
