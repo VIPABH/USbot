@@ -505,3 +505,55 @@ async def sleep_command(event):
     for _ in range(num1):
         await event.respond("😴")
         await asyncio.sleep(int(num2))
+@client.on(events.NewMessage(pattern=".معلوماتي", outgoing=True))
+async def my_info(event):
+    dialogs = [d async for d in client.iter_dialogs()]
+    async def analyze(dialog):
+        entity = dialog.entity
+        data = {
+            "private": 0,
+            "groups": 0,
+            "channels": 0,
+            "bots": 0,
+            "mentions": dialog.unread_mentions_count,
+            "unread_private": 0,
+            "unread_groups": 0
+        }
+        if dialog.is_user:
+            if getattr(entity, "bot", False):
+                data["bots"] = 1
+            else:
+                data["private"] = 1
+                data["unread_private"] = dialog.unread_count
+        elif dialog.is_group:
+            data["groups"] = 1
+            data["unread_groups"] = dialog.unread_coun
+
+        elif dialog.is_channel:
+            data["channels"] = 1
+        return data
+    results = await asyncio.gather(*(analyze(d) for d in dialogs))
+    private_chats = sum(r["private"] for r in results)
+    groups = sum(r["groups"] for r in results)
+    channels = sum(r["channels"] for r in results)
+    bots = sum(r["bots"] for r in results)
+    mentions = sum(r["mentions"] for r in results)
+    unread_private = sum(r["unread_private"] for r in results)
+    unread_groups = sum(r["unread_groups"] for r in results)
+    total = private_chats + groups + channels + bots
+    text = f"""
+📊 معلومات الحساب
+
+• مجموع المحادثات : {total}
+
+👤 الخاص : {private_chats}
+🤖 البوتات : {bots}
+👥 الكروبات : {groups}
+📢 القنوات : {channels}
+
+🔔 التاكات غير المقروءة : {mentions}
+
+✉️ رسائل الخاص غير المقروءة : {unread_private}
+📩 رسائل الكروبات غير المقروءة : {unread_groups}
+"""
+    await event.edit(text)
