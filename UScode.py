@@ -507,6 +507,7 @@ async def sleep_command(event):
         await asyncio.sleep(int(num2))
 @ABH.on(events.NewMessage(pattern=".معلوماتي", outgoing=True))
 async def my_info(event):
+    await event.edit("جاري جمع المعلومات")
     dialogs = [d async for d in ABH.iter_dialogs()]
     async def analyze(dialog):
         entity = dialog.entity
