@@ -527,7 +527,7 @@ async def my_info(event):
                 data["unread_private"] = dialog.unread_count
         elif dialog.is_group:
             data["groups"] = 1
-            data["unread_groups"] = dialog.unread_coun
+            data["unread_groups"] = dialog.unread_count
 
         elif dialog.is_channel:
             data["channels"] = 1
