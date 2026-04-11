@@ -291,7 +291,7 @@ user_ban_data = {}
 rights = ChatBannedRights(
     until_date=None,
     send_messages=True)
-@ABH.on(events.NewMessage(pattern='^(حظر|.حظر|حظر$|/حظر)(.*)'))
+@ABH.on(events.NewMessage(pattern='^(حظر|.حظر|حظر$|/حظر|حظر عام)(.*)'))
 async def anti_spam_ban(event):
     user_id = event.sender_id
     now = time.time()
