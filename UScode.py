@@ -190,7 +190,7 @@ async def when(event):
         message_time = r.date.astimezone(ZoneInfo("Asia/Baghdad"))
         formatted_time = message_time.strftime('%Y/%m/%d %I:%M:%S %p')
         await event.edit(formatted_time)
-@ABH.on(events.NewMessage(pattern=r'^.تقييد|ت$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^.تقييد$', outgoing=True))
 async def mute(event):
     r = await event.get_reply_message()
     if not r:
@@ -321,56 +321,74 @@ async def set_channel(event):
     r.set("global_schedule_channel", channel_id)
     await event.edit(f"✅ تم تعيين قناة الجدولة العامة:\n**{channel_id}**")
 baghdad_tz = pytz.timezone("Asia/Baghdad")
-@ABH.on(events.NewMessage(pattern=r'^جدوله\s+(\d{4})/(\d{1,2})/(\d{1,2})\s+(\d{1,2}):(\d{1,2})$', outgoing=True))
+@ABH.on(events.NewMessage(
+    pattern=r'^جدوله(?:\s+(\d{4})/(\d{1,2})/(\d{1,2})|\s+(\d{1,2})/(\d{1,2})|\s+(\d{1,2}))?(?:\s+(\d{1,2}):(\d{1,2}))?$',
+    outgoing=True
+))
 async def schedule_handler(event):
     if not event.is_reply:
         await event.edit("❌ يجب الرد على الرسالة التي تريد جدولتها.")
         return
-    channel = int(r.get("global_schedule_channel"))
+    channel = r.get("global_schedule_channel")
     if not channel:
         await event.edit("❌ لم يتم تعيين قناة الجدولة العامة.")
         return
+    channel = int(channel)
+    now = datetime.now(baghdad_tz)
+    year = now.year
+    month = now.month
+    day = now.day
+    hour = 17
+    minute = 25
     try:
-        year = int(event.pattern_match.group(1))
-        month = int(event.pattern_match.group(2))
-        day = int(event.pattern_match.group(3))
-        hour = int(event.pattern_match.group(4))
-        minute = int(event.pattern_match.group(5))
+        if event.pattern_match.group(1):
+            year = int(event.pattern_match.group(1))
+            month = int(event.pattern_match.group(2))
+            day = int(event.pattern_match.group(3))
+        elif event.pattern_match.group(4):
+            month = int(event.pattern_match.group(4))
+            day = int(event.pattern_match.group(5))
+        elif event.pattern_match.group(6):
+            day = int(event.pattern_match.group(6))
+        if event.pattern_match.group(7):
+            hour = int(event.pattern_match.group(7))
+            minute = int(event.pattern_match.group(8))
+
+        scheduled_time = baghdad_tz.localize(
+            datetime(year, month, day, hour, minute)
+        )
     except:
-        await event.edit("❌ صيغة التاريخ أو الوقت غير صحيحة.")
+        await event.edit("❌ التاريخ أو الوقت غير صالح.")
         return
-    try:
-        scheduled_time = baghdad_tz.localize(datetime(year, month, day, hour, minute))
-    except:
-        await event.edit("❌ التاريخ غير صالح.")
-        return
-    now_baghdad = datetime.now(baghdad_tz)
-    if scheduled_time <= now_baghdad:
+    if scheduled_time <= now:
         await event.edit("❌ لا يمكن جدولة وقت قد مضى.")
         return
     reply = await event.get_reply_message()
     if not reply:
         await event.edit("❌ يجب الرد على رسالة لجدولتها.")
         return
-    msg = reply.text
+    msg = reply.message
     file = reply.media
-    if not msg and not file:
-        await event.edit("❌ لا يمكن جدولة هذه الرسالة.")
-        return
-    if file:
-        await ABH.send_message(
-            entity=channel,
-            file=file,
-            schedule=scheduled_time
+    try:
+        if file:
+            await ABH.send_message(
+                entity=channel,
+                file=file,
+                message=msg if msg else None,
+                schedule=scheduled_time
+            )
+        else:
+            await ABH.send_message(
+                entity=channel,
+                message=msg,
+                schedule=scheduled_time
+            )
+        await event.edit(
+            "✅ تم جدولة الرسالة بنجاح.\n\n"
+            f"📅 {scheduled_time.strftime('%Y/%m/%d %H:%M')}"
         )
-        await event.edit(f"✅ تم جدولة الرسالة:\n{channel}\n{scheduled_time.strftime('%Y/%m/%d %H:%M')}")
-    else:
-        await ABH.send_message(
-            entity=channel,
-            message=msg,
-            schedule=scheduled_time
-        )
-        await event.edit(f"✅ تم جدولة الرسالة:\n{channel}\n{scheduled_time.strftime('%Y/%m/%d %H:%M')}")
+    except Exception as e:
+        await event.edit(f"❌ فشل في جدولة الرسالة:\n`{e}`")
 @ABH.on(events.NewMessage(pattern=r'^(تغيير افتاري|تغيير صورتي|اضف صورة|اضف افتار)$', outgoing=True))
 async def change_photo(e):
     if not e.is_reply:
