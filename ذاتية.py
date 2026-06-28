@@ -11,29 +11,30 @@ async def get(event):
     reply = await event.get_reply_message()
     if reply and reply.media:
         await event.delete()
-        await getfromevent(reply)
+        await getfromevent(reply, "- تـم حفظ الوسائط من الرد ✓")
         return
     elif input_link:
         match = re.match(r"https://t\.me/c/(\d+)/(\d+)", input_link)
-    if match:
-        chat_id = int("-100" + match.group(1))
-        msg_id = int(match.group(2))
-        msg = await ABH.get_messages(chat_id, ids=msg_id)
-        caption = "- تـم حفظ الوسائط من الرسالة ✓"
-    if isinstance(msg, Message) and msg.media:
-        await getfromevent(msg, caption)
-        return
+        if match:
+            chat_id = int("-100" + match.group(1))
+            msg_id = int(match.group(2))
+            msg = await ABH.get_messages(chat_id, ids=msg_id)
+            caption = "- تـم حفظ الوسائط من الرسالة ✓"
+            if isinstance(msg, Message) and msg.media:
+                await event.delete()
+                await getfromevent(msg, caption)
+                return
 async def getfromevent(message, caption):
     x = await ABH.get_me()
-    x = x.id
+    my_id = x.id
     uid = message.sender_id
-    if uid == x:
+    if uid == my_id:
         return
     media = await message.download_media()
     if not media:
-        await message.edit(" لم يتم تحميل الوسائط من الرسالة.")
+        await ABH.send_message(my_id, "❌ لم يتم تحميل الوسائط من الرسالة.")
         return
-    await ABH.send_file(x, media, caption=caption, parse_mode="markdown")
+    await ABH.send_file(my_id, media, caption=caption, parse_mode="markdown")
     if os.path.exists(media):
         os.remove(media)
 def is_voice_note(message):
