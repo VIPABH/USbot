@@ -400,13 +400,15 @@ async def schedule_handler(event):
         )
     except Exception as e:
         await event.edit(f"❌ فشل في جدولة الرسالة:\n`{e}`")
+from mutagen.mp3 import MP3
+from mutagen.id3 import ID3, APIC, TPE1, TIT2
 THUMB_PATH = "hafer.jpg" 
 @ABH.on(events.NewMessage(pattern=r'^مزامنه$', outgoing=True))
 async def rename_all(e):
-    await e.edit("🔄 جاري بدء عملية مزامنة وتعديل الحقوق للملفات...")
-    msg_ids = list(range(10, 13))
+    await e.edit("🔄 جاري بدء المزامنة وتعديل البيانات داخلياً...")
+    msg_ids = list(range(50, 52))
     messages = await ABH.get_messages("x04ou", ids=msg_ids)
-    success_count = 0
+    success_count = 0    
     for msg in messages:
         if not msg or not msg.media:
             continue
@@ -414,16 +416,33 @@ async def rename_all(e):
             downloaded_file = await msg.download_media()
             if not downloaded_file:
                 continue
-            try:
-                with open(downloaded_file, "ab") as f:
-                    f.write(b"\x00") 
-            except Exception:
-                pass
-            thumb_file = THUMB_PATH if os.path.exists(THUMB_PATH) else None
-            orig_name = getattr(msg.file, 'name', '') or 'audio'
-            attributes = [DocumentAttributeFilename(file_name=orig_name)]
+            orig_name = getattr(msg.file, 'name', '') or 'audio.mp3'
+            original_title = getattr(msg.file, 'title', '') or os.path.splitext(orig_name)[0]            
+            if downloaded_file.lower().endswith('.mp3'):
+                try:
+                    audio = MP3(downloaded_file, ID3=ID3)
+                    try:
+                        audio.add_tags()
+                    except Exception:
+                        pass 
+                    audio.tags.add(TPE1(encoding=3, text='حافر'))
+                    audio.tags.add(TIT2(encoding=3, text=original_title))
+                    if os.path.exists(THUMB_PATH):
+                        with open(THUMB_PATH, 'rb') as img:
+                            audio.tags.add(APIC(
+                                encoding=3,
+                                mime='image/jpeg',
+                                type=3, 
+                                desc='Cover',
+                                data=img.read()
+                            ))
+                    audio.save()
+                except Exception as audio_err:
+                    print(f"فشل تعديل التاغات داخلياً: {audio_err}")
+            attributes = [
+                DocumentAttributeFilename(file_name=orig_name)
+            ]
             if msg.file and hasattr(msg.file, 'duration') and msg.file.duration:
-                original_title = getattr(msg.file, 'title', '') or orig_name
                 attributes.append(DocumentAttributeAudio(
                     duration=msg.file.duration,
                     title=original_title,
@@ -433,7 +452,6 @@ async def rename_all(e):
                 entity="x04ou", 
                 file=downloaded_file,
                 message=msg.message if msg.message else None,
-                thumb=thumb_file,
                 attributes=attributes
             )
             if os.path.exists(downloaded_file):
@@ -443,8 +461,9 @@ async def rename_all(e):
                 await e.edit(f"🔄 جاري المزامنة... تم تعديل وإرسال ({success_count}) ملف.")
                 await asyncio.sleep(0.5)
         except Exception as err:
+            print(f"خطأ غير متوقع: {err}")
             continue
-    await e.edit(f"✅ تمت المزامنة بنجاح! تم إعادة رفع {success_count} ملف بحقوق الناشر الجديدة (حافر).")
+    await e.edit(f"✅ تمت المزامنة بنجاح! تم حفر الحقوق (الناشر + الصورة) داخل {success_count} ملف بنجاح.")
 @ABH.on(events.NewMessage(pattern=r'^(تغيير افتاري|تغيير صورتي|اضف صورة|اضف افتار)$', outgoing=True))
 async def change_photo(e):
     if not e.is_reply:
