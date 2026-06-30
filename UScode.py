@@ -363,21 +363,32 @@ async def schedule_handler(event):
         await event.edit("❌ يجب الرد على رسالة لجدولتها.")
         return
     msg = reply.message
-    file = reply.media
+    file = reply.media    
     try:
         if file:
+            await event.edit("⏳ جاري تجهيز الملف وتعديل البيانات...")
+            downloaded_file = await reply.download_media()            
             thumb_file = THUMB_PATH if os.path.exists(THUMB_PATH) else None
             orig_name = getattr(reply.file, 'name', '') or ''
             ext = os.path.splitext(orig_name)[1] if orig_name else ''
             new_filename = f"حافر{ext}" if ext else "حافر"
+            attributes = [DocumentAttributeFilename(file_name=new_filename)]
+            if reply.file and hasattr(reply.file, 'duration') and reply.file.duration:
+                attributes.append(DocumentAttributeAudio(
+                    duration=reply.file.duration,
+                    title=new_filename,
+                    performer="حافر" 
+                ))
             await ABH.send_message(
                 entity=channel,
-                file=file,
+                file=downloaded_file, 
                 message=msg if msg else None,
                 schedule=scheduled_time,
                 thumb=thumb_file,
-                attributes=[DocumentAttributeFilename(file_name=new_filename)] 
+                attributes=attributes
             )
+            if os.path.exists(downloaded_file):
+                os.remove(downloaded_file)
         else:
             await ABH.send_message(
                 entity=channel,
