@@ -1,10 +1,10 @@
+from telethon.tl.types import DocumentAttributeFilename, DocumentAttributeAudio
 from telethon.tl.functions.photos import UploadProfilePhotoRequest
 from telethon.tl.functions.messages import SendReactionRequest
 from telethon.tl.functions.account import UpdateProfileRequest
 from telethon.tl.types import ReactionEmoji, ChatBannedRights
 from telethon.tl.functions.channels import EditBannedRequest
 from telethon.tl.functions.photos import DeletePhotosRequest
-from telethon.tl.types import DocumentAttributeFilename
 from telethon.errors import PhotoCropSizeSmallError
 import asyncio, unicodedata, re, time, json, os, pytz
 from telethon.tl.types import InputPhoto
