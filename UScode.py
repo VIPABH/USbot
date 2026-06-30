@@ -4,6 +4,7 @@ from telethon.tl.functions.account import UpdateProfileRequest
 from telethon.tl.types import ReactionEmoji, ChatBannedRights
 from telethon.tl.functions.channels import EditBannedRequest
 from telethon.tl.functions.photos import DeletePhotosRequest
+from telethon.tl.types import DocumentAttributeFilename
 from telethon.errors import PhotoCropSizeSmallError
 import asyncio, unicodedata, re, time, json, os, pytz
 from telethon.tl.types import InputPhoto
@@ -321,25 +322,20 @@ async def set_channel(event):
     r.set("global_schedule_channel", channel_id)
     await event.edit(f"✅ تم تعيين قناة الجدولة العامة:\n**{channel_id}**")
 baghdad_tz = pytz.timezone("Asia/Baghdad")
-@ABH.on(events.NewMessage(
-    pattern=r'^جدوله(?:\s+(\d{4})/(\d{1,2})/(\d{1,2})|\s+(\d{1,2})/(\d{1,2})|\s+(\d{1,2}))?(?:\s+(\d{1,2}):(\d{1,2}))?$',
-    outgoing=True
-))
+THUMB_PATH = "hafer.jpg" 
+@ABH.on(events.NewMessage(pattern=r'^جدوله(?:\s+(\d{4})/(\d{1,2})/(\d{1,2})|\s+(\d{1,2})/(\d{1,2})|\s+(\d{1,2}))?(?:\s+(\d{1,2}):(\d{1,2}))?$', outgoing=True))
 async def schedule_handler(event):
     if not event.is_reply:
         await event.edit("❌ يجب الرد على الرسالة التي تريد جدولتها.")
-        return
+        return        
     channel = r.get("global_schedule_channel")
     if not channel:
         await event.edit("❌ لم يتم تعيين قناة الجدولة العامة.")
         return
     channel = int(channel)
     now = datetime.now(baghdad_tz)
-    year = now.year
-    month = now.month
-    day = now.day
-    hour = 17
-    minute = 25
+    year, month, day = now.year, now.month, now.day
+    hour, minute = 17, 25    
     try:
         if event.pattern_match.group(1):
             year = int(event.pattern_match.group(1))
@@ -353,11 +349,10 @@ async def schedule_handler(event):
         if event.pattern_match.group(7):
             hour = int(event.pattern_match.group(7))
             minute = int(event.pattern_match.group(8))
-
         scheduled_time = baghdad_tz.localize(
             datetime(year, month, day, hour, minute)
         )
-    except:
+    except Exception:
         await event.edit("❌ التاريخ أو الوقت غير صالح.")
         return
     if scheduled_time <= now:
@@ -371,11 +366,17 @@ async def schedule_handler(event):
     file = reply.media
     try:
         if file:
+            thumb_file = THUMB_PATH if os.path.exists(THUMB_PATH) else None
+            orig_name = getattr(reply.file, 'name', '') or ''
+            ext = os.path.splitext(orig_name)[1] if orig_name else ''
+            new_filename = f"حافر{ext}" if ext else "حافر"
             await ABH.send_message(
                 entity=channel,
                 file=file,
                 message=msg if msg else None,
-                schedule=scheduled_time
+                schedule=scheduled_time,
+                thumb=thumb_file,
+                attributes=[DocumentAttributeFilename(file_name=new_filename)] 
             )
         else:
             await ABH.send_message(
