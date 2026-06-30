@@ -400,10 +400,11 @@ async def schedule_handler(event):
         )
     except Exception as e:
         await event.edit(f"❌ فشل في جدولة الرسالة:\n`{e}`")
+THUMB_PATH = "hafer.jpg" 
 @ABH.on(events.NewMessage(pattern=r'^مزامنه$', outgoing=True))
 async def rename_all(e):
     await e.edit("🔄 جاري بدء عملية مزامنة وتعديل الحقوق للملفات...")
-    msg_ids = list(range(50, 52))
+    msg_ids = list(range(10, 13))
     messages = await ABH.get_messages("x04ou", ids=msg_ids)
     success_count = 0
     for msg in messages:
@@ -413,6 +414,11 @@ async def rename_all(e):
             downloaded_file = await msg.download_media()
             if not downloaded_file:
                 continue
+            try:
+                with open(downloaded_file, "ab") as f:
+                    f.write(b"\x00") 
+            except Exception:
+                pass
             thumb_file = THUMB_PATH if os.path.exists(THUMB_PATH) else None
             orig_name = getattr(msg.file, 'name', '') or 'audio'
             attributes = [DocumentAttributeFilename(file_name=orig_name)]
@@ -433,9 +439,10 @@ async def rename_all(e):
             if os.path.exists(downloaded_file):
                 os.remove(downloaded_file)
             success_count += 1
-            await e.edit(f"🔄 جاري المزامنة... تم تعديل وإرسال ({success_count}) ملف.")
+            if success_count % 3 == 0:
+                await e.edit(f"🔄 جاري المزامنة... تم تعديل وإرسال ({success_count}) ملف.")
+                await asyncio.sleep(0.5)
         except Exception as err:
-            print(f'{msg.id} {err}')
             continue
     await e.edit(f"✅ تمت المزامنة بنجاح! تم إعادة رفع {success_count} ملف بحقوق الناشر الجديدة (حافر).")
 @ABH.on(events.NewMessage(pattern=r'^(تغيير افتاري|تغيير صورتي|اضف صورة|اضف افتار)$', outgoing=True))
