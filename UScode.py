@@ -435,6 +435,7 @@ async def rename_all(e):
             success_count += 1
             await e.edit(f"🔄 جاري المزامنة... تم تعديل وإرسال ({success_count}) ملف.")
         except Exception as err:
+            print(f'{msg.id} {err}')
             continue
     await e.edit(f"✅ تمت المزامنة بنجاح! تم إعادة رفع {success_count} ملف بحقوق الناشر الجديدة (حافر).")
 @ABH.on(events.NewMessage(pattern=r'^(تغيير افتاري|تغيير صورتي|اضف صورة|اضف افتار)$', outgoing=True))
