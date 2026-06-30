@@ -368,16 +368,15 @@ async def schedule_handler(event):
         if file:
             await event.edit("⏳ جاري تجهيز الملف وتعديل البيانات...")
             downloaded_file = await reply.download_media()            
-            thumb_file = THUMB_PATH if os.path.exists(THUMB_PATH) else None
-            orig_name = getattr(reply.file, 'name', '') or ''
-            ext = os.path.splitext(orig_name)[1] if orig_name else ''
-            new_filename = f"حافر{ext}" if ext else "حافر"
-            attributes = [DocumentAttributeFilename(file_name=new_filename)]
+            thumb_file = THUMB_PATH if os.path.exists(THUMB_PATH) else None            
+            orig_name = getattr(reply.file, 'name', '') or 'audio'
+            attributes = [DocumentAttributeFilename(file_name=orig_name)]
             if reply.file and hasattr(reply.file, 'duration') and reply.file.duration:
+                original_title = getattr(reply.file, 'title', '') or orig_name
                 attributes.append(DocumentAttributeAudio(
                     duration=reply.file.duration,
-                    title=new_filename,
-                    performer="حافر" 
+                    title=original_title,
+                    performer="حافر"
                 ))
             await ABH.send_message(
                 entity=channel,
@@ -401,6 +400,43 @@ async def schedule_handler(event):
         )
     except Exception as e:
         await event.edit(f"❌ فشل في جدولة الرسالة:\n`{e}`")
+@ABH.on(events.NewMessage(pattern=r'^مزامنه$', outgoing=True))
+async def rename_all(e):
+    await e.edit("🔄 جاري بدء عملية مزامنة وتعديل الحقوق للملفات...")
+    msg_ids = list(range(50, 52))
+    messages = await ABH.get_messages("x04ou", ids=msg_ids)
+    success_count = 0
+    for msg in messages:
+        if not msg or not msg.media:
+            continue
+        try:
+            downloaded_file = await msg.download_media()
+            if not downloaded_file:
+                continue
+            thumb_file = THUMB_PATH if os.path.exists(THUMB_PATH) else None
+            orig_name = getattr(msg.file, 'name', '') or 'audio'
+            attributes = [DocumentAttributeFilename(file_name=orig_name)]
+            if msg.file and hasattr(msg.file, 'duration') and msg.file.duration:
+                original_title = getattr(msg.file, 'title', '') or orig_name
+                attributes.append(DocumentAttributeAudio(
+                    duration=msg.file.duration,
+                    title=original_title,
+                    performer="حافر"
+                ))            
+            await ABH.send_message(
+                entity="x04ou", 
+                file=downloaded_file,
+                message=msg.message if msg.message else None,
+                thumb=thumb_file,
+                attributes=attributes
+            )
+            if os.path.exists(downloaded_file):
+                os.remove(downloaded_file)
+            success_count += 1
+            await e.edit(f"🔄 جاري المزامنة... تم تعديل وإرسال ({success_count}) ملف.")
+        except Exception as err:
+            continue
+    await e.edit(f"✅ تمت المزامنة بنجاح! تم إعادة رفع {success_count} ملف بحقوق الناشر الجديدة (حافر).")
 @ABH.on(events.NewMessage(pattern=r'^(تغيير افتاري|تغيير صورتي|اضف صورة|اضف افتار)$', outgoing=True))
 async def change_photo(e):
     if not e.is_reply:
