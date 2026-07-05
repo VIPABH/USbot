@@ -591,7 +591,7 @@ async def my_info(event):
 @ABH.on(events.NewMessage(pattern=r".?ازرار", outgoing=True))
 async def send_button(event):
     user_id = event.sender_id 
-    profile_button = KeyboardButtonUserProfile(user_id=user_id)
+    profile_button = KeyboardButtonUserProfile(text="البروفايل", user_id=user_id)
     main_button = KeyboardButton(text="الرئيسي")
     markup = ReplyKeyboardMarkup(
         rows=[
