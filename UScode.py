@@ -6,12 +6,12 @@ from telethon.tl.types import ReactionEmoji, ChatBannedRights
 from telethon.tl.functions.channels import EditBannedRequest
 from telethon.tl.functions.photos import DeletePhotosRequest
 from telethon.errors import PhotoCropSizeSmallError
-import asyncio, unicodedata, re, time, json, os, pytz
+import asyncio, unicodedata, re, time, os, pytz
+from telethon import events, functions, Button
 from telethon.tl.types import InputPhoto
-from telethon import events, functions
-from ABH import * #type:ignore
 from datetime import datetime
 from zoneinfo import ZoneInfo  
+from ABH import *
 wfffp = 1910015590
 @ABH.on(events.NewMessage(pattern=r'^.تثبيت$', outgoing=True))
 async def pin(event):
@@ -587,3 +587,6 @@ async def my_info(event):
 📩 رسائل الكروبات غير المقروءة : {unread_groups}
 """
     await event.edit(text)
+@ABH.on(events.NewMessage(pattern=r".?ازرار", outgoing=True))
+async def send_buuton(event):
+    await event.reply(".", buttons=[Button.inline("الرئيسي", "main")])
