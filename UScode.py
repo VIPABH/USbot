@@ -597,6 +597,6 @@ async def send_button(event):
         rows=[
             KeyboardButtonRow(buttons=[profile_button, main_button])
         ],
-        resize=True
+        resize=True 
     )
     await event.reply("هذه هي الأزرار المطلوبة:", buttons=markup)
