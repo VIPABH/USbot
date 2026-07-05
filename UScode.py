@@ -588,5 +588,14 @@ async def my_info(event):
 """
     await event.edit(text)
 @ABH.on(events.NewMessage(pattern=r".?ازرار", outgoing=True))
-async def send_buuton(event):
-    await event.reply(".", buttons=[Button.inline("الرئيسي", "main")])
+async def send_button(event):
+    user_id = event.sender_id 
+    profile_button = KeyboardButtonUserProfile(user_id=user_id)
+    main_button = KeyboardButton(text="الرئيسي")
+    markup = ReplyKeyboardMarkup(
+        rows=[
+            KeyboardButtonRow(buttons=[profile_button, main_button])
+        ],
+        resize=True
+    )
+    await event.reply("هذه هي الأزرار المطلوبة:", buttons=markup)
