@@ -363,7 +363,6 @@ async def schedule_handler(event):
     if not reply:
         await event.edit("❌ يجب الرد على رسالة لجدولتها.")
         return
-    msg = reply.message
     file = reply.media    
     try:
         if file:
@@ -382,7 +381,7 @@ async def schedule_handler(event):
             await ABH.send_message(
                 entity=channel,
                 file=downloaded_file, 
-                message=msg if msg else None,
+                message=None,
                 schedule=scheduled_time,
                 thumb=thumb_file,
                 attributes=attributes
@@ -392,7 +391,7 @@ async def schedule_handler(event):
         else:
             await ABH.send_message(
                 entity=channel,
-                message=msg,
+                message=None,
                 schedule=scheduled_time
             )
         await event.edit(
