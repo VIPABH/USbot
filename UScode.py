@@ -614,5 +614,5 @@ async def _(e):
         f"✅ الناجحة: {success_count}\n"
         f"❌ الفاشلة: {failed_count}\n"
         f"⚠️ غير مكتملة: {incomplete_count}\n"
-        f"📌 الإجمالي: {total}"
+        f"📌 الإجمالي: {total}")
     await status_msg.edit(summary)
