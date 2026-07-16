@@ -595,7 +595,7 @@ async def _(e):
     incomplete_count = 0
     total = 0
     status_msg = await e.respond("🔄 جاري بدء المزامنة...")
-    for id in range(33, 466):
+    for id in range(38, 466):
         total += 1
         try:
             msg = await ABH.get_messages(chat, ids=id)
