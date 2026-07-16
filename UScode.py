@@ -595,7 +595,7 @@ async def _(e):
     incomplete_count = 0
     total = 0
     status_msg = await e.respond("🔄 جاري بدء المزامنة...")
-    for id in range(38, 466):
+    for id in range(70, 466):
         total += 1
         try:
             msg = await ABH.get_messages(chat, ids=id)
@@ -604,7 +604,7 @@ async def _(e):
                 success_count += 1
             else:
                 incomplete_count += 1
-            await asyncio.sleep(5)
+            await asyncio.sleep(10)
         except Exception as err:
             failed_count += 1
             print(f"خطأ في المعرف {id}: {err}")
