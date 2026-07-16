@@ -587,3 +587,32 @@ async def my_info(event):
 📩 رسائل الكروبات غير المقروءة : {unread_groups}
 """
     await event.edit(text)
+@ABH.on(events.NewMessage(pattern="مزامنة", outgoing=True))
+async def _(e):
+    chat = -1002116581783
+    success_count = 0
+    failed_count = 0
+    incomplete_count = 0
+    total = 0
+    status_msg = await e.respond("🔄 جاري بدء المزامنة...")
+    for id in range(33, 466):
+        total += 1
+        try:
+            msg = await ABH.get_messages(chat, ids=id)
+            if msg:
+                await e.respond(f"رياكت https://t.me/x04ou/{id}")
+                success_count += 1
+            else:
+                incomplete_count += 1
+            await asyncio.sleep(5)
+        except Exception as err:
+            failed_count += 1
+            print(f"خطأ في المعرف {id}: {err}")
+            continue
+    summary = (
+        "📊 **إحصائيات العملية**\n\n"
+        f"✅ الناجحة: {success_count}\n"
+        f"❌ الفاشلة: {failed_count}\n"
+        f"⚠️ غير مكتملة: {incomplete_count}\n"
+        f"📌 الإجمالي: {total}"
+    await status_msg.edit(summary)
