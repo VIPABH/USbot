@@ -318,7 +318,7 @@ CHANNELS_CONFIG = {
         "thumb": "hafer.jpg"
     },
     "channel_2": {
-        "id": -1001234567890,
+        "id": -1002980874985,
         "hour": 18,
         "minute": 30,
         "performer": "صدى الحسين",
