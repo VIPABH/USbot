@@ -342,24 +342,22 @@ async def schedule_handler(event):
         downloaded_file = await reply.download_media()
     results = []
     try:
+        user_year = int(event.pattern_match.group(1)) if event.pattern_match.group(1) else None
+        user_month = int(event.pattern_match.group(2)) if event.pattern_match.group(2) else (int(event.pattern_match.group(4)) if event.pattern_match.group(4) else None)
+        user_day = int(event.pattern_match.group(3)) if event.pattern_match.group(3) else (int(event.pattern_match.group(5)) if event.pattern_match.group(5) else (int(event.pattern_match.group(6)) if event.pattern_match.group(6) else None))
+        user_hour = int(event.pattern_match.group(7)) if event.pattern_match.group(7) else None
+        user_minute = int(event.pattern_match.group(8)) if event.pattern_match.group(8) else None
         for ch_key, config in CHANNELS_CONFIG.items():
-            year, month, day = now.year, now.month, now.day
-            hour, minute = config["hour"], config["minute"]
-            if event.pattern_match.group(1):
-                year = int(event.pattern_match.group(1))
-                month = int(event.pattern_match.group(2))
-                day = int(event.pattern_match.group(3))
-            elif event.pattern_match.group(4):
-                month = int(event.pattern_match.group(4))
-                day = int(event.pattern_match.group(5))
-            elif event.pattern_match.group(6):
-                day = int(event.pattern_match.group(6))
-            if event.pattern_match.group(7):
-                hour = int(event.pattern_match.group(7))
-                minute = int(event.pattern_match.group(8))
-            scheduled_time = baghdad_tz.localize(datetime(year, month, day, hour, minute))
+            year = user_year if user_year is not None else now.year
+            month = user_month if user_month is not None else now.month
+            day = user_day if user_day is not None else now.day
+            hour = user_hour if user_hour is not None else config["hour"]
+            minute = user_minute if user_minute is not None else config["minute"]
+            dt_naive = datetime(year, month, day, hour, minute)
+            scheduled_time = baghdad_tz.localize(dt_naive)
             if scheduled_time <= now:
-                scheduled_time += timedelta(days=1)
+                scheduled_time = baghdad_tz.localize(dt_naive + timedelta(days=1))
+            entity = await ABH.get_entity(config["id"])
             if downloaded_file:
                 thumb_file = config["thumb"] if os.path.exists(config["thumb"]) else None
                 orig_name = getattr(reply.file, 'name', '') or 'audio'
@@ -372,7 +370,7 @@ async def schedule_handler(event):
                         performer=config["performer"]
                     ))
                 await ABH.send_message(
-                    entity=config["id"],
+                    entity=entity,
                     file=downloaded_file,
                     message=None,
                     schedule=scheduled_time,
@@ -381,7 +379,7 @@ async def schedule_handler(event):
                 )
             else:
                 await ABH.send_message(
-                    entity=config["id"],
+                    entity=entity,
                     message=None,
                     schedule=scheduled_time
                 )
