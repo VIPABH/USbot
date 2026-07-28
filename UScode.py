@@ -308,97 +308,90 @@ async def anti_spam_ban(event):
     if data["count"] >= 5:
             await ABH(EditBannedRequest(channel=chat.id, participant=user_id, banned_rights=rights))
             user_ban_data[user_id] = {"count": 0, "first_time": now}
-@ABH.on(events.NewMessage(pattern=r'^\.تعيين قناة(?:\s+(.*))?$', outgoing=True))
-async def set_channel(event):
-    input_value = event.pattern_match.group(1)
-    if not input_value:
-        reply = await event.get_reply_message()
-        if reply and reply.chat:
-            channel_id = reply.chat.id
-        else:
-            await event.edit("❌ يرجى كتابة معرف القناة (ID) أو الرد على رسالة من القناة.")
-            return
-    else:
-        channel_id = input_value
-    r.set("global_schedule_channel", channel_id)
-    await event.edit(f"✅ تم تعيين قناة الجدولة العامة:\n**{channel_id}**")
 baghdad_tz = pytz.timezone("Asia/Baghdad")
-THUMB_PATH = "hafer.jpg" 
+CHANNELS_CONFIG = {
+    "channel_1": {
+        "id": -1002116581783,
+        "hour": 17,
+        "minute": 25,
+        "performer": "حافر",
+        "thumb": "hafer.jpg"
+    },
+    "channel_2": {
+        "id": -1001234567890,
+        "hour": 18,
+        "minute": 30,
+        "performer": "صدى الحسين",
+        "thumb": "IMG_5528.jpeg"
+    }
+}
 @ABH.on(events.NewMessage(pattern=r'^جدوله(?:\s+(\d{4})/(\d{1,2})/(\d{1,2})|\s+(\d{1,2})/(\d{1,2})|\s+(\d{1,2}))?(?:\s+(\d{1,2}):(\d{1,2}))?$', outgoing=True))
 async def schedule_handler(event):
     if not event.is_reply:
         await event.edit("❌ يجب الرد على الرسالة التي تريد جدولتها.")
-        return        
-    channel = r.get("global_schedule_channel")
-    if not channel:
-        await event.edit("❌ لم يتم تعيين قناة الجدولة العامة.")
-        return
-    channel = int(channel)
-    now = datetime.now(baghdad_tz)
-    year, month, day = now.year, now.month, now.day
-    hour, minute = 17, 25    
-    try:
-        if event.pattern_match.group(1):
-            year = int(event.pattern_match.group(1))
-            month = int(event.pattern_match.group(2))
-            day = int(event.pattern_match.group(3))
-        elif event.pattern_match.group(4):
-            month = int(event.pattern_match.group(4))
-            day = int(event.pattern_match.group(5))
-        elif event.pattern_match.group(6):
-            day = int(event.pattern_match.group(6))
-        if event.pattern_match.group(7):
-            hour = int(event.pattern_match.group(7))
-            minute = int(event.pattern_match.group(8))
-        scheduled_time = baghdad_tz.localize(
-            datetime(year, month, day, hour, minute)
-        )
-    except Exception:
-        await event.edit("❌ التاريخ أو الوقت غير صالح.")
-        return
-    if scheduled_time <= now:
-        await event.edit("❌ لا يمكن جدولة وقت قد مضى.")
         return
     reply = await event.get_reply_message()
     if not reply:
         await event.edit("❌ يجب الرد على رسالة لجدولتها.")
         return
-    file = reply.media    
+    now = datetime.now(baghdad_tz)
+    file = reply.media
+    downloaded_file = None
+    if file:
+        await event.edit("⏳ جاري تحميل الملف لتعديل البيانات وتوزيعه...")
+        downloaded_file = await reply.download_media()
+    results = []
     try:
-        if file:
-            await event.edit("⏳ جاري تجهيز الملف وتعديل البيانات...")
-            downloaded_file = await reply.download_media()            
-            thumb_file = THUMB_PATH if os.path.exists(THUMB_PATH) else None            
-            orig_name = getattr(reply.file, 'name', '') or 'audio'
-            attributes = [DocumentAttributeFilename(file_name=orig_name)]
-            if reply.file and hasattr(reply.file, 'duration') and reply.file.duration:
-                original_title = getattr(reply.file, 'title', '') or orig_name
-                attributes.append(DocumentAttributeAudio(
-                    duration=reply.file.duration,
-                    title=original_title,
-                    performer="حافر"
-                ))
-            await ABH.send_message(
-                entity=channel,
-                file=downloaded_file, 
-                message=None,
-                schedule=scheduled_time,
-                thumb=thumb_file,
-                attributes=attributes
-            )
-            if os.path.exists(downloaded_file):
-                os.remove(downloaded_file)
-        else:
-            await ABH.send_message(
-                entity=channel,
-                message=None,
-                schedule=scheduled_time
-            )
-        await event.edit(
-            "✅ تم جدولة الرسالة بنجاح.\n\n"
-            f"📅 {scheduled_time.strftime('%Y/%m/%d %H:%M')}"
-        )
+        for ch_key, config in CHANNELS_CONFIG.items():
+            year, month, day = now.year, now.month, now.day
+            hour, minute = config["hour"], config["minute"]
+            if event.pattern_match.group(1):
+                year = int(event.pattern_match.group(1))
+                month = int(event.pattern_match.group(2))
+                day = int(event.pattern_match.group(3))
+            elif event.pattern_match.group(4):
+                month = int(event.pattern_match.group(4))
+                day = int(event.pattern_match.group(5))
+            elif event.pattern_match.group(6):
+                day = int(event.pattern_match.group(6))
+            if event.pattern_match.group(7):
+                hour = int(event.pattern_match.group(7))
+                minute = int(event.pattern_match.group(8))
+            scheduled_time = baghdad_tz.localize(datetime(year, month, day, hour, minute))
+            if scheduled_time <= now:
+                scheduled_time += timedelta(days=1)
+            if downloaded_file:
+                thumb_file = config["thumb"] if os.path.exists(config["thumb"]) else None
+                orig_name = getattr(reply.file, 'name', '') or 'audio'
+                attributes = [DocumentAttributeFilename(file_name=orig_name)]
+                if reply.file and hasattr(reply.file, 'duration') and reply.file.duration:
+                    original_title = getattr(reply.file, 'title', '') or orig_name
+                    attributes.append(DocumentAttributeAudio(
+                        duration=reply.file.duration,
+                        title=original_title,
+                        performer=config["performer"]
+                    ))
+                await ABH.send_message(
+                    entity=config["id"],
+                    file=downloaded_file,
+                    message=None,
+                    schedule=scheduled_time,
+                    thumb=thumb_file,
+                    attributes=attributes
+                )
+            else:
+                await ABH.send_message(
+                    entity=config["id"],
+                    message=None,
+                    schedule=scheduled_time
+                )
+            results.append(f"✅ {ch_key} | 📅 `{scheduled_time.strftime('%Y/%m/%d %H:%M')}`")
+        if downloaded_file and os.path.exists(downloaded_file):
+            os.remove(downloaded_file)
+        await event.edit("✅ **تمت الجدولة للقناتين بنجاح:**\n\n" + "\n".join(results))
     except Exception as e:
+        if downloaded_file and os.path.exists(downloaded_file):
+            os.remove(downloaded_file)
         await event.edit(f"❌ فشل في جدولة الرسالة:\n`{e}`")
 @ABH.on(events.NewMessage(pattern=r'^(تغيير افتاري|تغيير صورتي|اضف صورة|اضف افتار)$', outgoing=True))
 async def change_photo(e):
