@@ -1,5 +1,4 @@
 import asyncio
-import sqlite3
 from datetime import datetime, timedelta
 from telethon import events
 from telethon.tl.functions.channels import (
@@ -13,57 +12,11 @@ from ABH import ABH
 CHANNELS = ['x04ou', 'sszxl', 'sizxll', 'ANYMOUSupdate']
 RETRY_INTERVAL = 300
 
+hunt_data = {}
+
 hunt_task_handle = None
 hunt_enabled = False
 flood_until = None
-
-def init_db():
-    conn = sqlite3.connect('hunt_data.db')
-    cursor = conn.cursor()
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS hunt_users (
-            user_id INTEGER PRIMARY KEY,
-            username TEXT NOT NULL
-        )
-    ''')
-    conn.commit()
-    conn.close()
-
-def set_hunt_user(user_id: int, username: str):
-    conn = sqlite3.connect('hunt_data.db')
-    cursor = conn.cursor()
-    cursor.execute('''
-        INSERT INTO hunt_users (user_id, username)
-        VALUES (?, ?)
-        ON CONFLICT(user_id) DO UPDATE SET username=excluded.username
-    ''', (user_id, username))
-    conn.commit()
-    conn.close()
-
-def get_hunt_user(user_id: int):
-    conn = sqlite3.connect('hunt_data.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT username FROM hunt_users WHERE user_id = ?', (user_id,))
-    row = cursor.fetchone()
-    conn.close()
-    return row[0] if row else None
-
-def get_all_hunt_users():
-    conn = sqlite3.connect('hunt_data.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT user_id, username FROM hunt_users')
-    rows = cursor.fetchall()
-    conn.close()
-    return rows
-
-def delete_hunt_user(user_id: int):
-    conn = sqlite3.connect('hunt_data.db')
-    cursor = conn.cursor()
-    cursor.execute('DELETE FROM hunt_users WHERE user_id = ?', (user_id,))
-    conn.commit()
-    conn.close()
-
-init_db()
 
 async def join_required_channels():
     for channel in CHANNELS:
@@ -99,7 +52,8 @@ async def attempt_hunt(user_id: int, username: str):
             ))
             
             await ABH.send_message('me', f"📌 تم تثبيت المعرف بنجاح على قناة: {formatted_user}")
-            delete_hunt_user(user_id)
+            if user_id in hunt_data:
+                del hunt_data[user_id]
 
         except FloodWaitError as err:
             flood_until = datetime.now() + timedelta(seconds=err.seconds)
@@ -116,13 +70,12 @@ async def attempt_hunt(user_id: int, username: str):
         flood_until = datetime.now() + timedelta(seconds=err.seconds)
 
 async def hunt_task() -> bool:
-    users = get_all_hunt_users()
-    if not users:
+    if not hunt_data:
         return False
 
     await join_required_channels()
 
-    for user_id, username in users:
+    for user_id, username in list(hunt_data.items()):
         if flood_until and datetime.now() < flood_until:
             break
         if username:
@@ -151,7 +104,7 @@ async def periodic_hunt():
 
 @ABH.on(events.NewMessage(pattern=r"^(الصيد|حالة الصيد)$"))
 async def shows(e):
-    current_user = get_hunt_user(e.sender_id)
+    current_user = hunt_data.get(e.sender_id)
     user_display = current_user if current_user else "لا يوجد يوزر مخزن"
 
     status_display = "🟢 شغال (مفعل)" if hunt_enabled else "🔴 متوقف (معطل)"
@@ -215,7 +168,7 @@ async def save(e):
     if not user.startswith('@'):
         user = f"@{user}"
 
-    set_hunt_user(e.sender_id, user)
+    hunt_data[e.sender_id] = user
     text = f"✅ تم حفظ اليوزر بنجاح: `{user}`"
     
     if e.out:
