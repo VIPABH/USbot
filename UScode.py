@@ -119,7 +119,7 @@ async def dele_me(event):
      await event.delete()
      async for msg in ABH.iter_messages(event.chat_id, from_user=owner):
          await msg.delete()
-@ABH.on(events.NewMessage(pattern=r'^.حذف مشاركاته$', outgoing=True))
+@ABH.on(events.NewMessage(pattern=r'^.مسح رسائله$', outgoing=True))
 async def dele(event):
     r = await event.get_reply_message()
     if not r:
@@ -132,20 +132,26 @@ async def dele(event):
     async for msg in ABH.iter_messages(event.chat_id, from_user=owner):
         await msg.delete()
 def normalize_text(text):
-    return ''.join(
-        c for c in unicodedata.normalize('NFKD', text)
-        if not unicodedata.combining(c)
-    ).lower().strip()
+    if not text:
+        return ""
+    text = re.sub(r'[\u0617-\u061A\u064B-\u0652\u0640]', '', text)
+    text = re.sub(r'[أإآٱ]', 'ا', text)
+    text = re.sub(r'[ى]', 'ي', text)
+    text = re.sub(r'[ة]', 'ه', text)
+    return text.lower().strip()
 @ABH.on(events.NewMessage(pattern=r'^.كلمة (.+)$', outgoing=True))
 async def word(event):
     keyword_raw = event.pattern_match.group(1)
     keyword = normalize_text(keyword_raw)
-    pattern = re.compile(rf'\b{re.escape(keyword)}\b')
+    pattern = re.compile(rf'(?<![\w\u0621-\u064A]){re.escape(keyword)}(?![\w\u0621-\u064A])')    
     async for msg in ABH.iter_messages(event.chat_id):
         if msg.text:
             msg_normalized = normalize_text(msg.text)
             if pattern.search(msg_normalized):
-                await msg.delete()
+                try:
+                    await msg.delete()
+                except Exception:
+                    pass
 @ABH.on(events.NewMessage(pattern=r'^\.?مكرر\s+(\d+)\s+(\d+(?:\.\d+)?)$', outgoing=True))
 async def repeat(event):
     await event.delete()
