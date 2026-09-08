@@ -40,7 +40,10 @@ info = {
 }
 @ABH.on(events.NewMessage(pattern=r'^.الاوامر$', outgoing=True))
 async def commands(e):
-    await e.edit(f'`{arg}`' for arg in info.keys())
+    text = ''
+    for arg in info.keys():
+        text += f"`{arg}`\n"
+    await e.edit(text)
 @ABH.on(events.NewMessage(outgoing=True))
 async def custom_commands(e):
     if e.text not in info:return
