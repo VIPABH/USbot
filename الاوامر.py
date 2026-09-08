@@ -41,7 +41,7 @@ info = {
 @ABH.on(events.NewMessage(pattern=r'^.الاوامر$', outgoing=True))
 async def commands(e):
     await e.edit(f'`{arg}`' for arg in info)
-@ABH.on(events.NewMessage(outgoing==True))
+@ABH.on(events.NewMessage(outgoing=True))
 async def custom_commands(e):
     if e.text not in info:return
     command, arg = info[e.text]
