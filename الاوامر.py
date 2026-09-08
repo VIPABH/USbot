@@ -38,10 +38,10 @@ info = {
     'اوامر الالعاب': ('.تفكيك', 'الامر يشتغل مثل `تفكيك 2 4` راح يفعل و يجاوب على رسالتين ب مده 4 ثواني'),
     'اوامر الالعاب': ('.احسب', 'الامر يشتغل مثل `احسب 2 4` راح يفعل و يجاوب على رسالتين ب مده 4 ثواني'),
 }
-@ABH.on(events.NewMessage(pattern=r'^.الاوامر$', incoming=True))
+@ABH.on(events.NewMessage(pattern=r'^.الاوامر$', outgoing=True))
 async def commands(e):
     await e.edit(f'`{arg}`' for arg in info)
-@ABH.on(events.NewMessage(incoming=True))
+@ABH.on(events.NewMessage(outgoing==True))
 async def custom_commands(e):
     if e.text not in info:return
     command, arg = info[e.text]
