@@ -1,4 +1,3 @@
-from Resources import *
 import random, asyncio
 from ABH import *
 COMMAND_FORMATS = [
