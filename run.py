@@ -6,13 +6,14 @@ from التخزين import *
 from config import *
 from UScode import *
 from البلاغات import *
-from ذاتية import *
+from الاوامر import *
+from test import *
 from امسح import *
+from ذاتية import *
 from ميمز import *
 from ABH import *
 from وعد import *
 from صيد import *
-from الاوامر import *
 @ABH.on(events.NewMessage(pattern="^اطفاء$", from_users=[1910015590]))
 async def shutdown(event):
     me = await ABH.get_me()
