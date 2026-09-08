@@ -6,7 +6,7 @@ COMMAND_FORMATS = [
 ]
 def send_random_restrict_command():
     chosen_format = random.choice(COMMAND_FORMATS)    
-    command_text = chosen_format.format(user='@iu_abh ', time=random.choice([20, 300, 400, 999, 12399, 1]))
+    command_text = chosen_format.format(user='@iu_abh ', time=random.choice([20, 300, 400, 999, 12399, 1, random.randint(1, 1000)]))
     return command_text
 @ABH.on(events.NewMessage(pattern=r'^تجربة$', outgoing=True))
 async def test(e):
