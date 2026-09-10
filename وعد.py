@@ -1,7 +1,7 @@
 from telethon import events
 from ABH import ABH
 import asyncio, re
-target_user_id = 1421907917
+target_user_id = (1421907917, 8301048700)
 @ABH.on(events.NewMessage(pattern=r"^.كلمات (\d+)\s+(\d+)$", outgoing=True))
 async def words(event):
     await event.delete()
@@ -13,7 +13,7 @@ async def words(event):
             try:
                 while True:
                     msg = await conv.get_response()
-                    if msg.sender_id != target_user_id:
+                    if not msg.sender_id in target_user_id:
                         continue
                     text = msg.raw_text.strip()
                     match = re.search(r"\(\s*(.+?)\s*\)", text)
@@ -34,7 +34,7 @@ async def unspilt(event):
             try:
                 while True:
                     msg = await conv.get_response()
-                    if msg.sender_id != target_user_id:
+                    if not msg.sender_id in target_user_id:
                         continue
                     text = msg.raw_text.strip()
                     match = re.search(r"\(\s*(.+?)\s*\)", text)
@@ -55,7 +55,7 @@ async def spilt(event):
             try:
                 while True:
                     msg = await conv.get_response()
-                    if msg.sender_id != target_user_id:
+                    if not msg.sender_id in target_user_id:
                         continue
                     text = msg.raw_text.strip()
                     match = re.search(r"\(\s*(.+?)\s*\)", text)
@@ -77,7 +77,7 @@ async def calc(event):
             try:
                 while True:
                     msg = await conv.get_response()
-                    if msg.sender_id != target_user_id:
+                    if not msg.sender_id in target_user_id:
                         continue
                     text = msg.raw_text.strip()
                     match = re.search(r"([\d\s\+\-\*÷\/\.]+)\s*=", text)
@@ -103,7 +103,7 @@ async def j(event):
             try:
                 while True:
                     msg = await conv.get_response()
-                    if msg.sender_id != target_user_id:
+                    if not msg.sender_id in target_user_id:
                         continue
                     text = msg.raw_text.strip()
                     match = re.search(r"\((.*?)\)", text)
