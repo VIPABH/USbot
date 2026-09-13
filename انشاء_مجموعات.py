@@ -28,6 +28,7 @@ SPECIAL_DATES = [
 
 CHANNELS_COUNT = 5
 GROUPS_COUNT = 5
+MESSAGES_COUNT = 10
 JSON_FILE = "created_dates.json"
 
 def load_created_dates():
@@ -54,7 +55,7 @@ async def create_special_channels_and_groups(current_day, current_month, date_st
     title_base = f"{current_day}/{current_month}"
     
     try:
-        await ABH.send_message('me', f"🎉 اليوم {title_base} يوم مميز! جاري البدء في إنشاء القنوات والمجموعات...")
+        await ABH.send_message('me', f"🎉 اليوم {title_base} يوم مميز! جاري البدء في إنشاء القنوات والمجموعات وإرسال الرسائل...")
     except Exception as e:
         print(f"❌ تعذر إرسال الإشعار: {e}")
 
@@ -62,13 +63,22 @@ async def create_special_channels_and_groups(current_day, current_month, date_st
     for i in range(1, CHANNELS_COUNT + 1):
         channel_title = f"قناة {title_base} - {i}"
         try:
-            await ABH(CreateChannelRequest(
+            result = await ABH(CreateChannelRequest(
                 title=channel_title,
                 about=f"قناة تلقائية تم إنشاؤها بتاريخ {title_base}",
                 megagroup=False
             ))
+            target_entity = result.chats[0]
             created_channels += 1
-            await asyncio.sleep(2) 
+
+            for m in range(1, MESSAGES_COUNT + 1):
+                try:
+                    await ABH.send_message(target_entity, f"رسالة {m} - {channel_title}")
+
+                except Exception as msg_err:
+                    print(f"❌ خطأ أثناء إرسال الرسالة {m} للقناة: {msg_err}")
+
+            await asyncio.sleep(1) 
         except Exception as e:
             print(f"❌ خطأ أثناء إنشاء القناة {channel_title}: {e}")
 
@@ -76,12 +86,21 @@ async def create_special_channels_and_groups(current_day, current_month, date_st
     for i in range(1, GROUPS_COUNT + 1):
         group_title = f"مجموعة {title_base} - {i}"
         try:
-            await ABH(CreateChatRequest(
+            result = await ABH(CreateChatRequest(
                 users=['me'],
                 title=group_title
             ))
+            target_entity = result.chats[0]
             created_groups += 1
-            await asyncio.sleep(2)
+
+            for m in range(1, MESSAGES_COUNT + 1):
+                try:
+                    await ABH.send_message(target_entity, f"رسالة {m} - {group_title}")
+                    
+                except Exception as msg_err:
+                    print(f"❌ خطأ أثناء إرسال الرسالة {m} للمجموعة: {msg_err}")
+
+            await asyncio.sleep(1)
         except Exception as e:
             print(f"❌ خطأ أثناء إنشاء المجموعة {group_title}: {e}")
 
@@ -91,8 +110,8 @@ async def create_special_channels_and_groups(current_day, current_month, date_st
         await ABH.send_message(
             'me',
             f"✅ **تم الانتهاء بنجاح!**\n\n"
-            f"📢 تم إنشاء **{created_channels}** قناة.\n"
-            f"👥 تم إنشاء **{created_groups}** مجموعة.\n"
+            f"📢 تم إنشاء **{created_channels}** قناة وتعبئتها بالرسائل.\n"
+            f"👥 تم إنشاء **{created_groups}** مجموعة وتعبئتها بالرسائل.\n"
             f"📁 تم حفظ التاريخ `{date_str}` في ملف JSON لمنع التكرار."
         )
     except Exception as e:
