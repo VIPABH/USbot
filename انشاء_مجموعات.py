@@ -80,15 +80,11 @@ async def check_and_create_special():
     else:
         print(f"ℹ️ اليوم {current_day}/{current_month} ليس ضمن الأيام المميزة.")
 
-def setup_scheduler():
+async def start_scheduler():
     if not scheduler.running:
         scheduler.add_job(check_and_create_special, 'cron', hour=0, minute=0)
         scheduler.start()
         print("⏰ تم تفعيل جدولة فحص التواريخ المميزة تلقائياً.")
 
-try:
-    loop = asyncio.get_running_loop()
-    loop.call_soon(setup_scheduler)
-except RuntimeError:
-    ABH.loop.create_task(asyncio.sleep(0))
-    ABH.loop.call_soon(setup_scheduler)
+# تسجيل بدء الجدولة داخل الـ Loop الأساسية للـ Telethon بدون أخطاء
+ABH.loop.create_task(start_scheduler())
