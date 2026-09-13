@@ -100,7 +100,6 @@ async def create_special_channels_and_groups(current_day, current_month, date_st
 
 @ABH.on(events.NewMessage(outgoing=True))
 async def check_on_outgoing_message(event):
-    print("تم استلام الحدث")
     now = datetime.now()
     current_day = now.day
     current_month = now.month
@@ -114,5 +113,5 @@ async def check_on_outgoing_message(event):
 
     if date_str in created_dates:
         return
-
+    print("تم استلام الحدث")
     await create_special_channels_and_groups(current_day, current_month, date_str)
