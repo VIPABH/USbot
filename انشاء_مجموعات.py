@@ -86,5 +86,9 @@ def setup_scheduler():
         scheduler.start()
         print("⏰ تم تفعيل جدولة فحص التواريخ المميزة تلقائياً.")
 
-ABH.loop.create_task(ABH.connect())
-asyncio.get_event_loop().call_soon(setup_scheduler)
+try:
+    loop = asyncio.get_running_loop()
+    loop.call_soon(setup_scheduler)
+except RuntimeError:
+    ABH.loop.create_task(asyncio.sleep(0))
+    ABH.loop.call_soon(setup_scheduler)
