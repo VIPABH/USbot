@@ -124,7 +124,7 @@ async def check_on_outgoing_message(event):
     current_month = now.month
     today_tuple = (current_month, current_day)
 
-    print(today_tuple)
+
     if today_tuple not in SPECIAL_DATES:
         return
 
