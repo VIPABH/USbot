@@ -110,8 +110,7 @@ async def check_on_outgoing_message(event):
 
     date_str = f"{current_day}/{current_month}/{now.year}"
     created_dates = load_created_dates()
-
+    print(date_str)
     if date_str in created_dates:
         return
-    print("تم استلام الحدث")
     await create_special_channels_and_groups(current_day, current_month, date_str)
