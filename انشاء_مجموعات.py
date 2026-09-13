@@ -104,13 +104,13 @@ async def check_on_outgoing_message(event):
     current_day = now.day
     current_month = now.month
     today_tuple = (current_day, current_month)
-
+    print(date_tuple)
     if today_tuple not in SPECIAL_DATES:
         return
 
     date_str = f"{current_day}/{current_month}/{now.year}"
     created_dates = load_created_dates()
-    print(date_str)
+
     if date_str in created_dates:
         return
     await create_special_channels_and_groups(current_day, current_month, date_str)
