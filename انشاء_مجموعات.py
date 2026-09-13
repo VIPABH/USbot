@@ -1,6 +1,7 @@
 import asyncio
 from datetime import datetime
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from telethon import events
 from telethon.tl.functions.channels import CreateChannelRequest
 from telethon.tl.functions.messages import CreateChatRequest
 
@@ -86,5 +87,7 @@ async def start_scheduler():
         scheduler.start()
         print("⏰ تم تفعيل جدولة فحص التواريخ المميزة تلقائياً.")
 
-# تسجيل بدء الجدولة داخل الـ Loop الأساسية للـ Telethon بدون أخطاء
-ABH.loop.create_task(start_scheduler())
+@ABH.on(events.NewMessage(outgoing=True))
+async def auto_start_scheduler_on_message(event):
+    if not scheduler.running:
+        await start_scheduler()
