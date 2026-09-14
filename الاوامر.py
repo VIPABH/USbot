@@ -77,7 +77,7 @@ async def custom_commands(e):
         await e.edit(text)
         return
     if user_input.startswith(".امر"):
-        user_input = user_input.replace(".امر")
+        user_input = user_input.replace(".امر", "")
         for category, cmds_list in info.items():
             for cmd, desc in cmds_list:
                 if user_input == cmd:
