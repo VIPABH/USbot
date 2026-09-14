@@ -76,8 +76,10 @@ async def custom_commands(e):
             text += f"• `{cmd}` : {desc}\n"
         await e.edit(text)
         return
-    for category, cmds_list in info.items():
-        for cmd, desc in cmds_list:
-            if user_input == cmd:
-                await e.edit(f"الامر: `{cmd}`\nالشرح: {desc}")
-                return
+    if user_input.startswith(".امر"):
+        user_input = user_input.replace(".امر")
+        for category, cmds_list in info.items():
+            for cmd, desc in cmds_list:
+                if user_input == cmd:
+                    await e.edit(f"الامر: `{cmd}`\nالشرح: {desc}")
+                    return
