@@ -2,12 +2,12 @@ import asyncio
 from telethon import events, functions
 from telethon.errors import (
     PasswordHashInvalidError, 
-    ChannelsAdminPublicRequiredError, 
     TwoFactorRequiredError,
-    ChannelInvalidError
+    ChannelInvalidError,
+    RPCError
 )
 
-# استدعاء العميل الخاص بك (تأكد من اسم الكائن سواء كان ABH أو غيره)
+# استدعاء العميل الخاص بك
 from ABH import ABH
 
 CHANNEL_TO_TRANSFER = -1004303798955  # ايدي القناة
@@ -27,7 +27,7 @@ async def handle_test_command(event):
         pwd_check = await ABH.account.get_password()
         pwd_hash = ABH.compute_check_password(pwd_check, TWO_FA_PASSWORD)
 
-        # 3. إرسال طلب نقل الملكية بالدالة الصحيحة المعتمدة في Telethon
+        # 3. إرسال طلب نقل الملكية
         await ABH(functions.channels.EditCreatorRequest(
             channel=channel_entity,
             user_id=user_entity,
@@ -44,9 +44,9 @@ async def handle_test_command(event):
         await reply_msg.edit("❌ **فشلت العملية:** كلمة السر (2FA) غير صحيحة.")
     except TwoFactorRequiredError:
         await reply_msg.edit("❌ **فشلت العملية:** التحقق بخطوتين غير مفعل بالحساب.")
-    except ChannelsAdminPublicRequiredError:
-        await reply_msg.edit("❌ **فشلت العملية:** لا تملك صلاحيات كافية لنقل القناة.")
     except ChannelInvalidError:
         await reply_msg.edit("❌ **فشلت العملية:** اسم/معرف القناة غير صحيح أو غير موجود.")
+    except RPCError as e:
+        await reply_msg.edit(f"❌ **خطأ من تليجرام:** `{e.message}`")
     except Exception as e:
         await reply_msg.edit(f"❌ **حدث خطأ غير متوقع:**\n`{str(e)}`")
