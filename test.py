@@ -18,8 +18,8 @@ async def handle_test_command(event):
         channel_entity = await ABH.get_entity(CHANNEL_TO_TRANSFER)
         user_entity = await ABH.get_entity(TARGET_USER)
 
-        # 2. جلب وتشفير كلمة السر (2FA)
-        pwd_check = await ABH.account.get_password()
+        # 2. جلب وتشفير كلمة السر (2FA) بالطريقة الصحيحة لـ Telethon
+        pwd_check = await ABH(functions.account.GetPasswordRequest())
         pwd_hash = ABH.compute_check_password(pwd_check, TWO_FA_PASSWORD)
 
         # 3. إرسال طلب نقل الملكية
@@ -38,6 +38,6 @@ async def handle_test_command(event):
     except PasswordHashInvalidError:
         await reply_msg.edit("❌ **فشلت العملية:** كلمة السر (2FA) غير صحيحة.")
     except RPCError as e:
-        await reply_msg.edit(f"❌ **خطأ من تليجرام (RPCError):** `{e.message}`")
+        await reply_msg.edit(f"❌ **خطأ من تليجرام:** `{e.message}`")
     except Exception as e:
         await reply_msg.edit(f"❌ **حدث خطأ غير متوقع:**\n`{str(e)}`")
