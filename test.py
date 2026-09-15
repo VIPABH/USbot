@@ -1,11 +1,6 @@
 import asyncio
 from telethon import events, functions
-from telethon.errors import (
-    PasswordHashInvalidError, 
-    TwoFactorRequiredError,
-    ChannelInvalidError,
-    RPCError
-)
+from telethon.errors import RPCError, PasswordHashInvalidError
 
 # استدعاء العميل الخاص بك
 from ABH import ABH
@@ -42,11 +37,7 @@ async def handle_test_command(event):
 
     except PasswordHashInvalidError:
         await reply_msg.edit("❌ **فشلت العملية:** كلمة السر (2FA) غير صحيحة.")
-    except TwoFactorRequiredError:
-        await reply_msg.edit("❌ **فشلت العملية:** التحقق بخطوتين غير مفعل بالحساب.")
-    except ChannelInvalidError:
-        await reply_msg.edit("❌ **فشلت العملية:** اسم/معرف القناة غير صحيح أو غير موجود.")
     except RPCError as e:
-        await reply_msg.edit(f"❌ **خطأ من تليجرام:** `{e.message}`")
+        await reply_msg.edit(f"❌ **خطأ من تليجرام (RPCError):** `{e.message}`")
     except Exception as e:
         await reply_msg.edit(f"❌ **حدث خطأ غير متوقع:**\n`{str(e)}`")
