@@ -1,5 +1,5 @@
 import asyncio
-from telethon import events, functions
+from telethon import events, functions, utils
 from telethon.errors import RPCError, PasswordHashInvalidError
 
 # استدعاء العميل الخاص بك
@@ -18,11 +18,13 @@ async def handle_test_command(event):
         channel_entity = await ABH.get_entity(CHANNEL_TO_TRANSFER)
         user_entity = await ABH.get_entity(TARGET_USER)
 
-        # 2. جلب وتشفير كلمة السر (2FA) بالطريقة الصحيحة لـ Telethon
+        # 2. جلب بيانات كلمة السر من التليجرام
         pwd_check = await ABH(functions.account.GetPasswordRequest())
-        pwd_hash = ABH.compute_check_password(pwd_check, TWO_FA_PASSWORD)
+        
+        # 3. تشفير كلمة السر بالطريقة الصحيحة المعتمدة في Telethon
+        pwd_hash = utils.compute_check_password(pwd_check, TWO_FA_PASSWORD)
 
-        # 3. إرسال طلب نقل الملكية
+        # 4. إرسال طلب نقل الملكية
         await ABH(functions.channels.EditCreatorRequest(
             channel=channel_entity,
             user_id=user_entity,
