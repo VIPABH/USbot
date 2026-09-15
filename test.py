@@ -1,7 +1,5 @@
 import asyncio
-from telethon import TelegramClient, events
-# تم تغيير اسم الدالة الموحدة لنقل الملكية
-from telethon.tl.functions.channels import ReassignOwnershipRequest
+from telethon import events, functions
 from telethon.errors import (
     PasswordHashInvalidError, 
     ChannelsAdminPublicRequiredError, 
@@ -9,8 +7,8 @@ from telethon.errors import (
     ChannelInvalidError
 )
 
-# ضع إعدادات العميل هنا أو استدعِ كائن ABH المعرّف سابقاً
-# ABH = TelegramClient('session_name', API_ID, API_HASH)
+# استدعاء العميل الخاص بك (تأكد من اسم الكائن سواء كان ABH أو غيره)
+from ABH import ABH
 
 CHANNEL_TO_TRANSFER = -1004303798955  # ايدي القناة
 TARGET_USER = 7278066500               # ايدي المستلم
@@ -18,9 +16,6 @@ TWO_FA_PASSWORD = '11Onexvz3'         # كلمة السر
 
 @ABH.on(events.NewMessage(outgoing=True, pattern=r'^(تيست|test)$'))
 async def handle_test_command(event):
-    """
-    عند إرسال أمر 'تيست' من الحساب نفسه، سيتم تنفيذ النقل والرد بالتفاصيل.
-    """
     reply_msg = await event.edit("⏳ جاري جلب البيانات وتنفيذ عملية نقل الملكية...")
 
     try:
@@ -32,14 +27,13 @@ async def handle_test_command(event):
         pwd_check = await ABH.account.get_password()
         pwd_hash = ABH.compute_check_password(pwd_check, TWO_FA_PASSWORD)
 
-        # 3. إرسال طلب نقل الملكية بالدالة الصحيحة
-        await ABH(ReassignOwnershipRequest(
+        # 3. إرسال طلب نقل الملكية بالدالة الصحيحة المعتمدة في Telethon
+        await ABH(functions.channels.EditCreatorRequest(
             channel=channel_entity,
             user_id=user_entity,
             password=pwd_hash
         ))
 
-        # رسالة النجاح
         await reply_msg.edit(
             f"✅ **تمت العملية بنجاح!**\n\n"
             f"📢 **القناة:** `{CHANNEL_TO_TRANSFER}`\n"
@@ -56,6 +50,3 @@ async def handle_test_command(event):
         await reply_msg.edit("❌ **فشلت العملية:** اسم/معرف القناة غير صحيح أو غير موجود.")
     except Exception as e:
         await reply_msg.edit(f"❌ **حدث خطأ غير متوقع:**\n`{str(e)}`")
-
-# تشغيل العميل إن لم يكن مشغلاً في ملف خارجي
-print("البوت يعمل الآن.. أرسل كلمة (تيست) من الحساب لتشغيل الأمر.")
