@@ -90,7 +90,7 @@ async def periodic_hunt():
             await msg.delete()
         await asyncio.sleep(RETRY_INTERVAL)
     hunt_task_handle = None
-@ABH.on(events.NewMessage(pattern=r"^(الصيد|حالة الصيد)$"))
+@ABH.on(events.NewMessage(pattern=r"^(الصيد|حالة الصيد)$", outgoing=True))
 async def shows(e):
     current_user = hunt_data.get(e.sender_id)
     user_display = current_user if current_user else "لا يوجد يوزر مخزن"
@@ -122,7 +122,7 @@ async def shows(e):
     else:
         await e.respond(report)
 
-@ABH.on(events.NewMessage(pattern=r"^الصيد (تفعيل|تعطيل)$"))
+@ABH.on(events.NewMessage(pattern=r"^الصيد (تفعيل|تعطيل)$", outgoing=True))
 async def toggle_hunt(e):
     global hunt_enabled, hunt_task_handle
     action = e.pattern_match.group(1)
@@ -149,7 +149,7 @@ async def toggle_hunt(e):
         else:
             await e.respond(text)
 
-@ABH.on(events.NewMessage(pattern=r"^صيد (@?\w+)$", from_users=[wfffp]))
+@ABH.on(events.NewMessage(pattern=r"^صيد (@?\w+)$", outgoing=True))
 async def save(e):
     user = e.pattern_match.group(1)
     
