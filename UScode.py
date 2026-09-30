@@ -589,4 +589,4 @@ async def delete_from(e):
     if not e.is_reply:return await e.edit('لازم تسوي رد على رسالة حته تحدد منين يبدي الحذف')
     message_ids = list(range(e.reply_to_msg_id, e.id))
     deleted_messages = await ABH.delete_messages(e.chat_id, message_ids)
-    await e.edit(f'تم حذف ( {len(deleted_messages)} ) رسالة ب نجاح')
+    await e.edit(f'تم حذف ( {len(message_ids)} ) رسالة ب نجاح')
