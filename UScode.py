@@ -613,3 +613,9 @@ async def _(e):
         f"⚠️ غير مكتملة: {incomplete_count}\n"
         f"📌 الإجمالي: {total}")
     await status_msg.edit(summary)
+@ABH.on(events.NewMessage(pattern=r'^الحذف من$', outgoing=True))
+async def delete_from(e):
+    if not e.is_reply:return await e.edit('لازم تسوي رد على رسالة حته تحدد منين يبدي الحذف')
+    message_ids = list(range(start_id, end_id + 1))
+    deleted_messages = await client.delete_messages(e.chat_id, message_ids)
+    await e.edit(f'تم حذف ( {len(deleted_messages)} ) رسالة ب نجاح')
