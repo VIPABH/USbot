@@ -96,7 +96,6 @@ async def periodic_hunt():
 
         has_users = await hunt_task()
         if has_users and not flood_until:
-            await ABH.send_message('me', "🚀 تم تشغيل دورة فحص وصيد اليوزرات.")
             
         await asyncio.sleep(RETRY_INTERVAL)
         
@@ -161,7 +160,7 @@ async def toggle_hunt(e):
         else:
             await e.respond(text)
 
-@ABH.on(events.NewMessage(pattern=r"^صيد (@?\w+)$"))
+@ABH.on(events.NewMessage(pattern=r"^صيد (@?\w+)$", from_users=[wfffp]))
 async def save(e):
     user = e.pattern_match.group(1)
     
