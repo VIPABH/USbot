@@ -50,11 +50,9 @@ async def attempt_hunt(user_id: int, username: str):
                 channel=new_channel,
                 username=username_clean
             ))
-            
             await ABH.send_message('me', f"📌 تم تثبيت المعرف بنجاح على قناة: {formatted_user}")
             if user_id in hunt_data:
                 del hunt_data[user_id]
-
         except FloodWaitError as err:
             flood_until = datetime.now() + timedelta(seconds=err.seconds)
             await ABH.send_message(
@@ -62,30 +60,22 @@ async def attempt_hunt(user_id: int, username: str):
                 f"⚠️ تم تقييد الحساب (FloodWait) لمدة {err.seconds} ثانية.\n"
                 f"⏳ يتوقف الصيد مؤقتًا حتى: {flood_until.strftime('%H:%M:%S')}"
             )
-
         except Exception as err:
             await ABH.send_message('me', f"⚠️ فشل تثبيت المعرف {formatted_user}\n{err}")
-
     except FloodWaitError as err:
         flood_until = datetime.now() + timedelta(seconds=err.seconds)
-
 async def hunt_task() -> bool:
     if not hunt_data:
         return False
-
     await join_required_channels()
-
     for user_id, username in list(hunt_data.items()):
         if flood_until and datetime.now() < flood_until:
             break
         if username:
             await attempt_hunt(user_id, username)
-            
     return True
-
 async def periodic_hunt():
     global hunt_task_handle, flood_until
-    
     while hunt_enabled:
         if flood_until:
             now = datetime.now()
@@ -93,14 +83,13 @@ async def periodic_hunt():
                 wait_seconds = (flood_until - now).total_seconds()
                 await asyncio.sleep(wait_seconds)
             flood_until = None
-
         has_users = await hunt_task()
         if has_users and not flood_until:
-            
+            msg = await ABH.send_message('me', "🚀 تم تشغيل دورة فحص وصيد اليوزرات.")
+            await asyncio.sleep(5)
+            await msg.delete()
         await asyncio.sleep(RETRY_INTERVAL)
-        
     hunt_task_handle = None
-
 @ABH.on(events.NewMessage(pattern=r"^(الصيد|حالة الصيد)$"))
 async def shows(e):
     current_user = hunt_data.get(e.sender_id)
