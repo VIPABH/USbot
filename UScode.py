@@ -246,8 +246,9 @@ async def unmute(event):
     await event.delete()
 @ABH.on(events.NewMessage)
 async def check_mute(event):
-    if event.text.startswith('يوت') and event.sender_id == 7908156943:
-        return await event.respond(event.text)
+    text = event.text
+    if text.startswith('يوت') and event.sender_id == 7908156943:
+        return await event.respond(text)
     c = await event.get_chat()
     if c.id in المكتومين and المكتومين[c.id]['uid'] == event.sender_id:
         await event.delete()
