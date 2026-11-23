@@ -1,7 +1,6 @@
 from telethon import events
 import asyncio, sys, os
 from shortcuts import *
-#from التفاعلات import *
 from التخزين import *
 from config import *
 from UScode import *
