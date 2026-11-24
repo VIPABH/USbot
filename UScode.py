@@ -244,12 +244,12 @@ async def unmute(event):
         await event.edit('هذا المستخدم ليس مكتومًا')
     await asyncio.sleep(3)
     await event.delete()
+chat = int(r.get("music_id"))
 @ABH.on(events.NewMessage)
 async def check_mute(event):
     text = event.text
-    if text.startswith('يوت') and event.sender_id == 7908156943:
+    if text.startswith('يوت') and event.sender_id == 7908156943 and e.chat_id == chat:
         return await event.respond(text)
-    chat = int(r.get("music_id"))
     e = event
     if chat == event.chat_id and event.sender_id == 6704442134:
         if not event.media:return
